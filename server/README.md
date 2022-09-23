@@ -10,7 +10,7 @@
 ├── users
 |   ├── user.model.go       //data models define & DB operation
 |   ├── user.router.go      //business logic & router binding
-|   ├── user.controller.go  //handle router's logic
+|   ├── user.controller.go  //handle router logic
 |   └── user.middleware.go  //put the before & after logic of handle request
 ├── ...
 ...
