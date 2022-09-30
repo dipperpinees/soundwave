@@ -1,0 +1,47 @@
+definitions:
+  controllers.AuthResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      token:
+        type: string
+    type: object
+  controllers.SignInBody:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+info:
+  contact: {}
+paths:
+  /signin:
+    post:
+      consumes:
+      - application/json
+      description: Create Account
+      parameters:
+      - description: email password
+        in: body
+        name: SignInBody
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.SignInBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.AuthResponse'
+      summary: Sign In
+      tags:
+      - auth2
+swagger: "2.0"
