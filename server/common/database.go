@@ -2,25 +2,25 @@ package common
 
 import (
 	"fmt"
-	"os"
 
+	"github.com/hiepnguyen223/int3306-project/configs"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-var Db *gorm.DB
+var db *gorm.DB
 
-func Init() *gorm.DB {
-	Db = connectDb()
-	return Db
+func InitDB() *gorm.DB {
+	db = connectDb()
+	return db
 }
 
 func connectDb() *gorm.DB {
-	DB_USERNAME := os.Getenv("DB_USERNAME")
-	DB_PASSWORD := os.Getenv("DB_PASSWORD")
-	DB_NAME := os.Getenv("DB_NAME")
-	DB_HOST := os.Getenv("DB_HOST")
-	DB_PORT := os.Getenv("DB_PORT")
+	DB_USERNAME := configs.EnvDbUserName()
+	DB_PASSWORD := configs.EnvDbPassword()
+	DB_NAME := configs.EnvDbName()
+	DB_HOST := configs.EnvDbHost()
+	DB_PORT := configs.EnvDbPort()
 	dsn := DB_USERNAME + ":" + DB_PASSWORD + "@tcp" + "(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME + "?" + "parseTime=true&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn))
 
@@ -29,5 +29,9 @@ func connectDb() *gorm.DB {
 		return nil
 	}
 
+	return db
+}
+
+func GetDB() *gorm.DB {
 	return db
 }
