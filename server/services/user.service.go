@@ -54,3 +54,10 @@ func (UserService) Search(page int, search string) (*[]userModel, int64, error) 
 
 	return &userList, <-count, err
 }
+
+func (UserService) GetFavoriteSong(userID uint) ([]songModel, error) {
+	var user userModel
+
+	err := common.GetDB().Model(&models.User{}).Where("id = ?", userID).Preload("FavoriteSongs").Preload("FavoriteSongs.Author").First(&user).Error
+	return user.FavoriteSongs, err
+}
