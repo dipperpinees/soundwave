@@ -15,6 +15,7 @@ import (
 type SongController struct{}
 
 var songService = services.SongService{}
+var commentService = services.CommentService{}
 
 type songModel = models.Song
 
@@ -141,11 +142,27 @@ func (SongController) CreateComment(c *gin.Context) {
 
 	comment := models.Comment{AuthorID: user.ID, SongID: params.ID, Content: body.Content}
 
-	err := songService.CreateComment(&comment)
+	err := commentService.CreateComment(&comment)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 	comment.Author = *user
 	c.JSON(http.StatusOK, &comment)
+}
+
+func (SongController) GetCommentOfSong(c *gin.Context) {
+	params := dtos.IdParams{}
+	if err := c.ShouldBindUri(&params); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		return
+	}
+
+	comments, err := commentService.GetCommentOfSong(params.ID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, &comments)
 }

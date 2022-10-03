@@ -54,8 +54,3 @@ func (SongService) CreateFavoriteSong(userID uint, songID uint) (*models.UserLik
 	err := common.GetDB().Create(&newFavoriteSong).Error
 	return &newFavoriteSong, err
 }
-
-func (SongService) CreateComment(data *models.Comment) error {
-	err := common.GetDB().Create(&data).Error
-	return err
-}
