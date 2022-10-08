@@ -29,10 +29,12 @@ func main() {
 	//start default gin server
 	app := gin.Default()
 
-	//cors
-	app.Use(middlewares.CORSMiddleware())
+	//swagger ui
+	app.Static("/swagger", "./public/swagger")
 
 	router := app.Group("/api")
+	//cors
+	router.Use(middlewares.CORSMiddleware())
 	routers.HandleRoute(router)
 
 	var PORT string

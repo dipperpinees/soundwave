@@ -11,7 +11,6 @@ type SongService struct{}
 
 func (SongService) CreateSong(data interface{}) error {
 	err := common.GetDB().Create(data).Error
-
 	return err
 }
 
@@ -23,34 +22,38 @@ func (SongService) FindByID(id uint) (songModel, error) {
 
 func (SongService) FindMany(page int, search string) (*[]songModel, int64, error) {
 	var listSong []songModel
+	var count int64
 	offSet := (page - 1) * common.LIMIT_PER_PAGE
 	queueErr := make(chan error, 1)
-	count := make(chan int64)
 
 	go func() {
-		var i int64
-		defer close(count)
+		db := common.GetDB()
 		if search != "" {
-			queueErr <- common.GetDB().Where("title LIKE ?", "%"+search+"%").Preload("Author").Find(&songModel{}).Count(&i).Error
-		} else {
-			queueErr <- common.GetDB().Preload("Author").Find(&songModel{}).Count(&i).Error
+			db = db.Where("title LIKE ?", "%"+search+"%")
 		}
-		count <- i
+		queueErr <- db.Find(&songModel{}).Count(&count).Error
 	}()
 
-	if search != "" {
-		queueErr <- common.GetDB().Limit(common.LIMIT_PER_PAGE).Offset(offSet).Where("title LIKE ?", "%"+search+"%").Preload("Author").Find(&listSong).Error
-	} else {
-		queueErr <- common.GetDB().Limit(common.LIMIT_PER_PAGE).Offset(offSet).Preload("Author").Find(&listSong).Error
-	}
+	go func() {
+		db := common.GetDB()
+		if search != "" {
+			db = db.Where("title LIKE ?", "%"+search+"%")
+		}
+		queueErr <- db.Preload("Author").Limit(common.LIMIT_PER_PAGE).Offset(offSet).Find(&listSong).Error
+	}()
 
 	err := common.GroupError(queueErr, 2)
-
-	return &listSong, <-count, err
+	return &listSong, count, err
 }
 
 func (SongService) CreateFavoriteSong(userID uint, songID uint) (*models.UserLikeSong, error) {
 	newFavoriteSong := models.UserLikeSong{UserID: userID, SongID: songID}
 	err := common.GetDB().Create(&newFavoriteSong).Error
 	return &newFavoriteSong, err
+}
+
+func (SongService) GetLikeNumber(songID uint) (int64, error) {
+	var count int64
+	err := common.GetDB().Model(&models.UserLikeSong{}).Where("song_id = ?", songID).Count(&count).Error
+	return count, err
 }

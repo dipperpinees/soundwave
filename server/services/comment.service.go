@@ -15,7 +15,7 @@ func (CommentService) CreateComment(data *models.Comment) error {
 func (CommentService) GetCommentOfSong(songID uint) (*[]models.Comment, error) {
 	comments := []models.Comment{}
 
-	err := common.GetDB().Model(&models.Comment{}).Where("song_id = ?", songID).Find(&comments).Error
+	err := common.GetDB().Model(&models.Comment{}).Preload("Author").Where("song_id = ?", songID).Find(&comments).Error
 
 	return &comments, err
 }

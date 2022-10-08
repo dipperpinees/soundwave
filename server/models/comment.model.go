@@ -4,7 +4,7 @@ import "time"
 
 type Comment struct {
 	Author    User      `json:"author"`
-	AuthorID  uint      `json:"author_id"`
+	AuthorID  uint      `json:"-"`
 	Song      Song      `json:"-"`
 	SongID    uint      `json:"song_id"`
 	Content   string    `gorm:"not null" json:"content"`

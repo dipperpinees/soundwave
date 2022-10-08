@@ -15,9 +15,13 @@ type userModel = models.User
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.Request.Header.Get("Authorization")
+		token, err := c.Request.Cookie("access_token")
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, "Unauthorized")
+			return
+		}
 
-		claims, err := common.DecodeJWT(token)
+		claims, err := common.DecodeJWT(token.Value)
 
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, "Unauthorized")
