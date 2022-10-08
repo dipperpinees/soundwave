@@ -7,12 +7,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
-	docs "github.com/hiepnguyen223/int3306-project/docs"
+	"github.com/hiepnguyen223/int3306-project/middlewares"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/routers"
 	"github.com/joho/godotenv"
-	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
@@ -31,11 +29,12 @@ func main() {
 	//start default gin server
 	app := gin.Default()
 
-	//add swagger
-	docs.SwaggerInfo.BasePath = "/api"
-	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	//swagger ui
+	app.Static("/swagger", "./public/swagger")
 
 	router := app.Group("/api")
+	//cors
+	router.Use(middlewares.CORSMiddleware())
 	routers.HandleRoute(router)
 
 	var PORT string

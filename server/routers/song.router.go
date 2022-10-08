@@ -14,4 +14,5 @@ func songRouter(router *gin.RouterGroup) {
 	router.GET("/:id", songController.GetByID)
 	router.POST("/like/:id", middlewares.AuthMiddleware(), songController.CreateFavoriteSong)
 	router.POST("/comment/:id", middlewares.AuthMiddleware(), songController.CreateComment)
+	router.GET("/comment/:id", songController.GetCommentOfSong)
 }

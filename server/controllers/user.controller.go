@@ -97,3 +97,15 @@ func (UserController) SearchUser(c *gin.Context) {
 		},
 	)
 }
+
+func (UserController) GetFavoriteSong(c *gin.Context) {
+	userID := c.Keys["user"].(*userModel).ID
+
+	songs, err := userService.GetFavoriteSong(userID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, &songs)
+}

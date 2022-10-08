@@ -44,7 +44,7 @@ func (AuthController) SignUp(c *gin.Context) {
 	}
 
 	tokenString, _ := common.GenerateJWT(newUser.ID, newUser.Email)
-
+	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
 	c.JSON(http.StatusAccepted, &AuthResponse{ID: newUser.ID, Email: newUser.Email, Token: tokenString})
 }
 
@@ -73,6 +73,7 @@ func (AuthController) SignIn(c *gin.Context) {
 
 	tokenString, _ := common.GenerateJWT(users.ID, users.Email)
 
+	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
 	c.JSON(http.StatusAccepted, &AuthResponse{ID: users.ID, Email: users.Email, Token: tokenString})
 }
 

@@ -15,6 +15,7 @@ import (
 type SongController struct{}
 
 var songService = services.SongService{}
+var commentService = services.CommentService{}
 
 type songModel = models.Song
 
@@ -49,7 +50,12 @@ func (SongController) CreateSong(c *gin.Context) {
 	}
 
 	//upload song to database
-	newSong := songModel{Title: formData.Title, Url: uploadUrl["song"], Thumbnail: uploadUrl["thumbnail"], AuthorID: user.ID}
+	newSong := songModel{
+		Title:     formData.Title,
+		Url:       uploadUrl["song"],
+		Thumbnail: uploadUrl["thumbnail"],
+		AuthorID:  user.ID,
+	}
 	if err := songService.CreateSong(&newSong); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
@@ -59,6 +65,11 @@ func (SongController) CreateSong(c *gin.Context) {
 	c.JSON(http.StatusOK, &newSong)
 }
 
+type songModelWithLike struct {
+	models.Song
+	Like int64 `json:"like"`
+}
+
 func (SongController) GetByID(c *gin.Context) {
 	params := dtos.IdParams{}
 
@@ -66,14 +77,29 @@ func (SongController) GetByID(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
 		return
 	}
+	queueErr := make(chan error, 1)
+	var song models.Song
+	var likeNumber int64
 
-	song, err := songService.FindByID(params.ID)
+	go func(song *models.Song) {
+		var err error
+		*song, err = songService.FindByID(params.ID)
+		queueErr <- err
+	}(&song)
+
+	go func(likeNumber *int64) {
+		var err error
+		*likeNumber, err = songService.GetLikeNumber(params.ID)
+		queueErr <- err
+	}(&likeNumber)
+
+	err := common.GroupError(queueErr, 2)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "This song doesn't exist")
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, &song)
+	c.JSON(http.StatusOK, &songModelWithLike{Song: song, Like: likeNumber})
 }
 
 func (SongController) FindMany(c *gin.Context) {
@@ -91,7 +117,6 @@ func (SongController) FindMany(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
-
 	totalPages := int(math.Ceil(float64(total) / float64(common.LIMIT_PER_PAGE)))
 	c.JSON(
 		http.StatusOK,
@@ -141,11 +166,27 @@ func (SongController) CreateComment(c *gin.Context) {
 
 	comment := models.Comment{AuthorID: user.ID, SongID: params.ID, Content: body.Content}
 
-	err := songService.CreateComment(&comment)
+	err := commentService.CreateComment(&comment)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 	comment.Author = *user
 	c.JSON(http.StatusOK, &comment)
+}
+
+func (SongController) GetCommentOfSong(c *gin.Context) {
+	params := dtos.IdParams{}
+	if err := c.ShouldBindUri(&params); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		return
+	}
+
+	comments, err := commentService.GetCommentOfSong(params.ID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, &comments)
 }
