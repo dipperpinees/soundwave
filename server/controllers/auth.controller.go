@@ -13,6 +13,7 @@ type AuthResponse struct {
 	ID    uint   `json:"id"`
 	Email string `json:"email"`
 	Token string `json:"token"`
+	Name  string `json:"name"`
 }
 
 var userService = services.UserService{}
@@ -30,7 +31,7 @@ type SignUpBody struct {
 func (AuthController) SignUp(c *gin.Context) {
 	body := SignUpBody{}
 	if err := c.BindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -39,13 +40,13 @@ func (AuthController) SignUp(c *gin.Context) {
 	newUser := models.User{Email: body.Email, Password: hashPassword, Name: body.Name}
 
 	if err := userService.CreateOne(&newUser); err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	tokenString, _ := common.GenerateJWT(newUser.ID, newUser.Email)
+	tokenString, _ := common.GenerateJWT(newUser.ID, newUser.Email, newUser.Name)
 	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
-	c.JSON(http.StatusAccepted, &AuthResponse{ID: newUser.ID, Email: newUser.Email, Token: tokenString})
+	c.JSON(http.StatusAccepted, &AuthResponse{ID: newUser.ID, Email: newUser.Email, Token: tokenString, Name: newUser.Name})
 }
 
 type SignInBody struct {
@@ -56,25 +57,25 @@ type SignInBody struct {
 func (AuthController) SignIn(c *gin.Context) {
 	body := SignInBody{}
 	if err := c.BindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	users, err := userService.FindOne(&userModel{Email: body.Email})
 	if err != nil {
-		c.JSON(http.StatusBadRequest, "This user is not exist")
+		c.AbortWithStatusJSON(http.StatusBadRequest, "This user is not exist")
 		return
 	}
 
 	if !common.CheckPasswordHash(body.Password, users.Password) {
-		c.JSON(http.StatusBadRequest, "Wrong password")
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Wrong password")
 		return
 	}
 
-	tokenString, _ := common.GenerateJWT(users.ID, users.Email)
+	tokenString, _ := common.GenerateJWT(users.ID, users.Email, users.Name)
 
 	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
-	c.JSON(http.StatusAccepted, &AuthResponse{ID: users.ID, Email: users.Email, Token: tokenString})
+	c.JSON(http.StatusAccepted, &AuthResponse{ID: users.ID, Email: users.Email, Token: tokenString, Name: users.Name})
 }
 
 func (AuthController) Auth(c *gin.Context) {

@@ -31,10 +31,11 @@ func main() {
 
 	//swagger ui
 	app.Static("/swagger", "./public/swagger")
+	//cors
+	app.Use(middlewares.CORSMiddleware())
 
 	router := app.Group("/api")
-	//cors
-	router.Use(middlewares.CORSMiddleware())
+
 	routers.HandleRoute(router)
 
 	var PORT string
