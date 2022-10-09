@@ -1,12 +1,15 @@
 import { createContext, useEffect, useReducer } from "react";
 import { API_ENDPOINT } from "../config";
 
-const initialState = {
+const defaultState = {
     id: 0,
-    email: "",
     avatar: "",
-    name: ""
+    name: "",
+    createdAt: "",
+    updatedAt: ""
 }
+
+const initialState = {...defaultState}
 
 export const UserContext = createContext(initialState);
 
@@ -17,7 +20,7 @@ export function UserStore({children}) {
                 return {...state, ...action.payload}
             }
             case "Delete": {
-                return {id: 0, email: "", avatar: ""}
+                return {...defaultState}
             }
             default:
                 return state;
@@ -37,7 +40,7 @@ export function UserStore({children}) {
         }
         auth()
     }, [])
-
+    console.log(state);
     return <UserContext.Provider value={[state, dispatch]}>
         {children}
     </UserContext.Provider>

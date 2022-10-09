@@ -7,7 +7,7 @@ var spec =
         version: "1.0", 
         title: "API DOCS"
     },
-    host: "localhost:3001",  
+    host: window.location.host,  
     basePath: "/api",     
     tags: [ 
         {
@@ -15,7 +15,7 @@ var spec =
             description: "Đăng kí, đăng nhập, xác thực tài khoản",  
         }
     ],
-    schemes: ["http"], 
+    schemes: ["http", "https"], 
     paths: {
         "/signup": {   
             post: {       
@@ -121,8 +121,7 @@ var spec =
                     {
                         in: "formData",
                         name: "thumbnail",
-                        type: "file",
-                        required: true
+                        type: "file"
                     }
                 ],
                 responses: {
@@ -131,8 +130,6 @@ var spec =
                     },
                 }
             },
-        },
-        "/song/": {
             get: {
                 tags: ["song"],
                 summary: "Lấy list bài nhạc",
@@ -178,6 +175,61 @@ var spec =
                     },
                 }
             },
+            delete: {
+                tags: ["song"],
+                summary: "Xoá bài nhạc",
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "songID",
+                        schema: {
+                            type: "interger"
+                        }  
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            },
+            put: {
+                tags: ["song"],
+                summary: "Update bài nhạc",
+                consumes: ["multipart/form-data"],
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "songID",
+                        schema: {
+                            type: "interger"
+                        }  
+                    },
+                    {
+                        in: "formData",
+                        name: "file",
+                        type: "file",
+                        description: "The music file to upload."
+                    },
+                    {
+                        in: "formData",
+                        name: "title",
+                        type: "string"
+                    },
+                    {
+                        in: "formData",
+                        name: "thumbnail",
+                        type: "file"
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
         },
         "/song/like/{songID}": {
             post: {
@@ -202,9 +254,29 @@ var spec =
                 }
             },
         },
-        "/song/comment/{songID}": {
+        "/song/{songID}/comment": {
+            get: {
+                tags: ["comment"],
+                summary: "Lấy comments bài nhạc",
+                operationId: "GetCommentBySongID",
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "songID",
+                        schema: {
+                            type: "interger"
+                        }  
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            },
             post: {
-                tags: ["song"],
+                tags: ["comment"],
                 summary: "Comment bài nhạc",
                 operationId: "CreateComment",
                 consumes: ["application/json"],
@@ -236,18 +308,51 @@ var spec =
                         description: "OK",   
                     },
                 }
-            },
+            }
         },
-        "/song/comment/{songID}": {
-            get: {
-                tags: ["song"],
-                summary: "Lấy comments bài nhạc",
-                operationId: "GetCommentBySongID",
+        "/song/comment/{commentID}": {
+            put: {
+                tags: ["comment"],
+                summary: "Cập nhật comment",
+                operationId: "UpdateComment",
                 produces: ["application/json"],
                 parameters: [
                     {
                         in: "path",
-                        name: "songID",
+                        name: "commentID",
+                        schema: {
+                            type: "interger"
+                        }  
+                    },
+                    {
+                        in: "body",
+                        name: "content",
+                        required: true,   
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "content": {
+                                    "type": "string"
+                                }
+                            }
+                        }, 
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            },
+            delete: {
+                tags: ["comment"],
+                summary: "Xoá comment",
+                operationId: "DeleteCommentBySongID",
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "commentID",
                         schema: {
                             type: "interger"
                         }  
@@ -258,7 +363,7 @@ var spec =
                         description: "OK",   
                     },
                 }
-            },
+            }
         },
         "/user/uploadAvatar": {
             post: {

@@ -10,8 +10,8 @@ type User struct {
 	Name          string    `gorm:"not null" json:"name"`
 	Password      string    `gorm:"not null" json:"-"`
 	Avatar        string    `json:"avatar"`
-	CreatedAt     time.Time `gorm:"autoCreateTime;column:created_at" json:"created_at"`
-	UpdatedAt     time.Time `gorm:"autoUpdateTime;column:updated_at" json:"updated_at"`
+	CreatedAt     time.Time `gorm:"autoCreateTime;column:created_at" json:"createdAt"`
+	UpdatedAt     time.Time `gorm:"autoUpdateTime;column:updated_at" json:"updatedAt"`
 	Songs         []Song    `gorm:"foreignKey:AuthorID" json:"-"`
 	FavoriteSongs []Song    `gorm:"many2many:user_like_songs;" json:"-"`
 }
