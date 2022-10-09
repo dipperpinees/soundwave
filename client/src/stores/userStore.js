@@ -40,7 +40,7 @@ export function UserStore({children}) {
         }
         auth()
     }, [])
-    console.log(state);
+    
     return <UserContext.Provider value={[state, dispatch]}>
         {children}
     </UserContext.Provider>

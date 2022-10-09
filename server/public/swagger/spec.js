@@ -15,7 +15,7 @@ var spec =
             description: "Đăng kí, đăng nhập, xác thực tài khoản",  
         }
     ],
-    schemes: ["http", "https"], 
+    schemes: [window.location.protocol.replace(":", "")], 
     paths: {
         "/signup": {   
             post: {       
@@ -89,6 +89,19 @@ var spec =
                 tags: ["auth"],
                 summary: "Xác thực token",
                 operationId: "Authenication",
+                produces: ["application/json"],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            },
+        },
+        "/logout": {
+            post: {
+                tags: ["auth"],
+                summary: "Đăng xuất",
+                operationId: "LogOut",
                 produces: ["application/json"],
                 responses: {
                     200: {                                    
@@ -399,7 +412,6 @@ var spec =
                         in: "path",
                         name: "userID",
                         type: "int",
-                        required: true
                     }
                 ],
                 responses: {
