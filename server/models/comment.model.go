@@ -3,6 +3,7 @@ package models
 import "time"
 
 type Comment struct {
+	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id"`
 	Author    User      `json:"author"`
 	AuthorID  uint      `json:"-"`
 	Song      Song      `json:"-"`

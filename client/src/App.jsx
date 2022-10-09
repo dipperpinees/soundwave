@@ -1,21 +1,24 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import { UserStore } from './store/userStore';
+import { Store } from './stores';
 
 function App() {
     return (
         <BrowserRouter>
-            <UserStore>
+            <Store>
                 <div className="App">
-                    <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/signin" element={<SignIn />} />
-                        <Route path="/signup" element={<SignUp />} />
-                    </Routes>
+                    <Layout>
+                        <Routes>
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/signin" element={<SignIn />} />
+                            <Route path="/signup" element={<SignUp />} />
+                        </Routes>
+                    </Layout>
                 </div>
-            </UserStore>
+            </Store>
         </BrowserRouter>
     );
 }

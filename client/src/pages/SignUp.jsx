@@ -1,10 +1,16 @@
 import { Button, TextField } from "@mui/material";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_ENDPOINT } from "../config";
-import { UserContext } from "../store/userStore";
+import { UserContext } from "../stores";
 
 export default function SignUp() {
     const [user, userDispatch] = useContext(UserContext);
+    const navigate = useNavigate()
+    if (user.id) {
+        navigate("/");
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const email = e.target.email.value;
@@ -27,7 +33,7 @@ export default function SignUp() {
             alert(responseJSON)
         }
     }
-
+    
     return <form className="sign-up" onSubmit={handleSubmit}>
         <TextField label="Email" name="email" variant="standard" />
         <TextField label="Password" name="password" type="password" variant="standard" />

@@ -13,6 +13,10 @@ func songRouter(router *gin.RouterGroup) {
 	router.POST("/", middlewares.AuthMiddleware(), songController.CreateSong)
 	router.GET("/:id", songController.GetByID)
 	router.POST("/like/:id", middlewares.AuthMiddleware(), songController.CreateFavoriteSong)
-	router.POST("/comment/:id", middlewares.AuthMiddleware(), songController.CreateComment)
-	router.GET("/comment/:id", songController.GetCommentOfSong)
+	router.DELETE("/:id", middlewares.AuthMiddleware(), middlewares.SongGuard(), songController.DeleteSong)
+	router.PUT("/:id", middlewares.AuthMiddleware(), middlewares.SongGuard(), songController.UpdateSong)
+	router.POST("/:id/comment", middlewares.AuthMiddleware(), songController.CreateComment)
+	router.GET("/:id/comment", songController.GetCommentOfSong)
+	router.DELETE("/comment/:id", middlewares.AuthMiddleware(), middlewares.CommentGuard(), songController.DeleteComment)
+	router.PUT("/comment/:id", middlewares.AuthMiddleware(), middlewares.CommentGuard(), songController.UpdateComment)
 }

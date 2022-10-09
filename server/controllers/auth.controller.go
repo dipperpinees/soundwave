@@ -9,13 +9,6 @@ import (
 	"github.com/hiepnguyen223/int3306-project/services"
 )
 
-type AuthResponse struct {
-	ID    uint   `json:"id"`
-	Email string `json:"email"`
-	Token string `json:"token"`
-	Name  string `json:"name"`
-}
-
 var userService = services.UserService{}
 
 type userModel = models.User
@@ -44,10 +37,10 @@ func (AuthController) SignUp(c *gin.Context) {
 		return
 	}
 
-	tokenString, _ := common.GenerateJWT(newUser.ID, newUser.Email, newUser.Name)
+	tokenString, _ := common.GenerateJWT(newUser.ID)
 	c.SetSameSite(http.SameSiteNoneMode)
 	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
-	c.JSON(http.StatusAccepted, &AuthResponse{ID: newUser.ID, Email: newUser.Email, Token: tokenString, Name: newUser.Name})
+	c.JSON(http.StatusAccepted, &newUser)
 }
 
 type SignInBody struct {
@@ -73,11 +66,11 @@ func (AuthController) SignIn(c *gin.Context) {
 		return
 	}
 
-	tokenString, _ := common.GenerateJWT(users.ID, users.Email, users.Name)
+	tokenString, _ := common.GenerateJWT(users.ID)
 
 	c.SetSameSite(http.SameSiteNoneMode)
 	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
-	c.JSON(http.StatusAccepted, &AuthResponse{ID: users.ID, Email: users.Email, Token: tokenString, Name: users.Name})
+	c.JSON(http.StatusAccepted, &users)
 }
 
 func (AuthController) Auth(c *gin.Context) {
