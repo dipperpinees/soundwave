@@ -1,10 +1,15 @@
 import { useContext } from "react";
+import { API_ENDPOINT } from "../../config";
 import { UserContext } from "../../stores";
 
 export default function Header() {
     const [user, userDispatch] = useContext(UserContext);
 
-    function logOut () {
+    async function logOut () {
+        await fetch(API_ENDPOINT + "/logout", {
+            method: "POST",
+            credentials: "include"
+        })
         userDispatch({type: "Delete"})
     }
 

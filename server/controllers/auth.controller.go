@@ -77,3 +77,9 @@ func (AuthController) Auth(c *gin.Context) {
 	user := c.Keys["user"].(*userModel)
 	c.JSON(http.StatusOK, user)
 }
+
+func (AuthController) LogOut(c *gin.Context) {
+	c.SetSameSite(http.SameSiteNoneMode)
+	c.SetCookie("access_token", "", -1, "/", "", true, true)
+	c.JSON(http.StatusOK, gin.H{"message": "Log out successfully"})
+}
