@@ -433,6 +433,26 @@ var spec =
                     },
                 }
             }
+        },
+        "/user/{userID}/songs": {
+            get: {
+                tags: ["user"],
+                summary: "Lấy các bài nhạc user đã đăng tải",
+                operationId: "GetSongOfUser",
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "userID",
+                        type: "int",
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
         }
     }
 };

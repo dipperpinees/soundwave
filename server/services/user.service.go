@@ -61,3 +61,10 @@ func (UserService) GetFavoriteSong(userID uint) ([]songModel, error) {
 	err := common.GetDB().Model(&models.User{}).Where("id = ?", userID).Preload("FavoriteSongs").Preload("FavoriteSongs.Author").First(&user).Error
 	return user.FavoriteSongs, err
 }
+
+func (UserService) GetSongOfUser(userID uint) ([]songModel, error) {
+	var songs []songModel
+	err := common.GetDB().Preload("Author").Where("author_id = ?", userID).Find(&songs).Error
+
+	return songs, err
+}
