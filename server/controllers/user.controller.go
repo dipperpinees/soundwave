@@ -71,6 +71,10 @@ func (UserController) GetUser(c *gin.Context) {
 	c.JSON(http.StatusOK, &user)
 }
 
+// func (UserController) GetUserProfile(c *gin.Context) {
+
+// }
+
 func (UserController) SearchUser(c *gin.Context) {
 	type SearchUserQuery struct {
 		Search string `form:"search"`
@@ -107,5 +111,21 @@ func (UserController) GetFavoriteSong(c *gin.Context) {
 		return
 	}
 
+	c.JSON(http.StatusOK, &songs)
+}
+
+func (UserController) GetSongOfUser(c *gin.Context) {
+	params := dtos.IdParams{}
+
+	if err := c.ShouldBindUri(&params); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid user ID")
+		return
+	}
+
+	songs, err := userService.GetSongOfUser(params.ID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		return
+	}
 	c.JSON(http.StatusOK, &songs)
 }

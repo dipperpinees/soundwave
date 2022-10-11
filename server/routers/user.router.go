@@ -24,4 +24,7 @@ func userRouter(router *gin.RouterGroup) {
 
 	//get user's favorite song
 	router.GET("/favorite", middlewares.AuthMiddleware(), userController.GetFavoriteSong)
+
+	//get user's song
+	router.GET("/:id/songs", userController.GetSongOfUser)
 }
