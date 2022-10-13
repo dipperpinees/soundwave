@@ -3,7 +3,8 @@
   + Front-end: ReactJS, SCSS, Chakra UI, React Hook Form
   + Back-end: Go Lang(Gin Gonic), GORM
   + Database: MySQL
-
+## Database Design
+  <a href="https://app.quickdatabasediagrams.com/#/d/sxtRMq">Datagram</a>
 ## GIT
   Mỗi người sẽ code trên một nhánh (branch), khi push sẽ push lên nhánh đó rồi mới merge vào nhánh chính (master), nếu muốn cập nhật sự thay đổi trên nhánh chính về nhánh của mình thì sẽ pull code từ nhánh chính (master) về.
  ```bash
