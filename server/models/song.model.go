@@ -10,7 +10,7 @@ type Song struct {
 	Thumbnail string    `gorm:"column:thumbnail" json:"thumbnail"`
 	Author    User      `json:"author"`
 	Likes     []User    `gorm:"many2many:user_like_songs;" json:"-"`
-	PlayCount int64     `gorm:"default:0"`
-	CreatedAt time.Time `gorm:"autoCreateTime;column:created_at" json:"created_at"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime;column:updated_at" json:"updated_at"`
+	PlayCount int64     `gorm:"default:0" json:"playCount"`
+	CreatedAt time.Time `gorm:"autoCreateTime;column:created_at" json:"createdAt"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime;column:updated_at" json:"updatedAt"`
 }
