@@ -1,3 +1,4 @@
+import { Button } from "@chakra-ui/react";
 import { useContext } from "react";
 import { API_ENDPOINT } from "../../config";
 import { UserContext } from "../../stores";
@@ -17,7 +18,7 @@ export default function Header() {
         <div>
             {user.name && <div>
                 Hello, {user.name}
-                <button onClick={logOut}>Log out</button>
+                <Button colorScheme="teal" onClick={logOut}>Log out</Button>
             </div>}
             
         </div>

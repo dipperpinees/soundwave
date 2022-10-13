@@ -291,3 +291,18 @@ func (SongController) UpdateComment(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Update comment successfully"})
 }
+
+func (SongController) IncrementPlayCount(c *gin.Context) {
+	params := dtos.IdParams{}
+	if err := c.ShouldBindUri(&params); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		return
+	}
+
+	err := songService.IncrementPlayCount(params.ID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Increment play count successfully"})
+}

@@ -19,4 +19,5 @@ func songRouter(router *gin.RouterGroup) {
 	router.GET("/:id/comment", songController.GetCommentOfSong)
 	router.DELETE("/comment/:id", middlewares.AuthMiddleware(), middlewares.CommentGuard(), songController.DeleteComment)
 	router.PUT("/comment/:id", middlewares.AuthMiddleware(), middlewares.CommentGuard(), songController.UpdateComment)
+	router.POST("/play/:id", songController.IncrementPlayCount)
 }

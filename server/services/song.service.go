@@ -5,6 +5,7 @@ import (
 
 	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/models"
+	"gorm.io/gorm"
 )
 
 type songModel = models.Song
@@ -93,4 +94,8 @@ func (SongService) Update(songID uint, title string, url string, thumbnail strin
 
 	err := common.GetDB().Model(&songModel{}).Where("id = ?", songID).Updates(updateData).Error
 	return updateData, err
+}
+
+func (SongService) IncrementPlayCount(songID uint) error {
+	return common.GetDB().Model(&songModel{}).Where("id = ?", songID).Update("play_count", gorm.Expr("play_count + ?", 1)).Error
 }
