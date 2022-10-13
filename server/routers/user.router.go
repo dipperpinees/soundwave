@@ -30,6 +30,7 @@ func userRouter(router *gin.RouterGroup) {
 
 	//follow feature
 	router.POST("/follow/:id", middlewares.AuthMiddleware(), userController.Follow)
+	router.POST("/unfollow/:id", middlewares.AuthMiddleware(), userController.UnFollow)
 	router.GET("/follower/:id", userController.GetFollowers)
 	router.GET("/following/:id", userController.GetFollowings)
 

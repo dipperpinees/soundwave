@@ -12,6 +12,7 @@ import (
 )
 
 var uploadService = services.UploadService{}
+var followService = services.FollowService{}
 
 type UserController struct{}
 
@@ -134,13 +135,30 @@ func (UserController) Follow(c *gin.Context) {
 	}
 
 	userID := c.Keys["user"].(*userModel).ID
-	err := userService.Follow(userID, params.ID)
+	err := followService.Follow(userID, params.ID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Follow successfully"})
+}
+
+func (UserController) UnFollow(c *gin.Context) {
+	params := dtos.IdParams{}
+	if err := c.ShouldBindUri(&params); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid following ID")
+		return
+	}
+
+	userID := c.Keys["user"].(*userModel).ID
+	err := followService.UnFollow(userID, params.ID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Unfollow successfully"})
 }
 
 func (UserController) GetFollowers(c *gin.Context) {
@@ -150,7 +168,7 @@ func (UserController) GetFollowers(c *gin.Context) {
 		return
 	}
 
-	followers, err := userService.GetFollowers(params.ID)
+	followers, err := followService.GetFollowers(params.ID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
@@ -166,7 +184,7 @@ func (UserController) GetFollowings(c *gin.Context) {
 		return
 	}
 
-	followings, err := userService.GetFollowings(params.ID)
+	followings, err := followService.GetFollowings(params.ID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return

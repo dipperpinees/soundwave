@@ -495,6 +495,27 @@ var spec =
                 }
             }
         },
+        "/user/unfollow/{followingID}": {
+            post: {
+                tags: ["user"],
+                summary: "Unfollow user khác",
+                operationId: "Unfollow",
+                consumes: ["application/json"],
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "followingID",
+                        type: "int",
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
         "/user/follower/{userID}": {
             get: {
                 tags: ["user"],
