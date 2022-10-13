@@ -378,6 +378,26 @@ var spec =
                 }
             }
         },
+        "/song/play/{songID}": {
+            post: {
+                tags: ["song"],
+                summary: "Tăng số lượt nghe bài hát",
+                operationId: "IncrementPlayCount",
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "songID",
+                        type: "int",
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
         "/user/uploadAvatar": {
             post: {
                 tags: ["user"],
@@ -439,6 +459,67 @@ var spec =
                 tags: ["user"],
                 summary: "Lấy các bài nhạc user đã đăng tải",
                 operationId: "GetSongOfUser",
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "userID",
+                        type: "int",
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
+        "/user/follow/{followingID}": {
+            post: {
+                tags: ["user"],
+                summary: "Follow user khác",
+                operationId: "Follow",
+                consumes: ["application/json"],
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "followingID",
+                        type: "int",
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
+        "/user/follower/{userID}": {
+            get: {
+                tags: ["user"],
+                summary: "Lấy danh sách người theo dõi",
+                operationId: "GetFollowers",
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "userID",
+                        type: "int",
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
+        "/user/following/{userID}": {
+            get: {
+                tags: ["user"],
+                summary: "Lấy danh sách người đang theo dõi",
+                operationId: "GetFollowings",
                 produces: ["application/json"],
                 parameters: [
                     {

@@ -14,4 +14,5 @@ type User struct {
 	UpdatedAt     time.Time `gorm:"autoUpdateTime;column:updated_at" json:"updatedAt"`
 	Songs         []Song    `gorm:"foreignKey:AuthorID" json:"-"`
 	FavoriteSongs []Song    `gorm:"many2many:user_like_songs;" json:"-"`
+	Role          string    `gorm:"default:'user'" json:"role"`
 }
