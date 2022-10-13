@@ -1,7 +1,7 @@
 # App nghe nhạc
 ## Công nghệ dự kiến sử dụng:
-  + Front-end: ReactJS, SCSS, Chakra UI, React Hook Form
-  + Back-end: Go Lang(Gin Gonic), GORM
+  + Front-end: [ReactJS](https://reactjs.org/), SCSS, [Chakra UI](https://chakra-ui.com/), [React Hook Form](https://react-hook-form.com/)
+  + Back-end: [Go Lang](https://go.dev/)([Gin Gonic](https://gin-gonic.com/)), [GORM](https://gorm.io/)
   + Database: MySQL
 ## Database Design
   <a href="https://app.quickdatabasediagrams.com/#/d/sxtRMq">Datagram</a>
