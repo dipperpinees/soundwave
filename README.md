@@ -1,6 +1,6 @@
 # App nghe nhạc
 ## Công nghệ dự kiến sử dụng:
-  + Front-end: [ReactJS](https://reactjs.org/), SCSS, [Chakra UI](https://chakra-ui.com/), [React Hook Form](https://react-hook-form.com/)
+  + Front-end: [ReactJS](https://reactjs.org/), [SCSS](https://sass-lang.com/), [Chakra UI](https://chakra-ui.com/), [React Hook Form](https://react-hook-form.com/)
   + Back-end: [Go Lang](https://go.dev/)([Gin Gonic](https://gin-gonic.com/)), [GORM](https://gorm.io/)
   + Database: MySQL
 ## Database Design
