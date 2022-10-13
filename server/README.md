@@ -1,4 +1,4 @@
-## <a href="https://music-a8of.onrender.com">DEMO</a>
+## <a href="https://music-a8of.onrender.com/swagger">DEMO</a>
 # Getting started
 
 ## Directory structure
