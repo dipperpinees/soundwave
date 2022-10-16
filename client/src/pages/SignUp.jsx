@@ -1,16 +1,9 @@
+import { Button, FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
 import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { API_ENDPOINT } from '../config';
 import { UserContext } from '../stores';
-import { useForm } from 'react-hook-form';
-import {
-    Button,
-    FormControl,
-    FormErrorMessage,
-    FormHelperText,
-    FormLabel,
-    Input,
-} from '@chakra-ui/react';
 
 export default function SignUp() {
     const [user, userDispatch] = useContext(UserContext);
