@@ -1,9 +1,4 @@
-import {
-    Button,
-    FormControl,
-    FormErrorMessage, FormLabel,
-    Input
-} from '@chakra-ui/react';
+import { Button, FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
