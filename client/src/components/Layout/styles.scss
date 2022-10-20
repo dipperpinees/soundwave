@@ -1,0 +1,15 @@
+.header {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 56px;
+
+    &-back, &-forward {
+        font-size: 28px;
+    }
+
+    &-avatar {
+        margin: 16px;
+    }
+}
