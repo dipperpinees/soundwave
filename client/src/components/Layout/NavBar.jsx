@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { API_ENDPOINT } from "../../config";
 import { UserContext } from "../../stores";
 
-export default function Header() {
+export default function NavBar() {
     const [user, userDispatch] = useContext(UserContext);
 
     async function logOut () {
