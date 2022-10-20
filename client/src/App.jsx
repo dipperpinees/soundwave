@@ -5,12 +5,14 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import { Store } from './stores';
 import { ChakraProvider } from '@chakra-ui/react';
+import Player from './components/Player';
+import theme from './utils/theme';
 
 function App() {
     return (
         <BrowserRouter>
             <Store>
-                <ChakraProvider>
+                <ChakraProvider theme={theme}>
                     <div className="App">
                         <Layout>
                             <Routes>
@@ -18,6 +20,7 @@ function App() {
                                 <Route path="/signin" element={<SignIn />} />
                                 <Route path="/signup" element={<SignUp />} />
                             </Routes>
+                            <Player />
                         </Layout>
                     </div>
                 </ChakraProvider>
