@@ -7,6 +7,7 @@ import { Store } from './stores';
 import { ChakraProvider } from '@chakra-ui/react';
 import Player from './components/Player';
 import theme from './utils/theme';
+import Upload from './pages/Upload';
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/signin" element={<SignIn />} />
                                 <Route path="/signup" element={<SignUp />} />
+                                <Route path="/upload" element={<Upload />}/>
                             </Routes>
                             <Player />
                         </Layout>

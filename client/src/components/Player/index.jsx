@@ -43,7 +43,7 @@ export default function DesktopPlayer() {
                 value={songDuration === 0 ? 0 : (currentTime / songDuration) * 100}
                 colorScheme="primary"
                 _hover={{ cursor: 'pointer' }}
-                display={{ base: 'inherit', lg: 'none' }}
+                display={{ base: 'inherit', md: 'none' }}
                 position="absolute"
                 top="-1px"
                 left="0px"
@@ -64,12 +64,12 @@ export default function DesktopPlayer() {
                     </Text>
                 </div>
             </Flex>
-            <Flex className="player-play" display={{ base: 'none', lg: 'flex' }}>
+            <Flex className="player-play" display={{ base: 'none', md: 'flex' }}>
                 <GiPreviousButton onClick={() => dispatch({ type: 'PrevSong' })} />
                 <button onClick={handleTogglePlay}>{isPlayed ? <BsPauseFill /> : <BsFillPlayFill />}</button>
                 <GiNextButton onClick={() => dispatch({ type: 'NextSong' })} />
             </Flex>
-            <Flex flex={1} alignItems="center" gap={1} display={{ base: 'none', lg: 'flex' }}>
+            <Flex flex={1} alignItems="center" gap={1} display={{ base: 'none', md: 'flex' }}>
                 <Text fontSize={10} color="white">
                     {formatTime(currentTime)}
                 </Text>
@@ -86,7 +86,7 @@ export default function DesktopPlayer() {
                 </Text>
             </Flex>
 
-            <Flex gap={4} display={{ base: 'none', lg: 'flex' }}>
+            <Flex gap={4} display={{ base: 'none', md: 'flex' }}>
                 <IoIosRepeat
                     onClick={() => changeAutoPlay('repeat')}
                     className={autoPlay === 'repeat' && 'player-choose'}
@@ -101,7 +101,7 @@ export default function DesktopPlayer() {
             </Flex>
 
             {/* mobile */}
-            <Flex gap={4} display={{ base: 'flex', lg: 'none' }}>
+            <Flex gap={4} display={{ base: 'flex', md: 'none' }}>
                 <CgHeart />
                 <button onClick={handleTogglePlay}>{isPlayed ? <BsPauseFill /> : <BsFillPlayFill />}</button>
             </Flex>
