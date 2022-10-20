@@ -19,3 +19,6 @@
   # Pull code từ master về branch
   git pull origin master
  ```
+ 
+ ## ENV test
+ REACT_APP_API=https://music-a8of.onrender.com/api
