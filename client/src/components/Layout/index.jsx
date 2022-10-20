@@ -1,9 +1,10 @@
-import NavBar from "./NavBar";
+import Header from "./Header";
+import "./styles.scss";
 
 export default function Layout({children}) {
     return (
         <>
-            <NavBar />
+            <Header />
             {children}
         </>
     )
