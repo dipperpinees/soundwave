@@ -1,6 +1,6 @@
 # App nghe nhạc
 ## Công nghệ dự kiến sử dụng:
-  + Front-end: [ReactJS](https://reactjs.org/), [SCSS](https://sass-lang.com/), [Chakra UI](https://chakra-ui.com/), [React Hook Form](https://react-hook-form.com/)
+  + Front-end: [ReactJS](https://reactjs.org/), [SCSS](https://sass-lang.com/), [Chakra UI](https://chakra-ui.com/), [React Hook Form](https://react-hook-form.com/), [React Icons](https://react-icons.github.io/react-icons/)
   + Back-end: [Go Lang](https://go.dev/)([Gin Gonic](https://gin-gonic.com/)), [GORM](https://gorm.io/)
   + Database: MySQL
   + RESTful API ([DEMO API](https://music-a8of.onrender.com/swagger/))
@@ -8,6 +8,7 @@
   <a href="https://app.quickdatabasediagrams.com/#/d/sxtRMq">Datagram</a>
 ## GIT
   Mỗi người sẽ code trên một nhánh (branch), khi push sẽ push lên nhánh đó rồi mới merge vào nhánh chính (master), nếu muốn cập nhật sự thay đổi trên nhánh chính về nhánh của mình thì sẽ pull code từ nhánh chính (master) về.
+## [UI Design](https://drive.google.com/drive/folders/12iPdt_N6ndeQkfoksEqpM0qUDYDLWrfg?usp=sharing)
  ```bash
   # Tạo branch mới
   git branch <branch-name>
@@ -18,3 +19,6 @@
   # Pull code từ master về branch
   git pull origin master
  ```
+ 
+ ## ENV test
+ REACT_APP_API=https://music-a8of.onrender.com/api
