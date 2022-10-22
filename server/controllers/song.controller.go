@@ -24,6 +24,7 @@ func (SongController) CreateSong(c *gin.Context) {
 		Title     string                `form:"title" binding:"required"`
 		File      *multipart.FileHeader `form:"file" binding:"required"`
 		Thumbnail *multipart.FileHeader `form:"file"`
+		GenreID   uint                  `form:"genreID" binding:"required"`
 	}
 	user := c.Keys["user"].(*userModel)
 
@@ -57,6 +58,7 @@ func (SongController) CreateSong(c *gin.Context) {
 		Url:       uploadUrl["song"],
 		Thumbnail: uploadUrl["thumbnail"],
 		AuthorID:  user.ID,
+		GenreID:   formData.GenreID,
 	}
 	if err := songService.CreateSong(&newSong); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
