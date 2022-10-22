@@ -134,7 +134,13 @@ var spec =
                     {
                         in: "formData",
                         name: "thumbnail",
-                        type: "file"
+                        type: "file",
+                    },
+                    {
+                        in: "formData",
+                        name: "genreID",
+                        type: "int",
+                        required: true
                     }
                 ],
                 responses: {
@@ -549,6 +555,18 @@ var spec =
                         type: "int",
                     }
                 ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
+        "/genre": {
+            get: {
+                tags: ["genre"],
+                summary: "Lấy list genre",
+                operationId: "GetGenres",
                 responses: {
                     200: {                                    
                         description: "OK",   

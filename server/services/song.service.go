@@ -19,7 +19,7 @@ func (SongService) CreateSong(data interface{}) error {
 
 func (SongService) FindByID(id uint) (songModel, error) {
 	song := songModel{}
-	err := common.GetDB().Model(&songModel{}).Preload("Author").First(&song, id).Error
+	err := common.GetDB().Model(&songModel{}).Preload("Genre").Preload("Author").First(&song, id).Error
 	return song, err
 }
 
@@ -42,7 +42,7 @@ func (SongService) FindMany(page int, search string) (*[]songModel, int64, error
 		if search != "" {
 			db = db.Where("title LIKE ?", "%"+search+"%")
 		}
-		queueErr <- db.Preload("Author").Limit(common.LIMIT_PER_PAGE).Offset(offSet).Find(&listSong).Error
+		queueErr <- db.Preload("Genre").Preload("Author").Limit(common.LIMIT_PER_PAGE).Offset(offSet).Find(&listSong).Error
 	}()
 
 	err := common.GroupError(queueErr, 2)
