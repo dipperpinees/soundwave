@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer, useRef } from 'react';
+import { createContext, useReducer, useRef } from 'react';
 
 const initialState = {
     isPlayed: false,
@@ -123,7 +123,7 @@ export function PlayerStore({ children }) {
                 return state;
         }
     }, initialState);
-    const { songList, indexSongPlayed, autoPlay, isPlayed } = state;
+    const { songList, indexSongPlayed, autoPlay } = state;
 
     const handleEndedSong = async () => {
         switch (autoPlay) {
