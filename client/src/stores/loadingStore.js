@@ -1,7 +1,6 @@
 import { Center } from '@chakra-ui/react';
-import { Spinner } from '@chakra-ui/react';
-import { createContext, useState } from 'react';
 import { motion } from 'framer-motion';
+import { createContext, useState } from 'react';
 const initialState = false;
 
 export const LoadingContext = createContext(initialState);
