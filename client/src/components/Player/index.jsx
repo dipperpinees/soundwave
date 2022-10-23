@@ -26,7 +26,8 @@ export default function DesktopPlayer() {
 
     //dont show on signin signup page
     const location = useLocation();
-    if (location.pathname === '/signin' || location.pathname === '/signup') return null;
+    if (location.pathname === '/signin' || location.pathname === '/signup' || location.pathname === '/upload')
+        return null;
 
     const changeAutoPlay = (type) => {
         if (autoPlay === type) {

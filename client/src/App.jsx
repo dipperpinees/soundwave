@@ -12,21 +12,21 @@ import Upload from './pages/Upload';
 function App() {
     return (
         <BrowserRouter>
-            <Store>
-                <ChakraProvider theme={theme}>
-                    <div className="App">
+            <ChakraProvider theme={theme}>
+                <div className="App">
+                    <Store>
                         <Layout>
                             <Routes>
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/signin" element={<SignIn />} />
                                 <Route path="/signup" element={<SignUp />} />
-                                <Route path="/upload" element={<Upload />}/>
+                                <Route path="/upload" element={<Upload />} />
                             </Routes>
                             <Player />
                         </Layout>
-                    </div>
-                </ChakraProvider>
-            </Store>
+                    </Store>
+                </div>
+            </ChakraProvider>
         </BrowserRouter>
     );
 }

@@ -17,7 +17,7 @@ export default function Header() {
     }
 
     return (
-        <Flex alignItems="center" className="header">
+        <Flex alignItems="center" className="header" zIndex={3}>
             {user.name && <div>
                 Hello, {user.name}
                 <Button colorScheme="teal" onClick={logOut}>Log out</Button>
