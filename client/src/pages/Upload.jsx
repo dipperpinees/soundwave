@@ -7,6 +7,7 @@ import { useContext, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { AiFillCamera } from 'react-icons/ai';
 import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
+import { toast } from 'react-toastify';
 import { API_ENDPOINT } from '../config';
 import { GenreContext } from '../stores';
 import { LoadingContext } from '../stores/loadingStore';
@@ -31,6 +32,7 @@ export default function Upload() {
 
     const onDrop = (acceptedFiles) => {
         if (!acceptedFiles || !acceptedFiles[0]) return;
+
         const file = acceptedFiles[0];
         const fileName = file.name;
         setFileName(fileName);
@@ -114,6 +116,9 @@ export default function Upload() {
         });
         const responseJSON = await response.json();
         console.log(responseJSON);
+        if (response.ok) {
+            toast("Upload song successfully.");
+        }
         setLoading(false);
     };
 
