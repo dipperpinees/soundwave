@@ -15,6 +15,7 @@ export function Store({ children }) {
     );
 }
 
-export { UserContext } from './userStore';
-export { PlayerContext } from './playerStore';
 export { GenreContext } from './genreStore';
+export { PlayerContext } from './playerStore';
+export { UserContext } from './userStore';
+
