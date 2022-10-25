@@ -1,6 +1,6 @@
 # App nghe nhạc
 ## Công nghệ dự kiến sử dụng:
-  + Front-end: [ReactJS](https://reactjs.org/), [SCSS](https://sass-lang.com/), [Chakra UI](https://chakra-ui.com/), [React Hook Form](https://react-hook-form.com/), [React Icons](https://react-icons.github.io/react-icons/)
+  + Front-end: [ReactJS](https://reactjs.org/), [SCSS](https://sass-lang.com/), [Chakra UI](https://chakra-ui.com/), [React Hook Form](https://react-hook-form.com/), [React Icons](https://react-icons.github.io/react-icons/) [React Toastify](https://github.com/fkhadra/react-toastify)
   + Back-end: [Go Lang](https://go.dev/)([Gin Gonic](https://gin-gonic.com/)), [GORM](https://gorm.io/)
   + Database: MySQL
   + RESTful API ([DEMO API](https://music-a8of.onrender.com/swagger/))
