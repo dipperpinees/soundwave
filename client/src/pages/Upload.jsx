@@ -26,7 +26,7 @@ export default function Upload() {
     const [fileName, setFileName] = useState('');
     const [genres] = useContext(GenreContext);
     const [genre, setGenre] = useState('');
-    const [loading, setLoading] = useContext(LoadingContext);
+    const setLoading = useContext(LoadingContext)[1];
     const [audioFile, setAudioFile] = useState(null);
 
     const onDrop = (acceptedFiles) => {
@@ -98,7 +98,8 @@ export default function Upload() {
         input.click();
     };
 
-    const handleUpload = async () => {
+    const handleUpload = async (e) => {
+        e.preventDefault();
         const formData = new FormData();
         formData.append('file', audioFile);
         formData.append('title', title);
@@ -117,96 +118,108 @@ export default function Upload() {
     };
 
     return (
-        <Container
-            centerContent
-            padding={8}
-            width={600}
-            position="fixed"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-        >
-            <Flex
-                alignItems="center"
-                borderWidth={1}
-                borderColor="gray"
-                borderStyle="dashed"
-                borderRadius={12}
-                paddingTop={6}
-                paddingBottom={6}
-                paddingRight={16}
-                paddingLeft={16}
-                justifyContent="space-between"
-                width="100%"
-                as={motion.div}
-                {...getRootProps()}
+        <form onSubmit={handleUpload} className="white-color">
+            <Container
+                centerContent
+                padding={8}
+                width={600}
+                position="fixed"
+                top="50%"
+                left="50%"
+                transform="translate(-50%, -50%)"
             >
-                <input {...getInputProps()} />
-                <Stack>
-                    <Text fontSize="lg">Drag your songs here</Text>
-                    <Text fontSize="sm" color="gray" textAlign="center">
-                        .mp3 or .wav or .m4a
-                    </Text>
-                </Stack>
-                <Text fontSize="sm" color="gray">
-                    or
-                </Text>
-                <Button color="black">Select Files</Button>
-            </Flex>
-            {audioFile && (
                 <Flex
-                    as={motion.div}
+                    alignItems="center"
+                    borderWidth={1}
+                    borderColor="gray"
+                    borderStyle="dashed"
+                    borderRadius={12}
+                    paddingTop={6}
+                    paddingBottom={6}
+                    paddingRight={16}
+                    paddingLeft={16}
                     justifyContent="space-between"
                     width="100%"
-                    margin={8}
-                    gap={8}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    as={motion.div}
+                    {...getRootProps()}
                 >
-                    <Box
-                        position="relative"
-                        _hover={{ opacity: 0.6, cursor: 'pointer' }}
-                        onClick={handleChangeThumbnail}
-                    >
-                        <Image
-                            src={thumbnail.src || DEFAULT_THUMBNAIL}
-                            boxSize="180px"
-                            borderRadius={8}
-                            objectFit="cover"
-                            alt="Dan Abramov"
-                        />
-                        <Center position="absolute" top={0} bottom={0} left={0} right={0}>
-                            <AiFillCamera fontSize={24} />
-                        </Center>
-                    </Box>
-                    <Stack flex={1}>
-                        <Flex alignItems="center" marginLeft="-8px">
-                            <Icon
-                                onClick={toggleAudio}
-                                fontSize={32}
-                                as={playAudio ? BsPauseFill : BsFillPlayFill}
-                                _hover={{ cursor: 'pointer' }}
-                            />
-                            <Text width="300px" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
-                                {fileName}
-                            </Text>
-                        </Flex>
-                        <Input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        <Select placeholder="Select Genre" value={genre} onChange={(e) => setGenre(e.target.value)}>
-                            {genres.map(({ id, name }) => (
-                                <option key={id} value={id}>
-                                    {name}
-                                </option>
-                            ))}
-                        </Select>
-                        <Button colorScheme="primary" onClick={handleUpload}>
-                            Save
-                        </Button>
+                    <input {...getInputProps()} />
+                    <Stack>
+                        <Text fontSize="lg">Drag your songs here</Text>
+                        <Text fontSize="sm" color="gray" textAlign="center">
+                            .mp3 or .wav or .m4a
+                        </Text>
                     </Stack>
+                    <Text fontSize="sm" color="gray">
+                        or
+                    </Text>
+                    <Button color="black">Select Files</Button>
                 </Flex>
-            )}
-            <audio id="sound" ref={audioRef}></audio>
-        </Container>
+                {audioFile && (
+                    <Flex
+                        as={motion.div}
+                        justifyContent="space-between"
+                        width="100%"
+                        margin={8}
+                        gap={8}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                    >
+                        <Box
+                            position="relative"
+                            _hover={{ opacity: 0.6, cursor: 'pointer' }}
+                            onClick={handleChangeThumbnail}
+                        >
+                            <Image
+                                src={thumbnail.src || DEFAULT_THUMBNAIL}
+                                boxSize="180px"
+                                borderRadius={8}
+                                objectFit="cover"
+                                alt="Dan Abramov"
+                            />
+                            <Center position="absolute" top={0} bottom={0} left={0} right={0}>
+                                <AiFillCamera fontSize={24} />
+                            </Center>
+                        </Box>
+                        <Stack flex={1}>
+                            <Flex alignItems="center" marginLeft="-8px">
+                                <Icon
+                                    onClick={toggleAudio}
+                                    fontSize={32}
+                                    as={playAudio ? BsPauseFill : BsFillPlayFill}
+                                    _hover={{ cursor: 'pointer' }}
+                                />
+                                <Text width="300px" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+                                    {fileName}
+                                </Text>
+                            </Flex>
+                            <Input
+                                placeholder="Title"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                required
+                            />
+                            <Select
+                                placeholder="Select Genre"
+                                value={genre}
+                                onChange={(e) => setGenre(e.target.value)}
+                                required
+                            >
+                                {genres.map(({ id, name }) => (
+                                    <option key={id} value={id}>
+                                        {name}
+                                    </option>
+                                ))}
+                            </Select>
+                            <Button type="submit" colorScheme="primary">
+                                Save
+                            </Button>
+                        </Stack>
+                    </Flex>
+                )}
+                <audio id="sound" ref={audioRef}></audio>
+            </Container>
+        </form>
     );
 }
 

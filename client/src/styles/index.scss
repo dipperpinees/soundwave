@@ -6,7 +6,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: white;
 }
 
 #root {
@@ -36,4 +35,8 @@ select {
     width: 80px;
     height: 80px;
     background-image: linear-gradient( 135deg, #FEC163 10%, #DE4313 100%);
+}
+
+.white-color * {
+    color: white;
 }
