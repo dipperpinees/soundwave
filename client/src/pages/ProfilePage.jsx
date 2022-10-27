@@ -1,15 +1,28 @@
-import { Fragment } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
-import Song from '../components/Song';
+import FeaturedTracks from '../components/FeaturedTracks';
+import RecentlyLikes from '../components/RecentlyLikes';
+import Profile from '../components/Profile';
+import Albums from '../components/Albums';
 
 const ProfilePage = () => (
-    <Flex>
-        <Box flex={2}></Box>
-        <Flex flex={5}>
-            <Box flex={3}>
-                <Song />
+    <Flex ml="100px" mt="48px">
+        <Box
+            flexBasis={'23%'}
+            borderLeft="1px solid rgba(255, 255, 255, 0.5)"
+            borderRight="1px solid rgba(255, 255, 255, 0.5)"
+        >
+            <Profile />
+        </Box>
+        <Flex margin="0 56px" flexWrap="wrap" flexBasis="77%" justifyContent="space-between">
+            <Box flexBasis="50%">
+                <FeaturedTracks />
             </Box>
-            <Box flex={2}></Box>
+            <Box flexBasis="38%">
+                <RecentlyLikes />
+            </Box>
+            <Box mt={'48px'} flex="100%">
+                <Albums />
+            </Box>
         </Flex>
     </Flex>
 );

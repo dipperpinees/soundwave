@@ -1,24 +1,41 @@
-import { Flex, Image, Box, Text, Icon } from '@chakra-ui/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Flex, Image, Box, Text } from '@chakra-ui/react';
+import { useCallback, useState } from 'react';
+import { RiHeartLine, RiHeartFill } from 'react-icons/ri';
 
-const Song = () => {
+const Song = ({ ...props }) => {
+    const { isLikeIcon } = props;
+    const { borderBottom } = props;
+    const { id, url_img, songName, singerName, userName } = props;
+
+    const [likeIcon, setLikeIcon] = useState(false);
+
+    const toggleLikeSong = useCallback(() => {
+        setLikeIcon(!likeIcon);
+    });
+
     return (
-        <Flex>
-            <Box boxSize="42px" bg="white" padding="4px">
-                <Image
-                    src="https://images.macrumors.com/t/hi1_a2IdFGRGMsJ0x31SdD_IcRk=/1600x/article-new/2018/05/apple-music-note.jpg"
-                    alt="song image"
-                    boxSize="100%"
-                    objectFit="cover"
-                    borderRadius="full"
-                />
-            </Box>
-            <Box ml={2} flex="1">
-                <Text fontSize="md">Hãy trao cho anh</Text>
-                <Text fontSize="xs">Sơn Tùng - Sơn Tùng MTP</Text>
-            </Box>
-            <Box>{/* <FontAwesomeIcon icon="fa-regular fa-heart" /> */}</Box>
-        </Flex>
+        <Box id={id} borderBottom={borderBottom} padding="12px 0">
+            <Flex h="42px" overflow="hidden">
+                <Box boxSize="42px" bg="white" padding="4px">
+                    <Image src={url_img} alt="song image" boxSize="100%" objectFit="cover" borderRadius="full" />
+                </Box>
+                <Box ml={2} flex="1">
+                    <Text fontSize="md">{songName}</Text>
+                    <Text fontSize="xs">
+                        {userName} - {singerName}
+                    </Text>
+                </Box>
+                {isLikeIcon && (
+                    <Flex alignItems="center" margin="0 24px">
+                        {likeIcon ? (
+                            <RiHeartFill fontSize="24px" onClick={() => toggleLikeSong()} />
+                        ) : (
+                            <RiHeartLine fontSize="24px" onClick={() => toggleLikeSong()} />
+                        )}
+                    </Flex>
+                )}
+            </Flex>
+        </Box>
     );
 };
 
