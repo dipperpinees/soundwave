@@ -1,0 +1,16 @@
+.header {
+    position: fixed;
+    top: 8px;
+    left: 0px;
+    right: 0px;
+    height: 56px;
+    margin-top: 4px;
+    padding: 0px 20px;
+    &-back, &-forward {
+        font-size: 28px;
+    }
+
+    &-avatar {
+        margin: 16px;
+    }
+}

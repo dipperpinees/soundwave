@@ -6,4 +6,5 @@ func HandleRoute(router *gin.RouterGroup) {
 	authRouter(router.Group("/"))
 	userRouter(router.Group("/user"))
 	songRouter(router.Group("/song"))
+	genreRouter(router.Group("/genre"))
 }
