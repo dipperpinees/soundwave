@@ -5,7 +5,7 @@ import Profile from '../components/Profile';
 import Albums from '../components/Albums';
 
 const ProfilePage = () => (
-    <Flex ml="100px" mt="48px">
+    <Flex className="profile-wrapper" ml="100px" mt="48px">
         <Box
             flexBasis={'23%'}
             borderLeft="1px solid rgba(255, 255, 255, 0.5)"
