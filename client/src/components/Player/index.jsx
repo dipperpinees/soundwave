@@ -26,7 +26,8 @@ export default function DesktopPlayer() {
 
     //dont show on signin signup page
     const location = useLocation();
-    if (location.pathname === '/signin' || location.pathname === '/signup') return null;
+    if (location.pathname === '/signin' || location.pathname === '/signup' || location.pathname === '/upload')
+        return null;
 
     const changeAutoPlay = (type) => {
         if (autoPlay === type) {
@@ -37,7 +38,7 @@ export default function DesktopPlayer() {
     };
 
     return (
-        <Flex className="player" gap={8} alignItems="center" justifyContent="space-between">
+        <Flex className="player white-color" gap={8} alignItems="center" justifyContent="space-between">
             {/* mobile progress bar */}
             <Progress
                 value={songDuration === 0 ? 0 : (currentTime / songDuration) * 100}

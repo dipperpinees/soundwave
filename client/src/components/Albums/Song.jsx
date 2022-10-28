@@ -1,6 +1,4 @@
 import { Flex, Link, Box, Text } from '@chakra-ui/react';
-import { useCallback, useState } from 'react';
-import { RiHeartLine, RiHeartFill } from 'react-icons/ri';
 import { BsThreeDots } from 'react-icons/bs';
 import { LikeIcon } from '../Icon';
 

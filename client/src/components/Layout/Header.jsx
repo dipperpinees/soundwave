@@ -17,12 +17,8 @@ export default function Header() {
     }
 
     return (
-        <Flex alignItems="center" className="header">
-            {user.name && <div>
-                Hello, {user.name}
-                <Button colorScheme="teal" onClick={logOut}>Log out</Button>
-            </div>}
-            <Avatar className="header-avatar" size='lg' name='Kent Dodds' src='https://bit.ly/kent-c-dodds' />
+        <Flex alignItems="center" className="header white-color" zIndex={3}>
+            <Avatar className="header-avatar" size='md' name='Kent Dodds' src='https://bit.ly/kent-c-dodds' />
             <IoIosArrowBack className="header-back" />
             <IoIosArrowForward className="header-forward" />
             <InputGroup width="50%" marginLeft="8px">
