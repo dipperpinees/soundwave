@@ -1,5 +1,4 @@
-import { useState, useCallback } from 'react';
-import { Flex } from '@chakra-ui/react';
+import { useState, useCallback, Fragment } from 'react';
 import { RiHeartLine, RiHeartFill } from 'react-icons/ri';
 
 const LikeIcon = () => {
@@ -10,14 +9,14 @@ const LikeIcon = () => {
     });
 
     return (
-        <Flex alignItems="center" margin="0 24px">
+        <Fragment>
             {isLike ? (
                 <RiHeartFill fontSize="24px" onClick={() => toggleLike()} />
             ) : (
                 <RiHeartLine fontSize="24px" onClick={() => toggleLike()} />
             )}
-        </Flex>
+        </Fragment>
     );
 };
 
-export default LikeIcon;
+export { LikeIcon };

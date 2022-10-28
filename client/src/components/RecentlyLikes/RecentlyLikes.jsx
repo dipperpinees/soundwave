@@ -1,6 +1,6 @@
 import Song from '../Song';
-import { Box, Heading, List, Text, Flex } from '@chakra-ui/react';
-import { AiOutlineRight } from 'react-icons/ai';
+import { Box, Heading, List, Text, Flex, Link } from '@chakra-ui/react';
+import { LineRightIcon } from '../Icon';
 import { data } from '../FeaturedTracks/dataTest';
 
 const iconStyle = { fontSize: '12px', display: 'inline', marginLeft: '4px' };
@@ -27,11 +27,13 @@ const RecentlyLikes = () => {
                 })}
             </List>
             {data.length > 5 && (
-                <Flex justifyContent="end" mt="12px">
-                    <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer">
-                        See more
-                        <AiOutlineRight style={iconStyle} />
-                    </Text>
+                <Flex justifyContent="end" mt="4px">
+                    <Link href="#">
+                        <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer">
+                            See more
+                            <LineRightIcon />
+                        </Text>
+                    </Link>
                 </Flex>
             )}
         </Box>

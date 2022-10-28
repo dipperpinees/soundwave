@@ -1,19 +1,33 @@
 import Song from '../Song';
-import { Box, Heading, List, Flex, Text, Center } from '@chakra-ui/react';
-import { AiOutlineDown, AiOutlineRight } from 'react-icons/ai';
+import { Box, Heading, List, Flex, Text, Link } from '@chakra-ui/react';
 import { data } from './dataTest';
-
-const iconStyle = { fontSize: '12px', display: 'inline', marginLeft: '4px' };
+import { useState } from 'react';
+import { LineRightIcon, LineDownIcon, LineUpIcon } from '../Icon';
 
 const FeaturedTracks = () => {
+    const [isDownIcon, setDownIcon] = useState(true);
+
+    // xử lý sắp xếp
+    const handleSortSongList = () => {
+        setDownIcon(!isDownIcon);
+        console.log('anc');
+    };
+
     return (
         <Box>
             <Flex justifyContent="space-between">
                 <Heading fontSize="xl">Featured Tracks</Heading>
                 <Box>
-                    <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="default">
+                    <Text
+                        onClick={() => handleSortSongList()}
+                        mr="4px"
+                        fontSize="xs"
+                        display="inline-flex"
+                        alignItems="center"
+                        cursor="default"
+                    >
                         Sort by
-                        <AiOutlineDown style={iconStyle} />
+                        {isDownIcon ? <LineDownIcon /> : <LineUpIcon />}
                     </Text>
                 </Box>
             </Flex>
@@ -34,11 +48,13 @@ const FeaturedTracks = () => {
                 })}
             </List>
             {data.length > 5 && (
-                <Flex justifyContent="end" mt="12px">
-                    <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer">
-                        See more
-                        <AiOutlineRight style={iconStyle} />
-                    </Text>
+                <Flex justifyContent="end" mt="4px">
+                    <Link href="#">
+                        <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer">
+                            See more
+                            <LineRightIcon />
+                        </Text>
+                    </Link>
                 </Flex>
             )}
         </Box>
