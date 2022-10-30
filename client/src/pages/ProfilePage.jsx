@@ -8,8 +8,8 @@ const ProfilePage = () => (
     <Box className="profile-wrapper" ml="360px">
         <Box
             className="profile-user"
-            borderLeft="1px solid rgba(255, 255, 255, 0.5)"
-            borderRight="1px solid rgba(255, 255, 255, 0.5)"
+            borderLeft="1px solid rgba(255, 255, 255, 0.2)"
+            borderRight="1px solid rgba(255, 255, 255, 0.2)"
         >
             <Box className="profile-content" margin="0 auto">
                 <Profile />
@@ -22,7 +22,7 @@ const ProfilePage = () => (
             <Box flexBasis="38%">
                 <RecentlyLikes />
             </Box>
-            <Box mt={'48px'} flex="100%">
+            <Box mt={'48px'} mb={'36px'} flex="100%">
                 <Albums />
             </Box>
         </Flex>
