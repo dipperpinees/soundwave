@@ -1,18 +1,19 @@
-import { Avatar, Flex, Heading, Progress, Text } from '@chakra-ui/react';
+import { Avatar, Flex, Heading, Icon, Progress, Text } from '@chakra-ui/react';
 import { useContext, useRef } from 'react';
 import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
 import { CgHeart } from 'react-icons/cg';
 import { GiNextButton, GiPreviousButton } from 'react-icons/gi';
+import { IoIosRepeat } from 'react-icons/io';
 import { MdPlaylistPlay } from 'react-icons/md';
 import { TiArrowShuffle } from 'react-icons/ti';
+import { useLocation } from 'react-router-dom';
+import defaultPreview from '../../assets/song_preview.jpg';
 import { PlayerContext } from '../../stores';
+import { formatTime } from '../../utils/formatTime';
 import SoundVolume from './SoundVolume';
 import './styles.scss';
-import { IoIosRepeat } from 'react-icons/io';
-import { formatTime } from '../../utils/formatTime';
-import { useLocation } from 'react-router-dom';
 
-export default function DesktopPlayer() {
+export default function Player() {
     const [{ songList, indexSongPlayed, isPlayed, currentTime, songDuration, autoPlay }, dispatch] =
         useContext(PlayerContext);
     const progressRef = useRef();
@@ -26,7 +27,12 @@ export default function DesktopPlayer() {
 
     //dont show on signin signup page
     const location = useLocation();
-    if (location.pathname === '/signin' || location.pathname === '/signup' || location.pathname === '/upload')
+    if (
+        location.pathname === '/signin' ||
+        location.pathname === '/signup' ||
+        location.pathname === '/upload' ||
+        !songList.length
+    )
         return null;
 
     const changeAutoPlay = (type) => {
@@ -38,7 +44,7 @@ export default function DesktopPlayer() {
     };
 
     return (
-        <Flex className="player white-color" gap={8} alignItems="center" justifyContent="space-between">
+        <Flex className="player" color="white" gap={8} alignItems="center" justifyContent="space-between">
             {/* mobile progress bar */}
             <Progress
                 value={songDuration === 0 ? 0 : (currentTime / songDuration) * 100}
@@ -55,7 +61,7 @@ export default function DesktopPlayer() {
             />
 
             <Flex alignItems="center" gap={2}>
-                <Avatar name="thumbnail" src={songList[indexSongPlayed]?.thumbnail} />
+                <Avatar name="thumbnail" src={songList[indexSongPlayed]?.thumbnail || defaultPreview} />
                 <div>
                     <Heading color="white" fontSize={12} as="h4">
                         {songList[indexSongPlayed]?.title}
@@ -66,7 +72,7 @@ export default function DesktopPlayer() {
                 </div>
             </Flex>
             <Flex className="player-play" display={{ base: 'none', md: 'flex' }}>
-                <GiPreviousButton onClick={() => dispatch({ type: 'PrevSong' })} />
+                <Icon as={GiPreviousButton} onClick={() => dispatch({ type: 'PrevSong' })} />
                 <button onClick={handleTogglePlay}>{isPlayed ? <BsPauseFill /> : <BsFillPlayFill />}</button>
                 <GiNextButton onClick={() => dispatch({ type: 'NextSong' })} />
             </Flex>
