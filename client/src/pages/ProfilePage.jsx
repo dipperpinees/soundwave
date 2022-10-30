@@ -5,15 +5,17 @@ import Profile from '../components/Profile';
 import Albums from '../components/Albums';
 
 const ProfilePage = () => (
-    <Flex className="profile-wrapper" ml="100px" mt="48px">
+    <Box className="profile-wrapper" ml="360px">
         <Box
-            flexBasis={'23%'}
+            className="profile-user"
             borderLeft="1px solid rgba(255, 255, 255, 0.5)"
             borderRight="1px solid rgba(255, 255, 255, 0.5)"
         >
-            <Profile />
+            <Box className="profile-content" margin="0 auto">
+                <Profile />
+            </Box>
         </Box>
-        <Flex margin="0 56px" flexWrap="wrap" flexBasis="77%" justifyContent="space-between">
+        <Flex margin="0 56px" flexWrap="wrap" justifyContent="space-between">
             <Box flexBasis="50%">
                 <FeaturedTracks />
             </Box>
@@ -24,7 +26,7 @@ const ProfilePage = () => (
                 <Albums />
             </Box>
         </Flex>
-    </Flex>
+    </Box>
 );
 
 export default ProfilePage;
