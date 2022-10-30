@@ -4,9 +4,12 @@ import { API_ENDPOINT } from "../../config";
 import { UserContext } from "../../stores";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io"
 import {BiSearchAlt} from "react-icons/bi"
+import { useLocation } from "react-router-dom";
 
 export default function Header() {
     const [user, userDispatch] = useContext(UserContext);
+    const location = useLocation();
+    if (location.pathname === '/signin' || location.pathname === '/signup') return null;
 
     async function logOut() {
         await fetch(API_ENDPOINT + "/logout", {
