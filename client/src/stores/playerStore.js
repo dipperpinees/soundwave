@@ -2,28 +2,7 @@ import { createContext, useReducer, useRef } from 'react';
 
 const initialState = {
     isPlayed: false,
-    songList: [
-        {
-            id: 1,
-            url: 'https://res.cloudinary.com/uethehe/video/upload/v1665674536/int3306/tjiwqfiigglgyqyhnbqd.mp3',
-            thumbnail:
-                'https://media.npr.org/assets/music/news/2010/09/maroon-e9cb8c5b25b4d1f3e68aa26e6a0ce51cf2ae59d8-s1100-c50.jpg',
-            title: 'Sugar',
-            author: {
-                name: 'Maroon 5',
-            },
-        },
-        {
-            id: 2,
-            url: 'https://res.cloudinary.com/uethehe/video/upload/v1665026251/int3306/mqzz0ajalesaiznwxucs.mp3',
-            thumbnail:
-                'https://media.npr.org/assets/music/news/2010/09/maroon-e9cb8c5b25b4d1f3e68aa26e6a0ce51cf2ae59d8-s1100-c50.jpg',
-            title: 'HiepNK',
-            author: {
-                name: 'Maroon 5',
-            },
-        },
-    ],
+    songList: [],
     indexSongPlayed: 0,
     volume: 1,
     autoPlay: 'next', //next, repeat, shuffle or null
@@ -37,18 +16,25 @@ export function PlayerStore({ children }) {
     const audioRef = useRef(null);
     const playAudio = () => {
         audioRef.current.play();
-    }
+    };
     const pauseAudio = () => {
         audioRef.current.pause();
-    }
+    };
     const setCurrentTimeAudio = (currentTime) => {
         audioRef.current.currentTime = currentTime;
-    }
+    };
     const setVolumeAudio = (volume) => {
         audioRef.current.volume = volume;
-    }
+    };
     const [state, dispatch] = useReducer((state, action) => {
         switch (action.type) {
+            case 'Add': {
+                setTimeout(() => {
+                    playAudio();
+                    setCurrentTimeAudio(0);
+                }, 100);
+                return { ...state, indexSongPlayed: 0, isPlayed: true, currentTime: 0, songList: [action.payload] };
+            }
             case 'Toggle': {
                 if (state.isPlayed) {
                     pauseAudio();
@@ -60,7 +46,7 @@ export function PlayerStore({ children }) {
             }
             case 'Play': {
                 playAudio();
-                return {...state, isPlayed: true}
+                return { ...state, isPlayed: true };
             }
             case 'Pause': {
                 pauseAudio();
@@ -81,14 +67,14 @@ export function PlayerStore({ children }) {
                 return { ...state, autoPlay: action.payload };
             }
             case 'Repeat': {
-                setCurrentTimeAudio(0);
                 setTimeout(() => {
+                    setCurrentTimeAudio(0);
                     playAudio();
-                }, 100)
-                return { ...state, currentTime: 0 };
+                }, 100);
+                return { ...state, currentTime: 0, isPlayed: true };
             }
             case 'NextSong': {
-                const newState = { ...state };
+                const newState = { ...state, isPlayed: true };
                 if (state.indexSongPlayed + 1 === state.songList.length) {
                     newState.indexSongPlayed = 0;
                     newState.currentTime = 0;
@@ -97,22 +83,23 @@ export function PlayerStore({ children }) {
                     newState.currentTime = 0;
                 }
                 setTimeout(() => {
+                    setCurrentTimeAudio(0);
                     playAudio();
-                }, 100)
+                }, 100);
                 return newState;
             }
             case 'PrevSong': {
-                const newState = { ...state };
+                const newState = { ...state, isPlayed: true };
                 if (state.indexSongPlayed === 0) {
-                    setCurrentTimeAudio(0);
                     newState.currentTime = 0;
                 } else {
                     --newState.indexSongPlayed;
                     newState.currentTime = 0;
                 }
                 setTimeout(() => {
+                    setCurrentTimeAudio(0);
                     playAudio();
-                }, 100)
+                }, 100);
                 return newState;
             }
             case 'Shuffle': {
@@ -139,28 +126,31 @@ export function PlayerStore({ children }) {
                 dispatch({ type: 'NextSong' });
                 break;
             }
-            default: {}
+            default: {
+            }
         }
     };
 
     return (
         <PlayerContext.Provider value={[state, dispatch]}>
-            <audio
-                controls
-                src={songList[indexSongPlayed].url}
-                ref={audioRef}
-                style={{ display: 'none' }}
-                onEnded={handleEndedSong}
-                onTimeUpdate={() => {
-                    dispatch({
-                        type: 'UpdateTime',
-                        payload: {
-                            currentTime: audioRef.current.currentTime,
-                            songDuration: audioRef.current.duration,
-                        },
-                    });
-                }}
-            ></audio>
+            {songList.length !== 0 && (
+                <audio
+                    controls
+                    src={songList[indexSongPlayed].url}
+                    ref={audioRef}
+                    style={{ display: 'none' }}
+                    onEnded={handleEndedSong}
+                    onTimeUpdate={() => {
+                        dispatch({
+                            type: 'UpdateTime',
+                            payload: {
+                                currentTime: audioRef.current.currentTime,
+                                songDuration: audioRef.current.duration,
+                            },
+                        });
+                    }}
+                ></audio>
+            )}
             {children}
         </PlayerContext.Provider>
     );

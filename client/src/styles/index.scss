@@ -11,20 +11,11 @@
 }
 
 #root {
-    width: 100vw;
-    height: 100vh;
     background-image: linear-gradient(90deg, #26262e, #1f1223);
 }
 
 :root {
     --primary-color: #f48004;
-}
-
-.App {
-    position: fixed;
-    top: 56px;
-    left: 0px;
-    right: 0px;
 }
 
 select {
@@ -36,7 +27,7 @@ select {
 .loading {
     width: 80px;
     height: 80px;
-    background-image: linear-gradient(135deg, #FEC163 10%, #DE4313 100%);
+    background-image: linear-gradient(135deg, #fec163 10%, #de4313 100%);
 }
 
 .white-color * {
