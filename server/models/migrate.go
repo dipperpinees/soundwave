@@ -7,7 +7,8 @@ import (
 func Migrate() {
 	db := common.GetDB()
 	db.SetupJoinTable(&User{}, "FavoriteSongs", &UserLikeSong{})
-	db.AutoMigrate(&User{}, &Song{}, &Comment{}, &Follow{}, &Genre{})
+	db.SetupJoinTable(&Playlist{}, "Songs", &PlaylistsSongs{})
+	db.AutoMigrate(&User{}, &Song{}, &Comment{}, &Follow{}, &Genre{}, &Playlist{})
 
 	//bulk insert data
 	BulkInsertGenre()

@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/dtos"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/services"
@@ -69,11 +68,6 @@ func (SongController) CreateSong(c *gin.Context) {
 	c.JSON(http.StatusOK, &newSong)
 }
 
-type songModelWithLike struct {
-	models.Song
-	Like int64 `json:"like"`
-}
-
 func (SongController) GetByID(c *gin.Context) {
 	params := dtos.IdParams{}
 
@@ -81,52 +75,41 @@ func (SongController) GetByID(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
 		return
 	}
-	queueErr := make(chan error, 1)
-	var song models.Song
-	var likeNumber int64
 
-	go func(song *models.Song) {
-		var err error
-		*song, err = songService.FindByID(params.ID)
-		queueErr <- err
-	}(&song)
+	song, err := songService.FindByID(params.ID)
 
-	go func(likeNumber *int64) {
-		var err error
-		*likeNumber, err = songService.GetLikeNumber(params.ID)
-		queueErr <- err
-	}(&likeNumber)
-
-	err := common.GroupError(queueErr, 2)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, &songModelWithLike{Song: song, Like: likeNumber})
+	c.JSON(http.StatusOK, &song)
 }
 
 func (SongController) FindMany(c *gin.Context) {
 	type QueryBinding struct {
-		Page   int    `form:"page,default=1"`
-		Search string `form:"search"`
+		Page    int    `form:"page,default=1"`
+		Search  string `form:"search"`
+		Limit   int    `form:"limit,default=10"`
+		GenreID int    `form:"genreID"`
+		OrderBy string `form:"orderBy"` // like, listen
 	}
 
 	query := QueryBinding{}
 	c.BindQuery(&query)
 
-	listSong, total, err := songService.FindMany(query.Page, query.Search)
+	listSong, total, err := songService.FindMany(query.Page, query.Search, query.OrderBy, query.GenreID, query.Limit)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	totalPages := int(math.Ceil(float64(total) / float64(common.LIMIT_PER_PAGE)))
+	totalPages := int(math.Ceil(float64(total) / float64(query.Limit)))
 	c.JSON(
 		http.StatusOK,
 		gin.H{
 			"data":       *listSong,
-			"pagination": models.Paginate{Page: query.Page, TotalPages: totalPages},
+			"pagination": models.Paginate{Page: query.Page, TotalPages: totalPages, TotalDocs: total},
 		},
 	)
 }

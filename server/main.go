@@ -31,8 +31,9 @@ func main() {
 
 	//swagger ui
 	app.Static("/swagger", "./public/swagger")
-	//cors
+	//middleware
 	app.Use(middlewares.CORSMiddleware())
+	app.Use(middlewares.AuthMiddleware())
 
 	router := app.Group("/api")
 
