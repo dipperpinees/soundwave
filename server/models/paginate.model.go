@@ -1,6 +1,7 @@
 package models
 
 type Paginate struct {
-	Page       int `json:"page"`
-	TotalPages int `json:"total_pages"`
+	Page       int   `json:"page"`
+	TotalPages int   `json:"totalPages"`
+	TotalDocs  int64 `json:"totalDocs"`
 }

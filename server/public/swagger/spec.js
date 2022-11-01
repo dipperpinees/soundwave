@@ -164,6 +164,16 @@ var spec =
                         in: "query",
                         name: "search",
                         type: "string"
+                    },
+                    {
+                        in: "query",
+                        name: "orderBy",
+                        type: "string"
+                    },
+                    {
+                        in: "query",
+                        name: "limit",
+                        type: "interger"
                     }
                 ],
                 responses: {
@@ -395,6 +405,36 @@ var spec =
                         in: "path",
                         name: "songID",
                         type: "int",
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
+        "/user/": {
+            get: {
+                tags: ["user"],
+                summary: "Lấy danh sách user",
+                operationId: "GetUserList",
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "query",
+                        name: "page",
+                        type: "interger"
+                    },
+                    {
+                        in: "query",
+                        name: "search",
+                        type: "string"
+                    },
+                    {
+                        in: "query",
+                        name: "limit",
+                        type: "interger"
                     }
                 ],
                 responses: {

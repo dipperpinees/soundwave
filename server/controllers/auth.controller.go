@@ -40,7 +40,7 @@ func (AuthController) SignUp(c *gin.Context) {
 	tokenString, _ := common.GenerateJWT(newUser.ID)
 	c.SetSameSite(http.SameSiteNoneMode)
 	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
-	c.JSON(http.StatusAccepted, &newUser)
+	c.JSON(http.StatusAccepted, gin.H{"id": newUser.ID, "name": newUser.Name, "avatar": newUser.Avatar, "role": newUser.Role})
 }
 
 type SignInBody struct {
@@ -55,27 +55,27 @@ func (AuthController) SignIn(c *gin.Context) {
 		return
 	}
 
-	users, err := userService.FindOne(&userModel{Email: body.Email})
+	user, err := userService.FindOne(&userModel{Email: body.Email})
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, "This user is not exist")
 		return
 	}
 
-	if !common.CheckPasswordHash(body.Password, users.Password) {
+	if !common.CheckPasswordHash(body.Password, user.Password) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, "Wrong password")
 		return
 	}
 
-	tokenString, _ := common.GenerateJWT(users.ID)
+	tokenString, _ := common.GenerateJWT(user.ID)
 
 	c.SetSameSite(http.SameSiteNoneMode)
 	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
-	c.JSON(http.StatusAccepted, &users)
+	c.JSON(http.StatusAccepted, gin.H{"id": user.ID, "name": user.Name, "avatar": user.Avatar, "role": user.Role})
 }
 
 func (AuthController) Auth(c *gin.Context) {
 	user := c.Keys["user"].(*userModel)
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, gin.H{"id": user.ID, "name": user.Name, "avatar": user.Avatar, "role": user.Role})
 }
 
 func (AuthController) LogOut(c *gin.Context) {

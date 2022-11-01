@@ -12,6 +12,8 @@ type songModel = models.Song
 
 type SongService struct{}
 
+var userService = UserService{}
+
 func (SongService) CreateSong(data interface{}) error {
 	err := common.GetDB().Create(data).Error
 	return err
@@ -19,14 +21,25 @@ func (SongService) CreateSong(data interface{}) error {
 
 func (SongService) FindByID(id uint) (songModel, error) {
 	song := songModel{}
-	err := common.GetDB().Model(&songModel{}).Preload("Genre").Preload("Author").First(&song, id).Error
+	err := common.GetDB().
+		Select("*, (Select count(*) from user_like_songs Where song_id = songs.id) as like_number").
+		Preload("Genre").
+		Preload("Author", func(db *gorm.DB) *gorm.DB {
+			return db.Select(
+				"*",
+				"(Select count(*) from songs where author_id = users.id) as track_number",
+				"(Select count(*) from follows where following_id = users.id) as follower_number",
+				"(Select count(*) from follows where follower_id = users.id) as following_number",
+			)
+		}).
+		First(&song, id).Error
 	return song, err
 }
 
-func (SongService) FindMany(page int, search string) (*[]songModel, int64, error) {
+func (SongService) FindMany(page int, search string, orderBy string, genreID int, limit int) (*[]songModel, int64, error) {
 	var listSong []songModel
 	var count int64
-	offSet := (page - 1) * common.LIMIT_PER_PAGE
+	offSet := (page - 1) * limit
 	queueErr := make(chan error, 1)
 
 	go func() {
@@ -34,15 +47,39 @@ func (SongService) FindMany(page int, search string) (*[]songModel, int64, error
 		if search != "" {
 			db = db.Where("title LIKE ?", "%"+search+"%")
 		}
+		if genreID != 0 {
+			db = db.Where("genre_id = ?", genreID)
+		}
 		queueErr <- db.Find(&songModel{}).Count(&count).Error
 	}()
 
 	go func() {
 		db := common.GetDB()
+		order := "id desc"
 		if search != "" {
 			db = db.Where("title LIKE ?", "%"+search+"%")
 		}
-		queueErr <- db.Preload("Genre").Preload("Author").Limit(common.LIMIT_PER_PAGE).Offset(offSet).Find(&listSong).Error
+		if genreID != 0 {
+			db = db.Where("genre_id = ?", genreID)
+		}
+		if orderBy == "like" {
+			order = "like_number desc"
+		}
+		if orderBy == "listen" {
+			order = "play_count desc"
+		}
+		queueErr <- db.Debug().
+			Select("*", "(Select count(*) from user_like_songs Where song_id = songs.id) as like_number").
+			Preload("Genre").
+			Preload("Author", func(db *gorm.DB) *gorm.DB {
+				return db.Select(
+					"*",
+					"(Select count(*) from songs where author_id = users.id) as track_number",
+					"(Select count(*) from follows where following_id = users.id) as follower_number",
+					"(Select count(*) from follows where follower_id = users.id) as following_number",
+				)
+			}).
+			Limit(limit).Offset(offSet).Order(order).Find(&listSong).Error
 	}()
 
 	err := common.GroupError(queueErr, 2)
@@ -98,4 +135,10 @@ func (SongService) Update(songID uint, title string, url string, thumbnail strin
 
 func (SongService) IncrementPlayCount(songID uint) error {
 	return common.GetDB().Model(&songModel{}).Where("id = ?", songID).Update("play_count", gorm.Expr("play_count + ?", 1)).Error
+}
+
+func (SongService) GetTrackNumber(authorID uint) int64 {
+	var count int64
+	common.GetDB().Model(&songModel{}).Where("author_id = ?", authorID).Count(&count)
+	return count
 }
