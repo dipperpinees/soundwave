@@ -24,7 +24,7 @@ function App() {
                                 <Route path="/signup" element={<SignUp />} />
                                 <Route path="/upload" element={<Upload />} />
                             </Routes>
-                            {/* <Player /> */}
+                            <Player />
                         </Layout>
                     </Store>
                 </div>

@@ -19,7 +19,6 @@ specifiers:
   react-icons: ^4.6.0
   react-router-dom: ^6.4.1
   react-scripts: 5.0.1
-  react-toastify: ^9.0.8
   readable-stream: ^4.2.0
   sass: ^1.55.0
   web-vitals: ^2.1.4
@@ -43,7 +42,6 @@ dependencies:
   react-icons: 4.6.0_react@18.2.0
   react-router-dom: 6.4.2_biqbaboplfbrettd7655fr4n2y
   react-scripts: 5.0.1_react@18.2.0+sass@1.55.0
-  react-toastify: 9.0.8_biqbaboplfbrettd7655fr4n2y
   readable-stream: 4.2.0
   sass: 1.55.0
   web-vitals: 2.1.4
@@ -4806,11 +4804,6 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
-    dev: false
-
-  /clsx/1.2.1:
-    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
-    engines: {node: '>=6'}
     dev: false
 
   /co/4.6.0:
@@ -9887,17 +9880,6 @@ packages:
       invariant: 2.2.4
       react: 18.2.0
       tslib: 2.4.0
-    dev: false
-
-  /react-toastify/9.0.8_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-EwM+teWt49HSHx+67qI08yLAW1zAsBxCXLCsUfxHYv1W7/R3ZLhrqKalh7j+kjgPna1h5LQMSMwns4tB4ww2yQ==}
-    peerDependencies:
-      react: '>=16'
-      react-dom: '>=16'
-    dependencies:
-      clsx: 1.2.1
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react/18.2.0:
