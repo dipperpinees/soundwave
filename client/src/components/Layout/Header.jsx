@@ -1,25 +1,24 @@
 import {
-    Button,
     Avatar,
-    MenuList,
-    MenuItem,
-    Menu,
-    MenuButton,
+    Box,
+    Button,
     Flex,
     Input,
     InputGroup,
     InputLeftElement,
+    Menu,
+    MenuButton, MenuItem,
+    MenuList, VStack
 } from '@chakra-ui/react';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { API_ENDPOINT } from '../../config';
 import { UserContext } from '../../stores';
 
 export default function Header() {
     const [user, userDispatch] = useContext(UserContext);
-
+    const [input, setInput] = useState('');
     const location = useLocation();
     if (location.pathname === '/signin' || location.pathname === '/signup') return null;
 
@@ -67,13 +66,39 @@ export default function Header() {
                     </Link>
                 </>
             )}
-
-            {/* <IoIosArrowBack className="header-back" /> */}
-            {/* <IoIosArrowForward className="header-forward" /> */}
-            <InputGroup width="50%" marginLeft="8px" size="sm">
-                <InputLeftElement pointerEvents="none" children={<BiSearchAlt color="gray.300" />} />
-                <Input type="tel" placeholder="Search for artists, song,..." borderRadius="40px" size="sm" />
-            </InputGroup>
+            <Box position={'relative'} width="50%">
+                <InputGroup width="100%" marginLeft="8px" size="sm">
+                    <InputLeftElement pointerEvents="none" children={<BiSearchAlt color="gray.300" />} />
+                    <Input
+                        type="tel"
+                        placeholder="Search for artists, song,..."
+                        borderRadius="40px"
+                        size="sm"
+                        onChange={(e) => setInput(e.target.value)}
+                    />
+                </InputGroup>
+                {input !== '' && (
+                    <VStack
+                        align="stretch"
+                        position={'absolute'}
+                        right={-3}
+                        left={1}
+                        top={38}
+                        bgColor="blackAlpha.600"
+                        borderRadius={8}
+                    >
+                        <Flex h="40px" align={'center'} paddingLeft={4}>
+                            Search 1 abc xyz ghk umn
+                        </Flex>
+                        <Flex h="40px" align={'center'} paddingLeft={4}>
+                            Search 2 abc xyz ghk umn
+                        </Flex>
+                        <Flex h="40px" align={'center'} paddingLeft={4}>
+                            Search 3 abc xyz ghk umn
+                        </Flex>
+                    </VStack>
+                )}
+            </Box>
         </Flex>
     );
 }
