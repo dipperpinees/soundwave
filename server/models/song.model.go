@@ -10,7 +10,7 @@ type Song struct {
 	Thumbnail  string     `gorm:"column:thumbnail" json:"thumbnail"`
 	Author     User       `json:"author"`
 	Likes      []User     `gorm:"many2many:user_like_songs;" json:"-"`
-	LikeNumber int        `gorm:"-:migration" json:"likeNumber"`
+	LikeNumber int        `gorm:"-:migration <-:false" json:"likeNumber"`
 	PlayCount  int64      `gorm:"default:0" json:"playCount"`
 	Genre      Genre      `json:"genre"`
 	GenreID    uint       `json:"-"`

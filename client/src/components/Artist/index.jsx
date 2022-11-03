@@ -7,16 +7,16 @@ import { Button } from '@chakra-ui/react';
 import { BsSoundwave } from 'react-icons/bs';
 import { IoIosPersonAdd, IoMdPeople } from 'react-icons/io';
 
-export default function Artist() {
+export default function Artist({name, avatar, followerNumber, trackNumber}) {
     return (
         <Flex align="center" justify="space-between" my={2}>
             <Flex align="center" gap={1}>
-                <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" size="lg" />
+                <Avatar name={name} src={avatar} size="lg" />
                 <Stack>
-                    <Text>TINLE</Text>
+                    <Text>{name}</Text>
                     <Flex fontSize={12}>
-                        <Icon as={IoMdPeople} fontSize={16} mr={1} /> 11.2K
-                        <Icon as={BsSoundwave} fontSize={16} ml={2} mr={1} /> 24
+                        <Icon as={IoMdPeople} fontSize={16} mr={1} /> {followerNumber}
+                        <Icon as={BsSoundwave} fontSize={16} ml={2} mr={1} /> {trackNumber}
                     </Flex>
                 </Stack>
             </Flex>

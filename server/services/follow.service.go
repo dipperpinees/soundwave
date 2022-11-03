@@ -77,12 +77,3 @@ func (FollowService) GetFollowingNumber(userID uint) (int64, error) {
 
 	return count, err
 }
-
-func (FollowService) CheckIsFollow(followerID uint, followingID uint) bool {
-	var follow models.Follow
-	err := common.GetDB().Where("follower_id = ?", followerID).Where("following_id = ?", followingID).First(&follow).Error
-	if err != nil {
-		return false
-	}
-	return true
-}

@@ -12,8 +12,6 @@ type songModel = models.Song
 
 type SongService struct{}
 
-var userService = UserService{}
-
 func (SongService) CreateSong(data interface{}) error {
 	err := common.GetDB().Create(data).Error
 	return err
@@ -68,7 +66,7 @@ func (SongService) FindMany(page int, search string, orderBy string, genreID int
 		if orderBy == "listen" {
 			order = "play_count desc"
 		}
-		queueErr <- db.Debug().
+		queueErr <- db.
 			Select("*", "(Select count(*) from user_like_songs Where song_id = songs.id) as like_number").
 			Preload("Genre").
 			Preload("Author", func(db *gorm.DB) *gorm.DB {

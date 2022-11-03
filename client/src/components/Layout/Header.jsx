@@ -1,8 +1,19 @@
-import { Avatar, Button, Flex, Input, InputGroup, InputLeftElement, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList } from '@chakra-ui/react';
+import {
+    Button,
+    Avatar,
+    MenuList,
+    MenuItem,
+    Menu,
+    MenuButton,
+    Flex,
+    Input,
+    InputGroup,
+    InputLeftElement,
+} from '@chakra-ui/react';
 import { useContext } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { API_ENDPOINT } from '../../config';
 import { UserContext } from '../../stores';
 
@@ -22,21 +33,43 @@ export default function Header() {
 
     return (
         <Flex alignItems="center" className="header" color="white" zIndex={3}>
-            <Menu _hover={{}}>
-                <MenuButton _hover={{}}>
-                    <Avatar className="header-avatar" size="md" name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
-                </MenuButton>
-                <MenuList bgColor={"blackAlpha.800"} color="white" minWidth={44} _hover={{}}>
-                    <Link to="/profile">
-                        <MenuItem _hover={{bgColor: "blackAlpha.800"}}>Profile</MenuItem>
+            {!!user.id ? (
+                <Menu>
+                    <MenuButton>
+                        <Avatar
+                            className="header-avatar"
+                            size="md"
+                            name={user.name}
+                            alt={user.name}
+                            src={user.avatar}
+                        />
+                    </MenuButton>
+                    <MenuList minWidth={44} bgColor="blackAlpha.900" border="none">
+                        <Link to="/profile" _hover={{}}>
+                            <MenuItem _focus={{ color: 'var(--primary-color)' }}>Profile</MenuItem>
+                        </Link>
+                        <MenuItem _focus={{ color: 'var(--primary-color)' }} onClick={logOut}>
+                            Sign Out
+                        </MenuItem>
+                    </MenuList>
+                </Menu>
+            ) : (
+                <>
+                    <Link to="/signin" _hover={{}}>
+                        <Button variant="outline" _hover={{ color: 'var(--primary-color)' }} colorScheme="white">
+                            Sign in
+                        </Button>
                     </Link>
-                    <MenuItem _hover={{bgColor: "blackAlpha.800"}}>Sign Out</MenuItem>
-                </MenuList>
-            </Menu>
+                    <Link to="/signup">
+                        <Button variant="ghost" _hover={{ color: 'var(--primary-color)' }} colorScheme="white">
+                            Sign up
+                        </Button>
+                    </Link>
+                </>
+            )}
 
-
-            <IoIosArrowBack className="header-back" />
-            <IoIosArrowForward className="header-forward" />
+            {/* <IoIosArrowBack className="header-back" /> */}
+            {/* <IoIosArrowForward className="header-forward" /> */}
             <InputGroup width="50%" marginLeft="8px" size="sm">
                 <InputLeftElement pointerEvents="none" children={<BiSearchAlt color="gray.300" />} />
                 <Input type="tel" placeholder="Search for artists, song,..." borderRadius="40px" size="sm" />

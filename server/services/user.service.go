@@ -9,8 +9,6 @@ type userModel = models.User
 
 type UserService struct{}
 
-var songService = SongService{}
-
 func (UserService) CreateOne(data interface{}) error {
 	err := common.GetDB().Create(data).Error
 	return err
@@ -41,7 +39,7 @@ func (UserService) UpdateOne(userId uint, data interface{}) error {
 	return err
 }
 
-func (UserService) Search(page int, search string, orderBy string, limit int) (*[]userModel, int64, error) {
+func (UserService) Search(page int, search string, orderBy string, limit int, user interface{}) (*[]userModel, int64, error) {
 	var userList []userModel
 	offSet := (page - 1) * limit
 	queueErr := make(chan error, 1)
@@ -50,11 +48,14 @@ func (UserService) Search(page int, search string, orderBy string, limit int) (*
 	go func() {
 		var i int64
 		defer close(count)
+		db := common.GetDB()
 		if search != "" {
-			queueErr <- common.GetDB().Where("name LIKE ?", "%"+search+"%").Find(&userModel{}).Count(&i).Error
-		} else {
-			queueErr <- common.GetDB().Find(&userModel{}).Count(&i).Error
+			db = db.Where("name LIKE ?", "%"+search+"%")
 		}
+		if user != nil {
+			db = db.Where("id <> ?", user.(*userModel).ID)
+		}
+		queueErr <- db.Find(&userModel{}).Count(&i).Error
 		count <- i
 	}()
 
@@ -69,6 +70,9 @@ func (UserService) Search(page int, search string, orderBy string, limit int) (*
 		}
 		if orderBy == "follower" {
 			order = "follower_number desc"
+		}
+		if user != nil {
+			db = db.Where("id <> ?", user.(*userModel).ID)
 		}
 		queueErr <- db.
 			Select("*",
@@ -90,8 +94,7 @@ func (UserService) Search(page int, search string, orderBy string, limit int) (*
 func (UserService) GetFavoriteSong(userID uint) ([]songModel, error) {
 	var songs []models.Song
 
-	// err := common.GetDB().Debug().Model(&models.User{}).Where("id = ?", userID).Joins("FavoriteSongs").Preload("FavoriteSongs.Author").First(&user).Error
-	err := common.GetDB().Debug().
+	err := common.GetDB().
 		Model(&models.UserLikeSong{}).
 		Where("user_id = ?", userID).Select(
 		"songs.*",

@@ -73,6 +73,8 @@ func (UserController) GetUser(c *gin.Context) {
 }
 
 func (UserController) SearchUser(c *gin.Context) {
+	user := c.Keys["user"]
+
 	type SearchUserQuery struct {
 		Search  string `form:"search"`
 		Page    int    `form:"page,default=1"`
@@ -85,7 +87,7 @@ func (UserController) SearchUser(c *gin.Context) {
 		return
 	}
 
-	userList, total, err := userService.Search(query.Page, query.Search, query.OrderBy, query.Limit)
+	userList, total, err := userService.Search(query.Page, query.Search, query.OrderBy, query.Limit, user)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return

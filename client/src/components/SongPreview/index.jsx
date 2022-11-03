@@ -12,7 +12,7 @@ export default function SongPreview({ song }) {
         setPlayer({ type: 'Add', payload: song });
     };
     return (
-        <Box width="100%">
+        <Box width="22%">
             <Box
                 position="relative"
                 _hover={{ cursor: 'pointer' }}
