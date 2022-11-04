@@ -1,18 +1,27 @@
 import { Flex } from '@chakra-ui/react';
 import { AspectRatio, Box, Icon, Image, Text } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
-import { AiFillPlayCircle } from 'react-icons/ai';
+import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
 import defaultPreview from '../../assets/song_preview.jpg';
 import { PlayerContext } from '../../stores/playerStore';
 
 export default function SongPreview({ song }) {
     const [showPlay, setShowPlay] = useState(false);
-    const [{ songList, indexSongPlayed }, setPlayer] = useContext(PlayerContext);
-    const play = () => {
+    const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
+
+    const addAndPlay = () => {
         setPlayer({ type: 'Add', payload: song });
     };
+
+    const togglePlay = () => {
+        setPlayer({ type: 'Toggle' });
+    };
+
+    const isPlayThisSong = song.id === songList[indexSongPlayed]?.id;
+    const showPauseIcon = song.id === songList[indexSongPlayed]?.id && isPlayed;
+
     return (
-        <Box width="22%">
+        <Box width="100%">
             <Box
                 position="relative"
                 _hover={{ cursor: 'pointer' }}
@@ -31,14 +40,14 @@ export default function SongPreview({ song }) {
                 {showPlay && (
                     <Icon
                         color="var(--primary-color)"
-                        as={AiFillPlayCircle}
+                        as={showPauseIcon ? AiFillPauseCircle : AiFillPlayCircle}
                         fontSize={60}
                         position="absolute"
                         top="50%"
                         left="50%"
                         transform="translate(-50%, -50%)"
                         borderRadius="50%"
-                        onClick={play}
+                        onClick={isPlayThisSong ? togglePlay : addAndPlay}
                     />
                 )}
             </Box>

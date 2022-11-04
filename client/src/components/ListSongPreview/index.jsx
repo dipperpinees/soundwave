@@ -1,5 +1,4 @@
-import { Skeleton } from '@chakra-ui/react';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Grid, Text } from '@chakra-ui/react';
 import SongPreview from '../SongPreview';
 import SongSkeleton from '../SquareSkeleton';
 
@@ -9,7 +8,7 @@ export default function ListSongPreview({ title, songs }) {
             <Text as="b" fontSize={20} marginBottom={1}>
                 {title}
             </Text>
-            <Flex gap={10}>
+            <Grid templateColumns='repeat(4, 1fr)' gap={6}>
                 {songs ? (
                     songs.map((song, id) => <SongPreview key={id} song={song} />)
                 ) : (
@@ -20,7 +19,7 @@ export default function ListSongPreview({ title, songs }) {
                         <SongSkeleton />
                     </>
                 )}
-            </Flex>
+            </Grid>
         </Box>
     );
 }

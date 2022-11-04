@@ -24,7 +24,8 @@ function App() {
                                 <Route path="/signin" element={<SignIn />} />
                                 <Route path="/signup" element={<SignUp />} />
                                 <Route path="/upload" element={<Upload />} />
-                                <Route path="/search" element={<Search />} />
+                                <Route path="/search" element={<Search type="tracks"/>} />
+                                <Route path="/search/people" element={<Search type="people" />} />
                             </Routes>
                             <Player />
                         </Layout>

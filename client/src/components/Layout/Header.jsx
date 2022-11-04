@@ -7,19 +7,32 @@ import {
     InputGroup,
     InputLeftElement,
     Menu,
-    MenuButton, MenuItem,
-    MenuList, VStack
+    MenuButton,
+    MenuItem,
+    MenuList,
+    VStack,
 } from '@chakra-ui/react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
 import { Link, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 import { API_ENDPOINT } from '../../config';
 import { UserContext } from '../../stores';
 
 export default function Header() {
     const [user, userDispatch] = useContext(UserContext);
-    const [input, setInput] = useState('');
+    const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+    const [searchInput, setSearchInput] = useState('');
     const location = useLocation();
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        document.addEventListener('click', () => {
+            setShowSearchDropdown(false);
+        });
+    }, []);
+
     if (location.pathname === '/signin' || location.pathname === '/signup') return null;
 
     async function logOut() {
@@ -29,6 +42,20 @@ export default function Header() {
         });
         userDispatch({ type: 'Delete' });
     }
+
+    const handleSearch = () => {
+        if (location.pathname.startsWith('/search')) {
+            const queryParams = queryString.parse(location.search);
+            queryParams.q = searchInput;
+            navigate({
+                path: location.pathname,
+                search: queryString.stringify(queryParams)
+            });
+        } else {
+            navigate(`/search/?q=${searchInput}`);
+        }
+        setShowSearchDropdown(false);
+    };
 
     return (
         <Flex alignItems="center" className="header" color="white" zIndex={3}>
@@ -74,27 +101,25 @@ export default function Header() {
                         placeholder="Search for artists, song,..."
                         borderRadius="40px"
                         size="sm"
-                        onChange={(e) => setInput(e.target.value)}
+                        onChange={(e) => {
+                            setSearchInput(e.target.value);
+                            setShowSearchDropdown(!!e.target.value);
+                        }}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                     />
                 </InputGroup>
-                {input !== '' && (
+                {showSearchDropdown && (
                     <VStack
                         align="stretch"
                         position={'absolute'}
                         right={-3}
                         left={1}
                         top={38}
-                        bgColor="blackAlpha.600"
+                        bgColor="blackAlpha.800"
                         borderRadius={8}
                     >
-                        <Flex h="40px" align={'center'} paddingLeft={4}>
-                            Search 1 abc xyz ghk umn
-                        </Flex>
-                        <Flex h="40px" align={'center'} paddingLeft={4}>
-                            Search 2 abc xyz ghk umn
-                        </Flex>
-                        <Flex h="40px" align={'center'} paddingLeft={4}>
-                            Search 3 abc xyz ghk umn
+                        <Flex h="40px" align={'center'} paddingLeft={4} onClick={handleSearch}>
+                            Search for "{searchInput}"
                         </Flex>
                     </VStack>
                 )}
