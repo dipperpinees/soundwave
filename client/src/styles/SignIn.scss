@@ -53,7 +53,6 @@
 
 
 .inputUser {
-    font-family: 'Open Sans', 'Helvetica', 'Arial';
     line-height: 16px;
     text-decoration: none solid rgb(0,0,0);
     word-spacing: 0px;
@@ -78,7 +77,6 @@
 
 
 #but-login {
-    font-family: 'Open Sans', 'Helvetica', 'Arial';
     line-height: 18px;
     text-align: center;
     text-transform: uppercase;
@@ -101,13 +99,9 @@
 }
 
 #but-login:hover {
-    background-color: #CF0A0A;
+    background-color: #DC5F00;
 }
 
 #gtp {
-    margin-top: 40px;
-}
-
-#service {
-    margin-top: 10px;
+    margin-top: 50px;
 }

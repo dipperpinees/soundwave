@@ -17,6 +17,11 @@ const theme = extendTheme({
         xl: '1200px',
         '2xl': '1536px',
     },
+    fontSizes: {
+        xs: '0.7rem',
+        md: '1rem',
+        xl: '1.5rem',
+    },
 });
 
 export default theme;

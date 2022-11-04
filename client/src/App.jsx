@@ -1,7 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import Layout from './components/Layout';
 import Player from './components/Player';
 import HomePage from './pages/HomePage';
@@ -10,6 +8,7 @@ import SignUp from './pages/SignUp';
 import Upload from './pages/Upload';
 import { Store } from './stores';
 import theme from './utils/theme';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
     return (
@@ -20,14 +19,14 @@ function App() {
                         <Layout>
                             <Routes>
                                 <Route path="/" element={<HomePage />} />
+                                <Route path="/profile" element={<ProfilePage />} />
                                 <Route path="/signin" element={<SignIn />} />
                                 <Route path="/signup" element={<SignUp />} />
                                 <Route path="/upload" element={<Upload />} />
                             </Routes>
-                            <Player />
+                            {/* <Player /> */}
                         </Layout>
                     </Store>
-                    <ToastContainer />
                 </div>
             </ChakraProvider>
         </BrowserRouter>

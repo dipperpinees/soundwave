@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react';
 import { Box, Button, Center, Container, Flex, Icon, Image, Input, Select, Stack, Text } from '@chakra-ui/react';
 import * as _buffer from 'buffer';
 import { motion } from 'framer-motion';
@@ -7,7 +8,6 @@ import { useContext, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { AiFillCamera } from 'react-icons/ai';
 import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
-import { toast } from 'react-toastify';
 import { API_ENDPOINT } from '../config';
 import { GenreContext } from '../stores';
 import { LoadingContext } from '../stores/loadingStore';
@@ -29,6 +29,7 @@ export default function Upload() {
     const [genre, setGenre] = useState('');
     const setLoading = useContext(LoadingContext)[1];
     const [audioFile, setAudioFile] = useState(null);
+    const toast = useToast();
 
     const onDrop = (acceptedFiles) => {
         if (!acceptedFiles || !acceptedFiles[0]) return;
@@ -114,24 +115,28 @@ export default function Upload() {
             credentials: 'include',
             body: formData,
         });
-        const responseJSON = await response.json();
-        console.log(responseJSON);
+        // const responseJSON = await response.json();
         if (response.ok) {
-            toast("Upload song successfully.");
+            toast({
+                title: 'Upload song successfully.',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            });
         }
         setLoading(false);
     };
 
     return (
-        <form onSubmit={handleUpload} className="white-color">
+        <form onSubmit={handleUpload} className="upload">
             <Container
                 centerContent
-                padding={8}
-                width={600}
-                position="fixed"
-                top="50%"
-                left="50%"
-                transform="translate(-50%, -50%)"
+                height="100vh"
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="column"
+                maxW="550px"
+                color="white"
             >
                 <Flex
                     alignItems="center"
@@ -144,9 +149,9 @@ export default function Upload() {
                     paddingRight={16}
                     paddingLeft={16}
                     justifyContent="space-between"
-                    width="100%"
                     as={motion.div}
                     {...getRootProps()}
+                    width="100%"
                 >
                     <input {...getInputProps()} />
                     <Stack>
