@@ -62,7 +62,7 @@ func (UserController) GetUser(c *gin.Context) {
 		return
 	}
 
-	user, err := userService.FindOne(&userModel{ID: params.ID})
+	user, err := userService.GetProfile(params.ID)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
@@ -73,9 +73,13 @@ func (UserController) GetUser(c *gin.Context) {
 }
 
 func (UserController) SearchUser(c *gin.Context) {
+	user := c.Keys["user"]
+
 	type SearchUserQuery struct {
-		Search string `form:"search"`
-		Page   int    `form:"page,default=1"`
+		Search  string `form:"search"`
+		Page    int    `form:"page,default=1"`
+		Limit   int    `form:"limit,default=10"`
+		OrderBy string `form:"orderBy"` //follower, track
 	}
 	query := SearchUserQuery{}
 	if err := c.BindQuery(&query); err != nil {
@@ -83,18 +87,19 @@ func (UserController) SearchUser(c *gin.Context) {
 		return
 	}
 
-	userList, total, err := userService.Search(query.Page, query.Search)
+	userList, total, err := userService.Search(query.Page, query.Search, query.OrderBy, query.Limit, user)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	totalPages := int(math.Ceil(float64(total) / float64(common.LIMIT_PER_PAGE)))
+	totalPages := int(math.Ceil(float64(total) / float64(query.Limit)))
+
 	c.JSON(
 		http.StatusOK,
 		gin.H{
 			"data":       *userList,
-			"pagination": models.Paginate{Page: query.Page, TotalPages: totalPages},
+			"pagination": models.Paginate{Page: query.Page, TotalPages: totalPages, TotalDocs: total},
 		},
 	)
 }
@@ -120,6 +125,7 @@ func (UserController) GetSongOfUser(c *gin.Context) {
 	}
 
 	songs, err := userService.GetSongOfUser(params.ID)
+
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
@@ -192,3 +198,12 @@ func (UserController) GetFollowings(c *gin.Context) {
 
 	c.JSON(http.StatusOK, &followings)
 }
+
+// func (UserController) CheckIsFollow(c *gin.Context) {
+// 	params := dtos.IdParams{}
+// 	if err := c.ShouldBindUri(&params); err != nil {
+// 		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid user ID")
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, )
+// }

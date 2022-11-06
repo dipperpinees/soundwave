@@ -10,6 +10,15 @@ import (
 
 var songService = services.SongService{}
 
+func AuthGuard() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if c.Keys["user"] == nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, "Unauthorized")
+			return
+		}
+	}
+}
+
 func SongGuard() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		params := dtos.IdParams{}

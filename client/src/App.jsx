@@ -9,6 +9,7 @@ import Upload from './pages/Upload';
 import { Store } from './stores';
 import theme from './utils/theme';
 import ProfilePage from './pages/ProfilePage';
+import Search from './pages/Search';
 
 function App() {
     return (
@@ -23,8 +24,10 @@ function App() {
                                 <Route path="/signin" element={<SignIn />} />
                                 <Route path="/signup" element={<SignUp />} />
                                 <Route path="/upload" element={<Upload />} />
+                                <Route path="/search" element={<Search type="tracks"/>} />
+                                <Route path="/search/people" element={<Search type="people" />} />
                             </Routes>
-                            {/* <Player /> */}
+                            <Player />
                         </Layout>
                     </Store>
                 </div>
