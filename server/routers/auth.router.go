@@ -13,4 +13,6 @@ func authRouter(router *gin.RouterGroup) {
 	router.POST("/signin", authController.SignIn)
 	router.POST("/auth", middlewares.AuthGuard(), authController.Auth)
 	router.POST("/logout", authController.LogOut)
+	router.POST("/password/forget", authController.ForgetPassword)
+	router.POST("/password/reset", authController.ResetPassword)
 }

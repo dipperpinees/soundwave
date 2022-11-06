@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+
 	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/models"
 )
@@ -128,4 +130,30 @@ func (u UserService) GetSongOfUser(userID uint) ([]songModel, error) {
 	}
 
 	return songs, err
+}
+
+func (UserService) CreateForget(userID uint) (string, error) {
+	randStr := common.RandStr(8)
+	err := common.GetDB().Create(&models.Forget{UserID: userID, Code: randStr}).Error
+	return randStr, err
+}
+
+func (UserService) ResetPassword(userID uint, code string, newPassword string) error {
+	var count int64
+	err := common.GetDB().Model(&models.Forget{}).Where("user_id = ?", userID).Where("code = ?", code).Where("created_at > (NOW() - INTERVAL 10 MINUTE)").Count(&count).Error
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		return errors.New("you do not have permission to perform this action")
+	}
+	//delete all old code
+	err = common.GetDB().Where("user_id = ?", userID).Delete(&models.Forget{}).Error
+	if err != nil {
+		return err
+	}
+
+	hash, _ := common.HashPassword(newPassword)
+	err = common.GetDB().Model(&userModel{}).Where("id = ?", userID).Update("password", hash).Error
+	return err
 }
