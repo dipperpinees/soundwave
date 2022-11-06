@@ -110,6 +110,70 @@ var spec =
                 }
             },
         },
+        "/password/forget": {
+            post: {
+                tags: ["auth"],
+                summary: "Quên mật khẩu",
+                operationId: "ForgotPassword",
+                produces: ["application/json"],
+                consumes: ["application/json"],
+                parameters: [
+                    {
+                        "in": "body",      
+                        "name": "Thông tin quên mật khẩu",  
+                        "required": "true",   
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            },
+        },
+        "/password/reset": {
+            post: {
+                tags: ["auth"],
+                summary: "Đổi mật khẩu",
+                operationId: "ResetPassword",
+                produces: ["application/json"],
+                consumes: ["application/json"],
+                parameters: [
+                    {
+                        "in": "body",      
+                        "name": "Thông tin reset mật khẩu",  
+                        "required": "true",   
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "userID": {
+                                    "type": "string"
+                                },
+                                "newPassword": {
+                                    "type": "string"
+                                },
+                                "code": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            },
+        },
         "/song": {
             post: {
                 tags: ["song"],

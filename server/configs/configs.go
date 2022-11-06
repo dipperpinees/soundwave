@@ -41,3 +41,11 @@ func EnvCloudinaryApiSecret() string {
 func EnvCloudinaryUploadFolder() string {
 	return os.Getenv("CLOUDINARY_UPLOAD_FOLDER")
 }
+
+func EnvEmail() (string, string) {
+	return os.Getenv("EMAIL"), os.Getenv("EMAIL_PASSWORD")
+}
+
+func EnvClientDomain() string {
+	return os.Getenv("CLIENT_DOMAIN")
+}
