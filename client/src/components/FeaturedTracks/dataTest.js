@@ -3,8 +3,8 @@ const data = [
         id: 1,
         url_img:
             'https://images.macrumors.com/t/hi1_a2IdFGRGMsJ0x31SdD_IcRk=/1600x/article-new/2018/05/apple-music-note.jpg',
-        songName: 'Hãy trao cho anh',
-        singerName: 'Sơn Tùng M-TP',
+        songName: 'Hãy trao cho anh trái tim đang mong chờ ú òa flsdfk;dslkf ;ldkf; lsdkf; lskdf;l sjfdglkfds jglkrs',
+        singerName: 'Sơn Tùng M-TP glkdfj gl;sfdjk ;ljfk ;ljfd;lk j;fdlk j;sldfk.j',
     },
     {
         id: 2,

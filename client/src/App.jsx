@@ -11,6 +11,7 @@ import TrackLibrary from './pages/TrackLibrary';
 import Upload from './pages/Upload';
 import { Store } from './stores';
 import theme from './utils/theme';
+import MusicPage from './pages/MusicPage';
 
 function App() {
     return (
@@ -22,11 +23,11 @@ function App() {
                             <Routes>
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/profile/:id" element={<ProfilePage />} />
+                                <Route path="/music" element={<MusicPage />} />
                                 <Route path="/signin" element={<SignIn />} />
                                 <Route path="/signup" element={<SignUp />} />
                                 <Route path="/upload" element={<Upload />} />
-                                <Route path="/songs-manager" element={<TrackLibrary />}/>
-                                <Route path="/search" element={<Search type="tracks"/>} />
+                                <Route path="/search" element={<Search type="tracks" />} />
                                 <Route path="/search/people" element={<Search type="people" />} />
                             </Routes>
                             <Player />

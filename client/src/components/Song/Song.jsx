@@ -15,12 +15,23 @@ const Song = ({ ...props }) => {
                 <Box ml={2} flex="1">
                     {/* Song name */}
                     <Link href={'#'}>
-                        <Text fontSize="md">{songName}</Text>
+                        <Text
+                            textOverflow={'ellipsis'}
+                            overflow="hidden"
+                            whiteSpace={'nowrap'}
+                            width={'280px'}
+                            fontSize="md"
+                        >
+                            {songName}
+                        </Text>
                     </Link>
-                    <Flex fontSize="xs">
+                    <Flex fontSize="xs" overflow="hidden" whiteSpace={'nowrap'} width={'260px'}>
                         <Link href={'#'}>{userName}</Link>
                         <Text m="0 4px">-</Text>
-                        <Link href={'#'}>{singerName}</Link> {/* singer */}
+                        <Link href={'#'} overflow="hidden" textOverflow={'ellipsis'}>
+                            {singerName}
+                        </Link>{' '}
+                        {/* singer */}
                     </Flex>
                 </Box>
                 {isLikeIcon && (
