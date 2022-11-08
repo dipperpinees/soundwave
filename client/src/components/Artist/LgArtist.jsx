@@ -6,14 +6,19 @@ import { Flex } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
 import { BsSoundwave } from 'react-icons/bs';
 import { IoIosPersonAdd, IoMdPeople } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 
-export default function LgArtist({ name, avatar, followerNumber, trackNumber }) {
+export default function LgArtist({ id, name, avatar, followerNumber, trackNumber }) {
     return (
         <Flex align="center" my={2} width="100%">
             <Flex align="center" gap={1}>
-                <Avatar name={name} src={avatar} size="2xl" mr={4}/>
+                <Link to={`/profile/${id}`}>
+                    <Avatar name={name} src={avatar} size="2xl" mr={4} />
+                </Link>
                 <Stack>
-                    <Text fontSize={20}>{name}</Text>
+                    <Link to={`/profile/${id}`}>
+                        <Text fontSize={20}>{name}</Text>
+                    </Link>
                     <Flex fontSize={12}>
                         <Icon as={IoMdPeople} fontSize={16} mr={1} /> {followerNumber}
                         <Icon as={BsSoundwave} fontSize={16} ml={2} mr={1} /> {trackNumber}
