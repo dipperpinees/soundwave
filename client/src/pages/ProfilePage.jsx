@@ -7,6 +7,7 @@ import Albums from '../components/Albums';
 const ProfilePage = () => (
     <Box className="profile-wrapper" ml="360px">
         <Box
+            pos={['initial', 'fixed']}
             className="profile-user"
             borderLeft="1px solid rgba(255, 255, 255, 0.2)"
             borderRight="1px solid rgba(255, 255, 255, 0.2)"

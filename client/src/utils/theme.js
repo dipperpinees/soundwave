@@ -30,6 +30,7 @@ const theme = extendTheme({
         md: '1rem',
         xl: '1.5rem',
     },
+    // config: { initialColorMode: 'light', useSystemColorMode: false },
 });
 
 export default theme;

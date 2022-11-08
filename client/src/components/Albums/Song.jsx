@@ -14,7 +14,15 @@ const Song = ({ ...props }) => {
                         1
                     </Text>
                     <Link href={'#'}>
-                        <Text fontSize="sm">{songName}</Text>
+                        <Text
+                            textOverflow={'ellipsis'}
+                            overflow="hidden"
+                            whiteSpace={'nowrap'}
+                            width={'500px'}
+                            fontSize="sm"
+                        >
+                            {songName}
+                        </Text>
                     </Link>
                 </Flex>
                 <Flex alignItems="center" margin="0 24px">
