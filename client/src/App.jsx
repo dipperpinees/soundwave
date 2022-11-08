@@ -10,6 +10,7 @@ import { Store } from './stores';
 import theme from './utils/theme';
 import ProfilePage from './pages/ProfilePage';
 import Search from './pages/Search';
+import MusicPage from './pages/MusicPage';
 
 function App() {
     return (
@@ -21,10 +22,11 @@ function App() {
                             <Routes>
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/profile" element={<ProfilePage />} />
+                                <Route path="/music" element={<MusicPage />} />
                                 <Route path="/signin" element={<SignIn />} />
                                 <Route path="/signup" element={<SignUp />} />
                                 <Route path="/upload" element={<Upload />} />
-                                <Route path="/search" element={<Search type="tracks"/>} />
+                                <Route path="/search" element={<Search type="tracks" />} />
                                 <Route path="/search/people" element={<Search type="people" />} />
                             </Routes>
                             <Player />
