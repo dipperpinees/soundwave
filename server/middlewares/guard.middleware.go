@@ -27,6 +27,11 @@ func SongGuard() gin.HandlerFunc {
 		}
 
 		user := c.Keys["user"].(*userModel)
+		if user.Role == "admin" {
+			c.Next()
+			return
+		}
+
 		var thisSong models.Song
 		err := common.GetDB().First(&thisSong, params.ID).Error
 		if err != nil {
@@ -50,6 +55,11 @@ func CommentGuard() gin.HandlerFunc {
 		}
 
 		user := c.Keys["user"].(*userModel)
+		if user.Role == "admin" {
+			c.Next()
+			return
+		}
+
 		var thisComment models.Comment
 		err := common.GetDB().First(&thisComment, params.ID).Error
 		if err != nil {
@@ -73,6 +83,11 @@ func PlaylistGuard() gin.HandlerFunc {
 		}
 
 		user := c.Keys["user"].(*userModel)
+		if user.Role == "admin" {
+			c.Next()
+			return
+		}
+
 		var thisPlaylist models.Playlist
 		err := common.GetDB().First(&thisPlaylist, params.ID)
 		if err != nil {

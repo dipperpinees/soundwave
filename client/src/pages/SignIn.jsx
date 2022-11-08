@@ -1,7 +1,7 @@
 import {
     Box,
     Button,
-    Container,
+    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -9,11 +9,10 @@ import {
     Link,
     Text,
     useToast,
-    VStack,
 } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 import { UserContext } from '../stores';
 import '../styles/SignIn.scss';
 import fetchAPI from '../utils/fetchAPI';
@@ -52,32 +51,30 @@ export default function SignIn() {
     };
 
     return (
-        <Container height="50em" width="100%">
-            <VStack display="flex" justifyContent="center" alignItems="center" height="100%">
-                <Box className="logo">
-                    <Text fontSize="2xl" fontWeight="bold" textAlign="center" mt="2">
-                        <Link href="/" color="#f48004" style={{ textDecoration: 'none' }}>
-                            SOUNDGROUND
-                        </Link>
-                    </Text>
-                </Box>
-                <Box fontSize="4xl" color="#FFF" fontFamily="Deezer, san-serif" style={{ marginBottom: '30px' }}>
-                    <h1>Log in</h1>
-                </Box>
-                <Box fontSize="2md" color="#FFF">
-                    <Text>
-                        Not register on Deezer yet?{' '}
-                        <Link href="/signup" color="#f48004" outline="none" style={{ textDecoration: 'none' }}>
-                            SIGN UP
-                        </Link>
-                    </Text>
-                </Box>
+        <Flex width="100%" justify="center" align="center" direction="column" height="100vh" color="white">
+            <Box fontSize="4xl" mb={8}>
+                <h1>Log in</h1>
+            </Box>
+            <Text mb={4}>
+                Not register yet?{' '}
+                <Link
+                    href="/signup"
+                    fontWeight={600}
+                    color="var(--primary-color)"
+                    outline="none"
+                    style={{ textDecoration: 'none' }}
+                >
+                    SIGN UP
+                </Link>
+            </Text>
+            <Box width={{ base: '92%', lg: 480 }}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Box id="inputInfo">
+                    <Box width="100%">
                         <FormControl isInvalid={errors.email}>
-                            <FormLabel className="inputLabel">Email address</FormLabel>
+                            <FormLabel fontSize={14} mb={1}>
+                                Email address
+                            </FormLabel>
                             <Input
-                                type="email"
                                 name="email"
                                 id="email"
                                 {...register(
@@ -90,13 +87,17 @@ export default function SignIn() {
                                         },
                                     }
                                 )}
-                                className="inputUser"
-                                style={{ height: '58px', fontSize: '14px', backgroundColor: '#FFFFFF' }}
+                                color="black"
+                                fontSize={14}
+                                bgColor="white"
+                                py={6}
                             />
-                            <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+                            <FormErrorMessage mt={1}>{errors.email && errors.email.message}</FormErrorMessage>
                         </FormControl>
-                        <FormControl isInvalid={errors.password}>
-                            <FormLabel className="inputLabel">Password</FormLabel>
+                        <FormControl isInvalid={errors.password} mt={4}>
+                            <FormLabel mb={1} fontSize={14}>
+                                Password
+                            </FormLabel>
                             <Input
                                 type="password"
                                 {...register('password', {
@@ -106,32 +107,33 @@ export default function SignIn() {
                                         message: 'This field has a minimum length of 6',
                                     },
                                 })}
-                                className="inputUser"
-                                style={{ height: '58px', fontSize: '14px', backgroundColor: '#FFFFFF' }}
+                                color="black"
+                                fontSize={14}
+                                bgColor="white"
+                                py={6}
                             />
-                            <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
+                            <FormErrorMessage mt={1}>{errors.password && errors.password.message}</FormErrorMessage>
                         </FormControl>
                     </Box>
                     <Button
                         type="submit"
-                        id="but-login"
-                        style={{ marginLeft: '10px', marginTop: '30px' }}
-                        borderRadius="0.375rem"
-                        fontSize="14px"
-                        fontWeight="700"
-                        backgroundColor="#f48004"
-                        color="#FFF"
+                        fontSize={14}
+                        fontWeight={700}
+                        colorScheme="primary"
+                        variant="solid"
+                        width="100%"
+                        mt={8}
+                        size="lg"
+                        _hover={{ opacity: 0.8 }}
                     >
                         <Text>Log in</Text>
                     </Button>
                 </form>
+            </Box>
 
-                <Box id="gtp">
-                    <Link style={{ textDecoration: 'none', color: '#f48004' }} href="/signup">
-                        FORGOT YOUR PASSWORD?
-                    </Link>
-                </Box>
-            </VStack>
-        </Container>
+            <Text fontSize={12} mt={4}>
+                FORGOT YOUR PASSWORD?
+            </Text>
+        </Flex>
     );
 }

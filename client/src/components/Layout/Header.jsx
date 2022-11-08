@@ -67,7 +67,7 @@ export default function Header() {
                         />
                     </MenuButton>
                     <MenuList minWidth={44} bgColor="blackAlpha.900" border="none">
-                        <Link to="/profile" _hover={{}}>
+                        <Link to={`/profile/${user.id}`} _hover={{}}>
                             <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}}>
                                 Profile
                             </MenuItem>

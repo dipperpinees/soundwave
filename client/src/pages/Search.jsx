@@ -1,12 +1,13 @@
 import { Button, Flex, Grid, Icon, Select, Text } from '@chakra-ui/react';
 import queryString from 'query-string';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { BsFillPeopleFill, BsSoundwave } from 'react-icons/bs';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import LgArtist from '../components/Artist/LgArtist';
 import SongPreview from '../components/SongPreview';
 import SongSkeleton from '../components/SquareSkeleton';
 import { API_ENDPOINT } from '../config';
+import { GenreContext } from '../stores';
 
 export default function Search({ type }) {
     const [searchParams] = useSearchParams();
@@ -15,8 +16,9 @@ export default function Search({ type }) {
     const [pagination, setPagination] = useState(null);
     const location = useLocation();
     const navigate = useNavigate();
+    const genre = useContext(GenreContext)[0];
 
-    const searchSongs = async (search, orderBy) => {
+    const searchSongs = async (search, orderBy, genreID) => {
         setSearchTracksData(null);
         const response = await fetch(
             API_ENDPOINT +
@@ -25,6 +27,7 @@ export default function Search({ type }) {
                     limit: 12,
                     ...(search && { search }),
                     ...(orderBy && { orderBy }),
+                    ...(genreID && {genreID})
                 })
         );
         if (response.ok) {
@@ -55,8 +58,9 @@ export default function Search({ type }) {
         setPagination(null);
         const search = searchParams.get('q');
         const orderBy = searchParams.get('order');
+        const genreID = searchParams.get('genre');
 
-        if (type === 'tracks') searchSongs(search, orderBy);
+        if (type === 'tracks') searchSongs(search, orderBy, genreID);
         if (type === 'people') searchUsers(search, orderBy);
     }, [type, searchParams]);
 
@@ -107,17 +111,31 @@ export default function Search({ type }) {
                     </Button>
                 </Link>
                 {type === 'tracks' && (
-                    <Select
-                        marginLeft="auto"
-                        width={40}
-                        defaultValue={searchParams.get('order')}
-                        focusBorderColor="primary.500"
-                        onChange={(e) => handleChangeSearch({ order: e.target.value })}
-                    >
-                        <option value="lastest">Lastest</option>
-                        <option value="like">Most likes</option>
-                        <option value="listen">Most listens</option>
-                    </Select>
+                    <>
+                        <Select
+                            marginLeft="auto"
+                            marginRight={4}
+                            width={40}
+                            defaultValue={searchParams.get('genre')}
+                            focusBorderColor="primary.500"
+                            onChange={(e) => handleChangeSearch({ genre: e.target.value })}
+                        >
+                            <option value="lastest">All</option>
+                            {genre.map(({ id, name }) => (
+                                <option value={id}>{name}</option>
+                            ))}
+                        </Select>
+                        <Select
+                            width={40}
+                            defaultValue={searchParams.get('order')}
+                            focusBorderColor="primary.500"
+                            onChange={(e) => handleChangeSearch({ order: e.target.value })}
+                        >
+                            <option value="lastest">Lastest</option>
+                            <option value="like">Most likes</option>
+                            <option value="listen">Most listens</option>
+                        </Select>
+                    </>
                 )}
                 {type === 'people' && (
                     <Select
