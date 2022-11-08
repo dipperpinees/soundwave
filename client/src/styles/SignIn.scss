@@ -1,7 +1,6 @@
 *{
     margin: 0;
     padding: 0;
-    
 }
 
 
@@ -37,12 +36,13 @@
 
 .inputLabel {
     font-family: 'Open Sans', 'Helvetica', 'Arial';
+    color: #FFF;
     font-size: 12px;
     line-height: 14px;
     text-decoration: none solid rgb(0,0,0);
     vertical-align: middle;
     word-spacing: 0px;
-    background-color: #FFFF;
+    background-color: none;
     height: 14px;
     width: 385px;
     border: 0px solid #32323D;
@@ -53,11 +53,9 @@
 
 
 .inputUser {
-    font-family: 'Open Sans', 'Helvetica', 'Arial';
     line-height: 16px;
     text-decoration: none solid rgb(0,0,0);
     word-spacing: 0px;
-    background-color: #FFF;
     color: #000000;
     height: 54px;
     width: 385px;
@@ -67,6 +65,7 @@
     min-width: auto;
     display: block;
     cursor: text;
+    margin-bottom: 10px;
 }
 
 
@@ -78,7 +77,6 @@
 
 
 #but-login {
-    font-family: 'Open Sans', 'Helvetica', 'Arial';
     line-height: 18px;
     text-align: center;
     text-transform: uppercase;
@@ -101,13 +99,9 @@
 }
 
 #but-login:hover {
-    background-color: #CF0A0A;
+    background-color: #DC5F00;
 }
 
 #gtp {
-    margin-top: 50px;
-}
-
-#service {
     margin-top: 50px;
 }
