@@ -17,15 +17,16 @@ const FeaturedTracks = () => {
         <Box>
             <Flex justifyContent="space-between">
                 <Heading fontSize="xl">Featured Tracks</Heading>
-                <Box>
-                    <Menu>
+                <Flex align={'center'}>
+                    <Menu autoSelect="false">
                         <MenuButton
                             as={Text}
                             onClick={() => {
                                 setDownIcon(!isDownIcon);
                             }}
+                            fontSize="xs"
                         >
-                            Sort {isDownIcon ? <LineDownIcon /> : <LineUpIcon />}
+                            <Flex align={'center'}>Sort {isDownIcon ? <LineDownIcon /> : <LineUpIcon />}</Flex>
                         </MenuButton>
                         <MenuList bg={'#2d3748'} minW="20px">
                             <MenuItem
@@ -63,7 +64,7 @@ const FeaturedTracks = () => {
                             </MenuItem>
                         </MenuList>
                     </Menu>
-                </Box>
+                </Flex>
             </Flex>
             <List>
                 {data.map((song, index) => {
