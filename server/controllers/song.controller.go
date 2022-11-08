@@ -30,7 +30,7 @@ func (SongController) CreateSong(c *gin.Context) {
 	//validate form data
 	formData := CreateSongForm{}
 	if err := c.ShouldBind(&formData); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -47,7 +47,7 @@ func (SongController) CreateSong(c *gin.Context) {
 
 	uploadUrl, err := uploadService.MultipleFileUpload(listFile)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -60,7 +60,7 @@ func (SongController) CreateSong(c *gin.Context) {
 		GenreID:   formData.GenreID,
 	}
 	if err := songService.CreateSong(&newSong); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 	newSong.Author = *user
@@ -72,14 +72,14 @@ func (SongController) GetByID(c *gin.Context) {
 	params := dtos.IdParams{}
 
 	if err := c.ShouldBindUri(&params); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
 	}
 
 	song, err := songService.FindByID(params.ID)
 
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -101,7 +101,7 @@ func (SongController) FindMany(c *gin.Context) {
 	listSong, total, err := songService.FindMany(query.Page, query.Search, query.OrderBy, query.GenreID, query.Limit)
 
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 	totalPages := int(math.Ceil(float64(total) / float64(query.Limit)))
@@ -118,7 +118,7 @@ func (SongController) CreateFavoriteSong(c *gin.Context) {
 	params := dtos.IdParams{}
 
 	if err := c.ShouldBindUri(&params); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
 	}
 
@@ -126,7 +126,7 @@ func (SongController) CreateFavoriteSong(c *gin.Context) {
 
 	data, err := songService.CreateFavoriteSong(user.ID, params.ID)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -136,12 +136,12 @@ func (SongController) CreateFavoriteSong(c *gin.Context) {
 func (SongController) DeleteSong(c *gin.Context) {
 	params := dtos.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
 	}
 
 	if err := songService.DeleteByID(params.ID); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -151,7 +151,7 @@ func (SongController) DeleteSong(c *gin.Context) {
 func (SongController) UpdateSong(c *gin.Context) {
 	params := dtos.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
 	}
 
@@ -179,13 +179,13 @@ func (SongController) UpdateSong(c *gin.Context) {
 
 	uploadUrl, err := uploadService.MultipleFileUpload(listFile)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
 	updateData, err := songService.Update(params.ID, formData.Title, uploadUrl["song"], uploadUrl["thumbnail"])
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -200,11 +200,11 @@ func (SongController) CreateComment(c *gin.Context) {
 	params := dtos.IdParams{}
 	body := CommentBody{}
 	if err := c.ShouldBind(&body); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 	if err := c.ShouldBindUri(&params); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
 	}
 
@@ -214,7 +214,7 @@ func (SongController) CreateComment(c *gin.Context) {
 
 	err := commentService.CreateComment(&comment)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 	comment.Author = *user
@@ -224,13 +224,13 @@ func (SongController) CreateComment(c *gin.Context) {
 func (SongController) GetCommentOfSong(c *gin.Context) {
 	params := dtos.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
 	}
 
 	comments, err := commentService.GetCommentOfSong(params.ID)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -240,12 +240,12 @@ func (SongController) GetCommentOfSong(c *gin.Context) {
 func (SongController) DeleteComment(c *gin.Context) {
 	params := dtos.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid comment ID")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid comment ID"})
 		return
 	}
 
 	if err := commentService.DeleteComment(params.ID); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -255,7 +255,7 @@ func (SongController) DeleteComment(c *gin.Context) {
 func (SongController) UpdateComment(c *gin.Context) {
 	params := dtos.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid comment ID")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid comment ID"})
 		return
 	}
 
@@ -265,12 +265,12 @@ func (SongController) UpdateComment(c *gin.Context) {
 
 	body := CommentBody{}
 	if err := c.ShouldBind(&body); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
 	if err := commentService.UpdateComment(params.ID, body.Content); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -280,13 +280,13 @@ func (SongController) UpdateComment(c *gin.Context) {
 func (SongController) IncrementPlayCount(c *gin.Context) {
 	params := dtos.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
 	}
 
 	err := songService.IncrementPlayCount(params.ID)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Increment play count successfully"})

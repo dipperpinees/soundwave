@@ -3,6 +3,7 @@ package services
 import (
 	"testing"
 
+	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/joho/godotenv"
@@ -17,7 +18,7 @@ func TestSendEmail(t *testing.T) {
 	err := mailService.SendForgotPassword([]string{"hiepnguyenno01@gmail.com"}, "https://go.dev/play/")
 
 	if err != nil {
-		t.Errorf("Don't send email %s", err.Error())
+		t.Errorf("Don't send email %s", gin.H{"message": err.Error()})
 	}
 }
 
@@ -27,7 +28,7 @@ func TestForgetPassword(t *testing.T) {
 
 	code, err := userService.CreateForget(1)
 	if err != nil {
-		t.Errorf("Don't create forget %s", err.Error())
+		t.Errorf("Don't create forget %s", gin.H{"message": err.Error()})
 	}
 	t.Log(code)
 }

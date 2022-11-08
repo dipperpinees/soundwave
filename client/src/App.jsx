@@ -3,13 +3,14 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
 import Player from './components/Player';
 import HomePage from './pages/HomePage';
+import ProfilePage from './pages/ProfilePage';
+import Search from './pages/Search';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import TrackLibrary from './pages/TrackLibrary';
 import Upload from './pages/Upload';
 import { Store } from './stores';
 import theme from './utils/theme';
-import ProfilePage from './pages/ProfilePage';
-import Search from './pages/Search';
 import MusicPage from './pages/MusicPage';
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
                         <Layout>
                             <Routes>
                                 <Route path="/" element={<HomePage />} />
-                                <Route path="/profile" element={<ProfilePage />} />
+                                <Route path="/profile/:id" element={<ProfilePage />} />
                                 <Route path="/music" element={<MusicPage />} />
                                 <Route path="/signin" element={<SignIn />} />
                                 <Route path="/signup" element={<SignUp />} />
