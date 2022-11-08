@@ -12,6 +12,8 @@ var db *gorm.DB
 
 func InitDB() *gorm.DB {
 	db = connectDb()
+	//enable event schedule
+	// db.Exec("SET GLOBAL event_scheduler = ON")
 	return db
 }
 
@@ -22,7 +24,7 @@ func connectDb() *gorm.DB {
 	DB_HOST := configs.EnvDbHost()
 	DB_PORT := configs.EnvDbPort()
 
-	dsn := DB_USERNAME + ":" + DB_PASSWORD + "@tcp" + "(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME + "?" + "parseTime=true&loc=Local"
+	dsn := DB_USERNAME + ":" + DB_PASSWORD + "@tcp" + "(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME + "?" + "parseTime=true"
 	db, err := gorm.Open(mysql.Open(dsn))
 
 	if err != nil {

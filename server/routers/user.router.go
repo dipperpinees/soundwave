@@ -11,7 +11,7 @@ var userController = controllers.UserController{}
 func userRouter(router *gin.RouterGroup) {
 	router.POST(
 		"/uploadAvatar",
-		middlewares.AuthMiddleware(),
+		middlewares.AuthGuard(),
 		middlewares.LimitUploadMiddleware(4),
 		userController.UploadAvatar,
 	)
@@ -23,15 +23,15 @@ func userRouter(router *gin.RouterGroup) {
 	router.GET("/", userController.SearchUser)
 
 	//get user's favorite song
-	router.GET("/favorite", middlewares.AuthMiddleware(), userController.GetFavoriteSong)
+	router.GET("/favorite", middlewares.AuthGuard(), userController.GetFavoriteSong)
 
 	//get user's song
 	router.GET("/:id/songs", userController.GetSongOfUser)
 
 	//follow feature
-	router.POST("/follow/:id", middlewares.AuthMiddleware(), userController.Follow)
-	router.POST("/unfollow/:id", middlewares.AuthMiddleware(), userController.UnFollow)
+	router.POST("/follow/:id", middlewares.AuthGuard(), userController.Follow)
+	router.POST("/unfollow/:id", middlewares.AuthGuard(), userController.UnFollow)
 	router.GET("/follower/:id", userController.GetFollowers)
 	router.GET("/following/:id", userController.GetFollowings)
-
+	// router.GET("/checkFollow/:id", userController.CheckIsFollow)
 }

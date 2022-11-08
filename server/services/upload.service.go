@@ -21,7 +21,10 @@ func (UploadService) SingleFileUpload(file multipart.File) (string, error) {
 	}
 
 	//upload file
-	uploadParams, err := cld.Upload.Upload(ctx, file, uploader.UploadParams{Folder: configs.EnvCloudinaryUploadFolder()})
+	uploadParams, err2 := cld.Upload.Upload(ctx, file, uploader.UploadParams{Folder: configs.EnvCloudinaryUploadFolder()})
+	if err2 != nil {
+		return "", err
+	}
 
 	return uploadParams.SecureURL, nil
 }

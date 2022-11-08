@@ -7,7 +7,15 @@ const theme = extendTheme({
     },
     colors: {
         primary: {
+            100: '#F48004',
+            200: '#F48004',
+            300: '#F48004',
+            400: '#F48004',
             500: '#F48004',
+            600: '#F48004',
+            700: '#F48004',
+            800: '#F48004',
+            900: '#F48004',
         },
     },
     breakpoints: {
@@ -22,6 +30,7 @@ const theme = extendTheme({
         md: '1rem',
         xl: '1.5rem',
     },
+    // config: { initialColorMode: 'light', useSystemColorMode: false },
 });
 
 export default theme;

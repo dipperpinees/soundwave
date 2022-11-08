@@ -1,5 +1,5 @@
 package common
 
-func validateImage(fileName string) {
-	// mimeType :=
-}
+// func validateImage(fileName string) {
+// 	// mimeType :=
+// }
