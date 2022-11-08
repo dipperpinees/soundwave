@@ -10,7 +10,7 @@ const fetchAPI = async (path = "/", configs = {}) => {
     if (response.ok) {
         return responseJSON;
     } 
-    throw new Error(responseJSON);
+    throw new Error(responseJSON.message);
 }
 
 export default fetchAPI;

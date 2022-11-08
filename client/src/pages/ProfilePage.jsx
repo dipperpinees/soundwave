@@ -9,6 +9,7 @@ import fetchAPI from '../utils/fetchAPI';
 
 const ProfilePage = () => {
     const { id } = useParams();
+
     const [data, setData] = useState(null);
     useEffect(() => {
         (async () => {
@@ -18,6 +19,7 @@ const ProfilePage = () => {
             } catch (e) {}
         })();
     }, [id]);
+
     return (
         <Box className="profile-wrapper" ml="360px">
             <Box
@@ -27,20 +29,20 @@ const ProfilePage = () => {
                 borderRight="1px solid rgba(255, 255, 255, 0.2)"
             >
                 <Box className="profile-content" margin="0 auto">
-                    <Profile {...data}/>
+                    <Profile {...data} />
                 </Box>
-                <Flex margin="0 56px" flexWrap="wrap" justifyContent="space-between">
-                    <Box flexBasis="50%">
-                        <FeaturedTracks />
-                    </Box>
-                    <Box flexBasis="38%">
-                        <RecentlyLikes />
-                    </Box>
-                    <Box mt={'48px'} mb={'36px'} flex="100%">
-                        <Albums />
-                    </Box>
-                </Flex>
             </Box>
+            <Flex margin="0 56px" flexWrap="wrap" justifyContent="space-between">
+                <Box flexBasis="50%">
+                    <FeaturedTracks />
+                </Box>
+                <Box flexBasis="38%">
+                    <RecentlyLikes />
+                </Box>
+                <Box mt={'48px'} mb={'36px'} flex="100%">
+                    <Albums />
+                </Box>
+            </Flex>
         </Box>
     );
 };
