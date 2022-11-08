@@ -7,4 +7,5 @@ func HandleRoute(router *gin.RouterGroup) {
 	userRouter(router.Group("/user"))
 	songRouter(router.Group("/song"))
 	genreRouter(router.Group("/genre"))
+	playlistRouter(router.Group("/playlist"))
 }

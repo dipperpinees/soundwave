@@ -1,12 +1,10 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
-	"github.com/hiepnguyen223/int3306-project/configs"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/services"
 )
@@ -27,7 +25,7 @@ type SignUpBody struct {
 func (AuthController) SignUp(c *gin.Context) {
 	body := SignUpBody{}
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -36,7 +34,7 @@ func (AuthController) SignUp(c *gin.Context) {
 	newUser := models.User{Email: body.Email, Password: hashPassword, Name: body.Name}
 
 	if err := userService.CreateOne(&newUser); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -46,26 +44,26 @@ func (AuthController) SignUp(c *gin.Context) {
 	c.JSON(http.StatusAccepted, gin.H{"id": newUser.ID, "name": newUser.Name, "avatar": newUser.Avatar, "role": newUser.Role})
 }
 
-type SignInBody struct {
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,min=6"`
-}
-
 func (AuthController) SignIn(c *gin.Context) {
-	body := SignInBody{}
+	type Body struct {
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required,min=6"`
+	}
+
+	body := Body{}
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
 	user, err := userService.FindOne(&userModel{Email: body.Email})
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "This user is not exist")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This user is not exist"})
 		return
 	}
 
 	if !common.CheckPasswordHash(body.Password, user.Password) {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "Wrong password")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Wrong password"})
 		return
 	}
 
@@ -93,19 +91,18 @@ func (AuthController) ForgetPassword(c *gin.Context) {
 	}
 	body := Body{}
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 	user, err := userService.FindOne(&userModel{Email: body.Email})
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, "This user doesn't exist")
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This user doesn't exist"})
 		return
 	}
 	code, err := userService.CreateForget(user.ID)
-	resetUrl := fmt.Sprintf(`%s/reset?userID=%d&email=%s&code=%s`, configs.EnvClientDomain(), user.ID, user.Email, code)
-	emailService.SendForgotPassword([]string{user.Email}, resetUrl)
+	emailService.SendForgotPassword([]string{user.Email}, code)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"userID": user.ID})
@@ -119,11 +116,11 @@ func (AuthController) ResetPassword(c *gin.Context) {
 	}
 	body := Body{}
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 	if err := userService.ResetPassword(body.UserID, body.Code, body.NewPassword); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, "Reset password successfully")

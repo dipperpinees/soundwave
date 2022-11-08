@@ -51,17 +51,27 @@ func (PlaylistService) GetSongsOfPlaylist(id uint) ([]models.Song, error) {
 	return playlist.Songs, err
 }
 
-func (PlaylistService) Delete(id uint) error {
-	err := common.GetDB().Where("id = ?", id).Delete(&models.Playlist{}).Error
-	return err
-}
-
-func (PlaylistService) AddSong(songID uint, playlistID uint) error {
-	err := common.GetDB().Create(&models.PlaylistsSongs{PlaylistID: playlistID, SongID: songID}).Error
+func (PlaylistService) AddSong(songsID []uint, playlistID uint) error {
+	playlistSongs := make([]models.PlaylistsSongs, len(songsID))
+	for songID, i := range songsID {
+		playlistSongs[i] = models.PlaylistsSongs{PlaylistID: playlistID, SongID: uint(songID)}
+	}
+	err := common.GetDB().Create(&playlistSongs).Error
 	return err
 }
 
 func (PlaylistService) RemoveSong(songID uint, playlistID uint) error {
 	err := common.GetDB().Where("song_id = ?", songID).Where("playlist_id = ?", playlistID).Delete(&models.PlaylistsSongs{}).Error
 	return err
+}
+
+func (PlaylistService) Delete(playlistID uint) error {
+	if err := common.GetDB().Where("playlist_id = ?", playlistID).Delete(&models.PlaylistsSongs{}).Error; err != nil {
+		return err
+	}
+	if err := common.GetDB().Where("id = ?", playlistID).Delete(&models.Playlist{}).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -10,15 +10,14 @@ import {
     MenuButton,
     MenuItem,
     MenuList,
-    VStack,
+    VStack
 } from '@chakra-ui/react';
+import queryString from 'query-string';
 import { useContext, useEffect, useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
-import { useNavigate } from 'react-router-dom';
-import { Link, useLocation } from 'react-router-dom';
-import queryString from 'query-string';
-import { API_ENDPOINT } from '../../config';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../stores';
+import fetchAPI from '../../utils/fetchAPI';
 
 export default function Header() {
     const [user, userDispatch] = useContext(UserContext);
@@ -26,7 +25,7 @@ export default function Header() {
     const [searchInput, setSearchInput] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         document.addEventListener('click', () => {
             setShowSearchDropdown(false);
@@ -36,10 +35,7 @@ export default function Header() {
     if (location.pathname === '/signin' || location.pathname === '/signup') return null;
 
     async function logOut() {
-        await fetch(API_ENDPOINT + '/logout', {
-            method: 'POST',
-            credentials: 'include',
-        });
+        fetchAPI('/logout', { method: 'POST' });
         userDispatch({ type: 'Delete' });
     }
 
@@ -49,7 +45,7 @@ export default function Header() {
             queryParams.q = searchInput;
             navigate({
                 path: location.pathname,
-                search: queryString.stringify(queryParams)
+                search: queryString.stringify(queryParams),
             });
         } else {
             navigate(`/search/?q=${searchInput}`);
@@ -72,9 +68,11 @@ export default function Header() {
                     </MenuButton>
                     <MenuList minWidth={44} bgColor="blackAlpha.900" border="none">
                         <Link to="/profile" _hover={{}}>
-                            <MenuItem _focus={{ color: 'var(--primary-color)' }}>Profile</MenuItem>
+                            <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}}>
+                                Profile
+                            </MenuItem>
                         </Link>
-                        <MenuItem _focus={{ color: 'var(--primary-color)' }} onClick={logOut}>
+                        <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} onClick={logOut}>
                             Sign Out
                         </MenuItem>
                     </MenuList>

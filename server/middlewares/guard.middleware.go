@@ -4,16 +4,15 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/dtos"
-	"github.com/hiepnguyen223/int3306-project/services"
+	"github.com/hiepnguyen223/int3306-project/models"
 )
-
-var songService = services.SongService{}
 
 func AuthGuard() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if c.Keys["user"] == nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, "Unauthorized")
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
 			return
 		}
 	}
@@ -23,43 +22,66 @@ func SongGuard() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		params := dtos.IdParams{}
 		if err := c.ShouldBindUri(&params); err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid song ID")
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 			return
 		}
 
 		user := c.Keys["user"].(*userModel)
-		song, err := songService.FindByID(params.ID)
+		var thisSong models.Song
+		err := common.GetDB().First(&thisSong, params.ID).Error
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, "This song does not exist")
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This song does not exist"})
 			return
 		}
 
-		if song.AuthorID != user.ID {
-			c.AbortWithStatusJSON(http.StatusBadRequest, "You are not authorized to perform this action")
+		if thisSong.AuthorID != user.ID {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "You are not authorized to perform this action"})
 			return
 		}
 	}
 }
 
-var commentService = services.CommentService{}
-
 func CommentGuard() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		params := dtos.IdParams{}
 		if err := c.ShouldBindUri(&params); err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid comment ID")
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid comment ID"})
 			return
 		}
 
 		user := c.Keys["user"].(*userModel)
-		comment, err := commentService.GetCommentByID(params.ID)
+		var thisComment models.Comment
+		err := common.GetDB().First(&thisComment, params.ID).Error
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, "This comment does not exist")
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This comment does not exist"})
 			return
 		}
 
-		if user.ID != comment.AuthorID {
-			c.AbortWithStatusJSON(http.StatusBadRequest, "You are not authorized to perform this action")
+		if user.ID != thisComment.AuthorID {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "You are not authorized to perform this action"})
+			return
+		}
+	}
+}
+
+func PlaylistGuard() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		params := dtos.IdParams{}
+		if err := c.ShouldBindUri(&params); err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid playlist ID"})
+			return
+		}
+
+		user := c.Keys["user"].(*userModel)
+		var thisPlaylist models.Playlist
+		err := common.GetDB().First(&thisPlaylist, params.ID)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This playlist does not exist"})
+			return
+		}
+
+		if thisPlaylist.AuthorID != user.ID {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "You are not authorized to perform this action"})
 			return
 		}
 	}
