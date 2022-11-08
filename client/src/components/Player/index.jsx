@@ -1,5 +1,5 @@
 import { Avatar, Flex, Heading, Icon, Progress, Text } from '@chakra-ui/react';
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
 import { CgHeart } from 'react-icons/cg';
 import { GiNextButton, GiPreviousButton } from 'react-icons/gi';
@@ -10,16 +10,17 @@ import { useLocation } from 'react-router-dom';
 import defaultPreview from '../../assets/song_preview.jpg';
 import { PlayerContext } from '../../stores';
 import { formatTime } from '../../utils/formatTime';
+import { NextUp } from './NextUp';
 import SoundVolume from './SoundVolume';
 import './styles.scss';
 
 export default function Player() {
     const [{ songList, indexSongPlayed, isPlayed, currentTime, songDuration, autoPlay }, dispatch] =
         useContext(PlayerContext);
+    const [showPlaylist, setShowPlaylist] = useState(false);
     const progressRef = useRef();
-    const handleTogglePlay = () => {
-        dispatch({ type: 'Toggle' });
-    };
+    const handleTogglePlay = () => dispatch({ type: 'Toggle' });
+ 
     const handleChangeProgress = (e) => {
         const progress = ((e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth) * 100;
         dispatch({ type: 'ChangeTime', payload: progress });
@@ -103,7 +104,7 @@ export default function Player() {
                     className={autoPlay === 'shuffle' && 'player-choose'}
                 />
                 <CgHeart />
-                <MdPlaylistPlay />
+                <MdPlaylistPlay onClick={() => setShowPlaylist(true)}/>
                 <SoundVolume />
             </Flex>
 
@@ -112,6 +113,7 @@ export default function Player() {
                 <CgHeart />
                 <button onClick={handleTogglePlay}>{isPlayed ? <BsPauseFill /> : <BsFillPlayFill />}</button>
             </Flex>
+            <NextUp isOpen={showPlaylist} toggleOpen={() => setShowPlaylist(!showPlaylist)}/>
         </Flex>
     );
 }

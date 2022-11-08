@@ -13,7 +13,7 @@ export default function MdArtist({name, avatar, followerNumber, trackNumber}) {
             <Flex align="center" gap={1}>
                 <Avatar name={name} src={avatar} size="lg" />
                 <Stack>
-                    <Text>{name}</Text>
+                    <Text fontSize={14}>{name}</Text>
                     <Flex fontSize={12}>
                         <Icon as={IoMdPeople} fontSize={16} mr={1} /> {followerNumber}
                         <Icon as={BsSoundwave} fontSize={16} ml={2} mr={1} /> {trackNumber}

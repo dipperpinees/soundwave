@@ -677,6 +677,82 @@ var spec =
                     },
                 }
             }
-        }
+        },
+        "/playlist/": {
+            post: {
+                tags: ["playlist"],
+                summary: "Tạo playlist",
+                operationId: "CreatePlaylist",
+                consumes: ["application/json"],
+                produces: ["application/json"],
+                parameters: [              
+                    {
+                        "in": "body",      
+                        "name": "Thông tin playlist",  
+                        "required": "true",   
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "songs": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            },
+            get: {
+                tags: ["playlist"],
+                summary: "Lấy thông tin playlist",
+                operationId: "GetPlaylist",
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
+        "/playlist/{playlistID}/song/": {
+            post: {
+                tags: ["playlist"],
+                summary: "Thêm bài hát vào playlist",
+                operationId: "CreatePlaylist",
+                consumes: ["application/json"],
+                produces: ["application/json"],
+                parameters: [              
+                    {
+                        "in": "body",      
+                        "name": "Song ID",  
+                        "required": "true",   
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "songID": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                    },
+                    {
+                        in: "path",
+                        name: "playlistID",
+                        type: "int",
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
     }
 };

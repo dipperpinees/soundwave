@@ -147,7 +147,7 @@ export default function Search({ type }) {
                 </Grid>
             )}
             {type === 'people' && (
-                <Flex width={60}>
+                <Flex direction="column" width="100%">
                     {searchPeopleData && searchPeopleData.map((user) => <LgArtist key={user.id} {...user} />)}
                 </Flex>
             )}

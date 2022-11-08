@@ -14,7 +14,7 @@ var genreService = services.GenreService{}
 func (GenreController) GetAll(c *gin.Context) {
 	genres, err := genreService.GetAll()
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 	}
 
 	c.JSON(http.StatusOK, &genres)

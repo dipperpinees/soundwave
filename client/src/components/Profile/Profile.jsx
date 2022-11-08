@@ -1,6 +1,6 @@
 import { Box, Avatar, Heading, Flex, Text, Button } from '@chakra-ui/react';
 
-const Profile = () => {
+const Profile = ({name}) => {
     return (
         <Box>
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
@@ -11,7 +11,7 @@ const Profile = () => {
                     src="https://photo-cms-plo.epicdn.me/w850/Uploaded/2022/nkxrxqeiox/2020_12_04/1_fppt.jpeg"
                 />
                 <Heading class="user-name" fontSize="xl" mb="16px">
-                    User Name
+                    {name}
                 </Heading>
                 <Text mb="16px">900 Followers</Text>
                 <Flex flexDirection="column">
