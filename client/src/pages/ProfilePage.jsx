@@ -11,6 +11,7 @@ const ProfilePage = () => {
     const { id } = useParams();
 
     const [data, setData] = useState(null);
+
     useEffect(() => {
         (async () => {
             try {
