@@ -29,7 +29,7 @@ func GenerateJWT(id uint) (string, error) {
 func DecodeJWT(tokenString string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Failed parse token")
+			return nil, fmt.Errorf("failed parse token")
 		}
 		return mySigningKey, nil
 	})
@@ -42,7 +42,7 @@ func DecodeJWT(tokenString string) (jwt.MapClaims, error) {
 		return claims, nil
 	}
 
-	return nil, errors.New("Failed decode token ")
+	return nil, errors.New("failed decode token ")
 }
 
 func HashPassword(password string) (string, error) {

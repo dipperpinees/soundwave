@@ -38,3 +38,5 @@ go mod tidy
 ```bash
 go run main.go
 ```
+
+# For Docker db host: "host.docker.internal"

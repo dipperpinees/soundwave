@@ -16,14 +16,13 @@ type userModel = models.User
 
 type AuthController struct{}
 
-type SignUpBody struct {
-	Email    string `json:"email" binding:"required,email"`
-	Name     string `json:"name" binding:"required,min=6"`
-	Password string `json:"password" binding:"required,min=6"`
-}
-
 func (AuthController) SignUp(c *gin.Context) {
-	body := SignUpBody{}
+	type Body struct {
+		Email    string `json:"email" binding:"required,email"`
+		Name     string `json:"name" binding:"required,min=6"`
+		Password string `json:"password" binding:"required,min=6"`
+	}
+	body := Body{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return

@@ -1,0 +1,29 @@
+version: "3.9"
+volumes:
+  dbdata:
+services:
+  db:
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=TEST
+    volumes:
+      - dbdata:/var/lib/mysql
+  web:
+    build: ./client
+    ports:
+      - 3000:3000
+    environment:
+      - REACT_APP_API=http://localhost:3001/api
+    depends_on:
+      - api
+  api:
+    build: ./server
+    ports:
+      - 3001:3001
+    links:
+      - "db:db"
+    depends_on:
+      - db
