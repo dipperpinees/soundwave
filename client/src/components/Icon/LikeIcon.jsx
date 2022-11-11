@@ -11,7 +11,7 @@ const LikeIcon = () => {
     return (
         <Fragment>
             {isLike ? (
-                <RiHeartFill fontSize="24px" onClick={() => toggleLike()} />
+                <RiHeartFill color="#e53e3e" fontSize="24px" onClick={() => toggleLike()} />
             ) : (
                 <RiHeartLine fontSize="24px" onClick={() => toggleLike()} />
             )}

@@ -29,7 +29,7 @@ const Albums = () => {
                         <BsThreeDots />
                     </Flex>
                 </Box>
-                <Box flexBasis={'79%'} ml={'16px'}>
+                <Box width={['79%']} flexBasis={'79%'} ml={'16px'}>
                     <Heading as={'h2'} size={'sm'}>
                         Sense
                     </Heading>

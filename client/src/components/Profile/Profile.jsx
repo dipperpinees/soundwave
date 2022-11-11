@@ -1,7 +1,22 @@
 import { Box, Avatar, Heading, Flex, Text, Button } from '@chakra-ui/react';
 import Describe from './Describe';
+import { useEffect, useState } from 'react';
+import fetchAPI from '../../utils/fetchAPI';
 
-const Profile = ({name}) => {
+const Profile = (props) => {
+    const { id, name, avatar, trackNumber, followerNumber, followingNumber } = props;
+
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const data = await fetchAPI(`/song/page/1`);
+                console.log(data);
+            } catch (error) {}
+        })();
+    });
+
     return (
         <Box m={'0 24px'} maxW={['100%', '100%', '150px', '180px']}>
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
@@ -16,7 +31,7 @@ const Profile = ({name}) => {
                 </Heading>
                 <Text mb="16px">900 Followers</Text>
                 <Flex flexDirection="column">
-                    <Button bg="#fff" textColor="#000" borderRadius="20px" margin="8px 0">
+                    <Button textColor="#000" borderRadius="20px" margin="8px 0">
                         Following
                     </Button>
                     <Button

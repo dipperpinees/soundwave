@@ -5,11 +5,8 @@ import { useState } from 'react';
 import { LineRightIcon, LineDownIcon, LineUpIcon } from '../Icon';
 
 const FeaturedTracks = () => {
-    const [isDownIcon, setDownIcon] = useState(true);
-
     // xử lý sắp xếp
     const handleSortSongList = (e) => {
-        setDownIcon(!isDownIcon);
         console.log(e);
     };
 
@@ -19,14 +16,10 @@ const FeaturedTracks = () => {
                 <Heading fontSize="xl">Featured Tracks</Heading>
                 <Flex align={'center'}>
                     <Menu autoSelect="false">
-                        <MenuButton
-                            as={Text}
-                            onClick={() => {
-                                setDownIcon(!isDownIcon);
-                            }}
-                            fontSize="xs"
-                        >
-                            <Flex align={'center'}>Sort {isDownIcon ? <LineDownIcon /> : <LineUpIcon />}</Flex>
+                        <MenuButton as={Text} fontSize="xs">
+                            <Flex align={'center'}>
+                                Sort <LineDownIcon />
+                            </Flex>
                         </MenuButton>
                         <MenuList bg={'#2d3748'} minW="20px">
                             <MenuItem

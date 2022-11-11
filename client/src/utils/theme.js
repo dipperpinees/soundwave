@@ -17,6 +17,9 @@ const theme = extendTheme({
             800: '#F48004',
             900: '#F48004',
         },
+        text: '#74767a',
+        hoverColor: 'rgba(255, 255, 255, 0.1)',
+        primaryBorderColor: 'rgba(255, 255, 255, 0.2)',
     },
     breakpoints: {
         sm: '320px',
