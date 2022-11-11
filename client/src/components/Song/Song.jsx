@@ -12,20 +12,20 @@ const Song = ({ ...props }) => {
                 <Box boxSize="42px" bg="white" padding="4px">
                     <Image src={url_img} alt="song image" boxSize="100%" objectFit="cover" borderRadius="full" />
                 </Box>
-                <Box ml={2} flex="1">
+                <Box ml={2} flex="1" width={'70%'}>
                     {/* Song name */}
                     <Link href={'#'}>
                         <Text
                             textOverflow={'ellipsis'}
                             overflow="hidden"
                             whiteSpace={'nowrap'}
-                            width={'280px'}
+                            width={'90%'}
                             fontSize="md"
                         >
                             {songName}
                         </Text>
                     </Link>
-                    <Flex fontSize="xs" overflow="hidden" whiteSpace={'nowrap'} width={'260px'}>
+                    <Flex fontSize="xs" overflow="hidden" whiteSpace={'nowrap'} width={'80%'}>
                         <Link href={'#'}>{userName}</Link>
                         <Text m="0 4px">-</Text>
                         <Link href={'#'} overflow="hidden" textOverflow={'ellipsis'}>

@@ -7,20 +7,14 @@ const Song = ({ ...props }) => {
     const { id, songName } = props;
 
     return (
-        <Box id={id} borderBottom={borderBottom} padding="4px 0">
+        <Box width={'100%'} id={id} borderBottom={borderBottom} padding="4px 0">
             <Flex h="36px" overflow="hidden" justify={'space-between'} align={'center'}>
-                <Flex align={'end'}>
+                <Flex overflow={'hidden'} width={'80%'} align={'end'}>
                     <Text fontSize="sm" mr={'16px'}>
                         1
                     </Text>
-                    <Link href={'#'}>
-                        <Text
-                            textOverflow={'ellipsis'}
-                            overflow="hidden"
-                            whiteSpace={'nowrap'}
-                            width={'500px'}
-                            fontSize="sm"
-                        >
+                    <Link width={'90%'} href={'#'}>
+                        <Text textOverflow={'ellipsis'} overflow="hidden" whiteSpace={'nowrap'} fontSize="sm">
                             {songName}
                         </Text>
                     </Link>

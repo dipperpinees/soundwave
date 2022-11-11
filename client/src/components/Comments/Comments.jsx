@@ -21,7 +21,7 @@ const Comments = () => {
                 <Box mb={'16px'}>
                     <WriteComment />
                 </Box>
-                <Comment />
+                <Comment isSubComment={true} />
                 <Comment />
                 <Comment />
                 <Comment />

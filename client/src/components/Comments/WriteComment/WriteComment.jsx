@@ -36,9 +36,9 @@ const WriteComment = () => {
             </Flex> */}
             <InputGroup size={'md'}>
                 <Input
-                    // onKeyDown={(e) => {
-                    //     if (e.key === 'Enter') handleSendComment();
-                    // }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleSendComment();
+                    }}
                     ref={input}
                     placeholder="Write a comment"
                     borderRadius="full"
