@@ -4,28 +4,12 @@ import { useEffect, useState } from 'react';
 import fetchAPI from '../../utils/fetchAPI';
 
 const Profile = (props) => {
-    const { id, name, avatar, trackNumber, followerNumber, followingNumber } = props;
-
-    const [data, setData] = useState(null);
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const data = await fetchAPI(`/song/page/1`);
-                console.log(data);
-            } catch (error) {}
-        })();
-    });
+    const { name, avatar } = props;
 
     return (
         <Box m={'0 24px'} maxW={['100%', '100%', '150px', '180px']}>
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
-                <Avatar
-                    mb="16px"
-                    size="xl"
-                    name="user avatar"
-                    src="https://photo-cms-plo.epicdn.me/w850/Uploaded/2022/nkxrxqeiox/2020_12_04/1_fppt.jpeg"
-                />
+                <Avatar mb="16px" size="xl" name="user avatar" src={avatar} />
                 <Heading class="user-name" fontSize="xl" mb="16px">
                     {name}
                 </Heading>
@@ -47,7 +31,7 @@ const Profile = (props) => {
                 </Flex>
             </Flex>
             <Box>
-                <Describe />
+                <Describe {...props} />
             </Box>
         </Box>
     );

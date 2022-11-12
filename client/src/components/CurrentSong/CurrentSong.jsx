@@ -6,58 +6,56 @@ import { LikeIcon } from '../Icon';
 import { useState, useContext, Fragment } from 'react';
 import { PlayerContext } from '../../stores/playerStore';
 
-const CurrentSong = () => {
+const CurrentSong = (props) => {
     // const [showPlay, setShowPlay] = useState(false);
-    // const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
+    const { id, title, url, thumbnail, author, likeNumber, playCount, genre } = props;
 
-    // const addAndPlay = () => setPlayer({ type: 'Add', payload: song });
+    const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
 
-    // const togglePlay = () => setPlayer({ type: 'Toggle' });
+    const addAndPlay = () => setPlayer({ type: 'Add', payload: { id, url } });
 
-    // const isPlayThisSong = song.id === songList[indexSongPlayed]?.id;
-    // const showPauseIcon = song.id === songList[indexSongPlayed]?.id && isPlayed;
+    const togglePlay = () => setPlayer({ type: 'Toggle' });
 
-    // const download = () => window.open(song.url.replace('/upload/', '/upload/fl_attachment/'), '_blank');
-
-    const [isPlayed, hasPlayed] = useState(false);
+    const isPlayThisSong = id === songList[indexSongPlayed]?.id;
+    const showPauseIcon = id === songList[indexSongPlayed]?.id && isPlayed;
+    console.log('title', title);
+    let songName;
+    let singerName;
+    const titles = title?.split(' - ');
+    if (titles) {
+        songName = titles[0];
+        singerName = titles[1];
+    }
+    // const [isPlayed, hasPlayed] = useState(false);
+    const download = () => window.open(url.replace('/upload/', '/upload/fl_attachment/'), '_blank');
 
     return (
-        <Flex>
+        <Flex id={id}>
             <Box boxSize="260px" bg="white" borderRadius={'10px'} overflow="hidden">
                 {/* current song image */}
-                <Image
-                    src={
-                        'https://images.macrumors.com/t/hi1_a2IdFGRGMsJ0x31SdD_IcRk=/1600x/article-new/2018/05/apple-music-note.jpg'
-                    }
-                    alt="song image"
-                    boxSize="100%"
-                    objectFit="cover"
-                />
+                <Image src={thumbnail} alt="song image" boxSize="100%" objectFit="cover" />
             </Box>
             <Flex flex={1} m={'0 48px'} flexDirection={'column'}>
                 <Flex align={'center'}>
                     <Heading fontSize="3xl" mb={'12px'}>
-                        Hãy Trao Cho Anh
+                        {songName}
                     </Heading>
                     {/* <Link fontSize={'3xl'}>Sơn Tùng M-TP</Link> */}
                 </Flex>
                 <HStack mb={'24px'} color={'text'} fontSize="md">
-                    <Link href="#">user name</Link>
+                    <Link href={`../../profile/${author?.id}`}>{author?.name}</Link>
                     <Box m="0 4px">-</Box>
-                    <Link href="#">artist</Link>
+                    <Link href="#">{singerName}</Link>
                 </HStack>
                 <Flex justify={'space-between'} align={'center'}>
                     <Flex gap={'16px'}>
                         <Button
                             borderRadius={'full'}
-                            // display={'flex'}
-                            // alignItems="center"
-                            // justify="center"
                             colorScheme={'red'}
-                            onClick={() => hasPlayed(!isPlayed)}
+                            onClick={isPlayThisSong ? togglePlay : addAndPlay}
                             width={'120px'}
                         >
-                            {isPlayed ? (
+                            {showPauseIcon ? (
                                 <Fragment>
                                     <GiPauseButton fontSize={'20px'} />
                                     <Box ml={'8px'} lineHeight={'100%'}>
@@ -94,6 +92,7 @@ const CurrentSong = () => {
                             alignItems="center"
                             justify="center"
                             color={'white'}
+                            onClick={download}
                         >
                             <BsDownload />
                             <Box ml={'8px'} lineHeight={'100%'}>
