@@ -124,3 +124,34 @@ func (AuthController) ResetPassword(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, "Reset password successfully")
 }
+
+func (AuthController) GoogleLogin(c *gin.Context) {
+	type Body struct {
+		AccessToken string `json:"access_token" binding:"required"`
+		AuthUser    string `json:"authuser"`
+		ExpiresIn   string `json:"prompt"`
+		Scope       string `json:"scope"`
+		TokenType   string `json:"bearer"`
+	}
+	body := Body{}
+	if err := c.BindJSON(&body); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+	googleProfile, err := common.DecodeGoogleJWT(body.AccessToken)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+	var user = userModel{Email: googleProfile.Email, Name: googleProfile.Name, Avatar: googleProfile.Picture, Password: common.RandStr(8)}
+	if err := userService.FindOneOrCreate(&user); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	tokenString, _ := common.GenerateJWT(user.ID)
+
+	c.SetSameSite(http.SameSiteNoneMode)
+	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
+	c.JSON(http.StatusAccepted, gin.H{"id": user.ID, "name": user.Name, "avatar": user.Avatar, "role": user.Role})
+}

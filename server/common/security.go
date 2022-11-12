@@ -1,8 +1,11 @@
 package common
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
 	"time"
 
@@ -53,4 +56,30 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+type GoogleProfile struct {
+	Name    string `json:"name"`
+	Picture string `json:"picture"`
+	Email   string `json:"email"`
+}
+
+func DecodeGoogleJWT(accessToken string) (GoogleProfile, error) {
+	urlRequest := fmt.Sprintf("https://www.googleapis.com/oauth2/v3/userinfo?access_token=%s", accessToken)
+	resp, err := http.Get(urlRequest)
+	profile := GoogleProfile{}
+
+	if err != nil {
+		return profile, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return profile, err
+	}
+
+	err = json.Unmarshal([]byte(string(body)), &profile)
+	if err != nil {
+		return profile, err
+	}
+	return profile, err
 }
