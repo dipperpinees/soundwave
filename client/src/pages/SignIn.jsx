@@ -5,23 +5,26 @@ import {
     FormControl,
     FormErrorMessage,
     FormLabel,
+    Icon,
     Input,
     Link,
     Text,
     useToast,
 } from '@chakra-ui/react';
+import { useGoogleLogin } from '@react-oauth/google';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, useNavigate } from 'react-router-dom';
+import { FcGoogle } from 'react-icons/fc';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../stores';
 import '../styles/SignIn.scss';
 import fetchAPI from '../utils/fetchAPI';
+import { googleLogout } from '@react-oauth/google';
 
 export default function SignIn() {
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm();
     const [user, userDispatch] = useContext(UserContext);
@@ -39,6 +42,7 @@ export default function SignIn() {
                 },
                 body: JSON.stringify({ email, password }),
             });
+            googleLogout();
             userDispatch({ type: 'Update', payload: { avatar, name, id } });
         } catch (e) {
             toast({
@@ -49,6 +53,28 @@ export default function SignIn() {
             });
         }
     };
+
+    const loginGoogle = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            try {
+                const { id, name, avatar } = await fetchAPI('/google/signin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(tokenResponse),
+                });
+                userDispatch({ type: 'Update', payload: { avatar, name, id } });
+            } catch (e) {
+                toast({
+                    title: e.message,
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
+            }
+        },
+    });
 
     return (
         <Flex width="100%" justify="center" align="center" direction="column" height="100vh" color="white">
@@ -79,7 +105,12 @@ export default function SignIn() {
                                 id="email"
                                 {...register(
                                     'email',
-                                    { required: { value: true, message: 'This field cannot be empty' } },
+                                    {
+                                        required: {
+                                            value: true,
+                                            message: 'This field cannot be empty',
+                                        },
+                                    },
                                     {
                                         pattern: {
                                             value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -95,13 +126,22 @@ export default function SignIn() {
                             <FormErrorMessage mt={1}>{errors.email && errors.email.message}</FormErrorMessage>
                         </FormControl>
                         <FormControl isInvalid={errors.password} mt={4}>
-                            <FormLabel mb={1} fontSize={14}>
-                                Password
+                            <FormLabel fontSize={14} mb={1} mr={0}>
+                                <Flex align="center" justify="space-between">
+                                    <Text>Password</Text>
+                                    <Text fontSize={14} color="var(--primary-color)">
+                                        Forgot Password
+                                    </Text>
+                                </Flex>
                             </FormLabel>
+
                             <Input
                                 type="password"
                                 {...register('password', {
-                                    required: { value: true, message: 'This field cannot be empty' },
+                                    required: {
+                                        value: true,
+                                        message: 'This field cannot be empty',
+                                    },
                                     minLength: {
                                         value: 6,
                                         message: 'This field has a minimum length of 6',
@@ -129,11 +169,22 @@ export default function SignIn() {
                         <Text>Log in</Text>
                     </Button>
                 </form>
+                <Text textAlign="center" fontSize={14} fontWeight={600} margin={4}>
+                    OR
+                </Text>
+                <Button
+                    colorSheme="primary"
+                    variant="outline"
+                    width="100%"
+                    color="white"
+                    _active={{}}
+                    _hover={{}}
+                    onClick={loginGoogle}
+                >
+                    <Icon as={FcGoogle} fontSize={24} mr={2} />
+                    Sign in with google
+                </Button>
             </Box>
-
-            <Text fontSize={12} mt={4}>
-                FORGOT YOUR PASSWORD?
-            </Text>
         </Flex>
     );
 }
