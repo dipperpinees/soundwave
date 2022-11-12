@@ -22,6 +22,10 @@ func (UserService) FindOne(condition interface{}) (userModel, error) {
 	return user, err
 }
 
+func (UserService) FindOneOrCreate(user *userModel) error {
+	return common.GetDB().FirstOrCreate(&user, userModel{Email: user.Email}).Error
+}
+
 func (UserService) GetProfile(id uint) (userModel, error) {
 	user := userModel{}
 	err := common.
