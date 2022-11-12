@@ -1,10 +1,21 @@
 import Song from '../Song';
 import { Box, Heading, List, Flex, Text, Link, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
-import { data } from './dataTest';
-import { useState } from 'react';
-import { LineRightIcon, LineDownIcon, LineUpIcon } from '../Icon';
+import { LineRightIcon, LineDownIcon } from '../Icon';
+import { useEffect, useState } from 'react';
+import fetchAPI from '../../utils/fetchAPI';
 
-const FeaturedTracks = () => {
+const FeaturedTracks = ({ userId }) => {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const data = await fetchAPI(`/user/${userId}/songs`);
+                setData(data);
+            } catch (e) {}
+        })();
+    }, [userId]);
+
     // xử lý sắp xếp
     const handleSortSongList = (e) => {
         console.log(e);
@@ -60,22 +71,23 @@ const FeaturedTracks = () => {
                 </Flex>
             </Flex>
             <List>
-                {data.map((song, index) => {
-                    if (index >= 5) {
-                        return null;
-                    }
-                    return (
-                        <Song
-                            key={song.id}
-                            {...song}
-                            userName={'user name'}
-                            isLikeIcon={true}
-                            borderBottom="1px solid rgba(255, 255, 255, 0.2)"
-                        />
-                    );
-                })}
+                {data &&
+                    data.map((song, index) => {
+                        if (index >= 5) {
+                            return null;
+                        }
+                        return (
+                            <Song
+                                key={song.id}
+                                {...song}
+                                userName={'user name'}
+                                isLikeIcon={true}
+                                borderBottom="1px solid rgba(255, 255, 255, 0.2)"
+                            />
+                        );
+                    })}
             </List>
-            {data.length > 5 && (
+            {data && data.length > 5 && (
                 <Flex justifyContent="end" mt="4px">
                     <Link href="#">
                         <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer">

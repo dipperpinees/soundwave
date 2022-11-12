@@ -35,13 +35,13 @@ const ProfilePage = () => {
             </Box>
             <Flex margin="0 56px" flexWrap="wrap" justifyContent="space-between">
                 <Box flexBasis={['100%', '100%', '100%', '50%']} width={['100%', '100%', '100%', '50%']}>
-                    <FeaturedTracks />
+                    <FeaturedTracks userId={id} />
                 </Box>
                 <Box flexBasis={['100%', '100%', '100%', '38%']} width={['100%', '100%', '100%', '38%']}>
-                    <RecentlyLikes />
+                    <RecentlyLikes userId={id} />
                 </Box>
                 <Box mt={'48px'} mb={'36px'} flex="100%" width={['100%']}>
-                    <Albums />
+                    <Albums userId={id} />
                 </Box>
             </Flex>
         </Box>

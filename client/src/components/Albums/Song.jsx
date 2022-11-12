@@ -3,17 +3,18 @@ import { BsThreeDots } from 'react-icons/bs';
 import { LikeIcon } from '../Icon';
 
 const Song = ({ ...props }) => {
-    const { borderBottom } = props;
-    const { id, songName } = props;
+    const { borderBottom, number } = props;
+    const { id, title, url } = props;
+    const [songName, singerName] = title.split(' - ');
 
     return (
         <Box width={'100%'} id={id} borderBottom={borderBottom} padding="4px 0">
             <Flex h="36px" overflow="hidden" justify={'space-between'} align={'center'}>
                 <Flex overflow={'hidden'} width={'80%'} align={'end'}>
                     <Text fontSize="sm" mr={'16px'}>
-                        1
+                        {number + 1}
                     </Text>
-                    <Link width={'90%'} href={'#'}>
+                    <Link href={`../../music/${id}`} width={'90%'}>
                         <Text textOverflow={'ellipsis'} overflow="hidden" whiteSpace={'nowrap'} fontSize="sm">
                             {songName}
                         </Text>
