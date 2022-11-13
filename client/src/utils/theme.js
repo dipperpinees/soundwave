@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
+import { menuTheme } from './menuTheme';
 
 const theme = extendTheme({
     fonts: {
@@ -33,7 +34,9 @@ const theme = extendTheme({
         md: '1rem',
         xl: '1.5rem',
     },
-    // config: { initialColorMode: 'light', useSystemColorMode: false },
+    components: {
+        Menu: menuTheme,
+    },
 });
 
 export default theme;

@@ -32,12 +32,8 @@ const FeaturedTracks = ({ userId }) => {
                                 Sort <LineDownIcon />
                             </Flex>
                         </MenuButton>
-                        <MenuList bg={'#2d3748'} minW="20px">
+                        <MenuList minW="20px">
                             <MenuItem
-                                _hover={{
-                                    'background-color': '#51555e',
-                                }}
-                                color={'#fff'}
                                 onClick={() => {
                                     handleSortSongList('View');
                                 }}
@@ -45,10 +41,6 @@ const FeaturedTracks = ({ userId }) => {
                                 View
                             </MenuItem>
                             <MenuItem
-                                _hover={{
-                                    'background-color': '#51555e',
-                                }}
-                                color={'#fff'}
                                 onClick={() => {
                                     handleSortSongList('Like');
                                 }}
@@ -56,10 +48,6 @@ const FeaturedTracks = ({ userId }) => {
                                 Like
                             </MenuItem>
                             <MenuItem
-                                _hover={{
-                                    'background-color': '#51555e',
-                                }}
-                                color={'#fff'}
                                 onClick={() => {
                                     handleSortSongList('Download');
                                 }}

@@ -1,6 +1,7 @@
-import { Flex, Link, Box, Text } from '@chakra-ui/react';
+import { Flex, Box, Text } from '@chakra-ui/react';
 import { BsThreeDots } from 'react-icons/bs';
 import { LikeIcon } from '../Icon';
+import { Link } from 'react-router-dom';
 
 const Song = ({ ...props }) => {
     const { borderBottom, number } = props;
@@ -14,11 +15,11 @@ const Song = ({ ...props }) => {
                     <Text fontSize="sm" mr={'16px'}>
                         {number + 1}
                     </Text>
-                    <Link href={`../../music/${id}`} width={'90%'}>
-                        <Text textOverflow={'ellipsis'} overflow="hidden" whiteSpace={'nowrap'} fontSize="sm">
+                    <Text textOverflow={'ellipsis'} overflow="hidden" whiteSpace={'nowrap'} fontSize="sm">
+                        <Link to={`/music/${id}`} width={'90%'}>
                             {songName}
-                        </Text>
-                    </Link>
+                        </Link>
+                    </Text>
                 </Flex>
                 <Flex alignItems="center" margin="0 24px">
                     <LikeIcon />

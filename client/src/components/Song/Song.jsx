@@ -1,5 +1,6 @@
-import { Flex, Image, Box, Text, Link } from '@chakra-ui/react';
+import { Flex, Image, Box, Text } from '@chakra-ui/react';
 import { LikeIcon } from '../Icon';
+import { Link } from 'react-router-dom';
 
 const Song = ({ ...props }) => {
     const { isLikeIcon } = props;
@@ -15,23 +16,15 @@ const Song = ({ ...props }) => {
                 </Box>
                 <Box ml={2} flex="1" width={'70%'}>
                     {/* Song name */}
-                    <Link href={`../../music/${id}`}>
-                        <Text
-                            textOverflow={'ellipsis'}
-                            overflow="hidden"
-                            whiteSpace={'nowrap'}
-                            width={'90%'}
-                            fontSize="md"
-                        >
-                            {songName}
-                        </Text>
-                    </Link>
-                    <Flex fontSize="xs" overflow="hidden" whiteSpace={'nowrap'} width={'80%'}>
-                        <Link href={`../../profile/${author?.id}`}>{author?.name}</Link>
+                    <Text textOverflow={'ellipsis'} overflow="hidden" whiteSpace={'nowrap'} width={'90%'} fontSize="md">
+                        <Link to={`/music/${id}`}>{songName}</Link>
+                    </Text>
+                    <Flex fontSize="xs" overflow={'hidden'} whiteSpace={'nowrap'} width={'80%'}>
+                        <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
                         <Text m="0 4px">-</Text>
-                        <Link href="#" overflow="hidden" textOverflow={'ellipsis'}>
-                            {singerName}
-                        </Link>
+                        <Text textOverflow={'ellipsis'} overflow="hidden">
+                            <Link to={''}>{'singer sdfdsf dsf dsf dsf dName dsfdsf sf sdf ds fsdf sdf dsf'}</Link>
+                        </Text>
                         {/* singer */}
                     </Flex>
                 </Box>
