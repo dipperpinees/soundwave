@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import Describe from './Describe';
 
 const Profile = (props) => {
-    const { name, avatar } = props;
+    const { name, avatar, followerNumber } = props;
 
     return (
         <Box m={'0 24px'} maxW={['100%', '100%', '150px', '180px']}>
