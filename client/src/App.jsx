@@ -14,32 +14,35 @@ import SignUp from './pages/SignUp';
 import Upload from './pages/Upload';
 import { Store } from './stores';
 import theme from './utils/theme';
+import ScrollToTop from './utils/ScrollToTop';
 
 function App() {
     return (
         <BrowserRouter>
-            <ChakraProvider theme={theme}>
-                <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-                    <div className="App">
-                        <Store>
-                            <Layout>
-                                <Routes>
-                                    <Route path="/" element={<HomePage />} />
-                                    <Route path="/profile/:id" element={<ProfilePage />} />
-                                    <Route path="/music" element={<MusicPage />} />
-                                    <Route path="/signin" element={<SignIn />} />
-                                    <Route path="/signup" element={<SignUp />} />
-                                    <Route path="/upload" element={<Upload />} />
-                                    <Route path="/search" element={<Search type="tracks" />} />
-                                    <Route path="/search/people" element={<Search type="people" />} />
-                                    <Route path="/library" element={<Library />} />
-                                </Routes>
-                                <Player />
-                            </Layout>
-                        </Store>
-                    </div>
-                </GoogleOAuthProvider>
-            </ChakraProvider>
+            <ScrollToTop>
+                <ChakraProvider theme={theme}>
+                    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+                        <div className="App">
+                            <Store>
+                                <Layout>
+                                    <Routes>
+                                        <Route path="/" element={<HomePage />} />
+                                        <Route path="/profile/:id" element={<ProfilePage />} />
+                                        <Route path="/music/:id" element={<MusicPage />} />
+                                        <Route path="/signin" element={<SignIn />} />
+                                        <Route path="/signup" element={<SignUp />} />
+                                        <Route path="/upload" element={<Upload />} />
+                                        <Route path="/search" element={<Search type="tracks" />} />
+                                        <Route path="/search/people" element={<Search type="people" />} />
+                                        <Route path="/library" element={<Library />} />
+                                    </Routes>
+                                    <Player />
+                                </Layout>
+                            </Store>
+                        </div>
+                    </GoogleOAuthProvider>
+                </ChakraProvider>
+            </ScrollToTop>
         </BrowserRouter>
     );
 }

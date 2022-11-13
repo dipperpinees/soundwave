@@ -1,7 +1,9 @@
 import { Box, Flex, Text, List, ListItem, HStack } from '@chakra-ui/react';
 import ItemDescribe from './ItemDescribe';
 
-const Describe = () => {
+const Describe = (props) => {
+    const { trackNumber, followerNumber, followingNumber } = props;
+
     return (
         <Box borderTop={'1px solid #fff'}>
             <Box margin="12px 0">
@@ -10,9 +12,9 @@ const Describe = () => {
                 </Text>
             </Box>
             <List borderTop={'1px solid #fff'} width={'100%'}>
-                <ItemDescribe name={'Songs'} amount={'17'} />
-                <ItemDescribe name={'Songs'} amount={'17'} />
-                <ItemDescribe name={'Songs'} amount={'17'} />
+                <ItemDescribe name={'Songs'} amount={trackNumber} />
+                <ItemDescribe name={'Followers'} amount={followerNumber} />
+                <ItemDescribe name={'Following'} amount={followingNumber} />
             </List>
         </Box>
     );

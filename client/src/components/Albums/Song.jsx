@@ -1,29 +1,25 @@
-import { Flex, Link, Box, Text } from '@chakra-ui/react';
+import { Flex, Box, Text } from '@chakra-ui/react';
 import { BsThreeDots } from 'react-icons/bs';
 import { LikeIcon } from '../Icon';
+import { Link } from 'react-router-dom';
 
 const Song = ({ ...props }) => {
-    const { borderBottom } = props;
-    const { id, songName } = props;
+    const { borderBottom, number } = props;
+    const { id, title, url } = props;
+    const [songName, singerName] = title.split(' - ');
 
     return (
-        <Box id={id} borderBottom={borderBottom} padding="4px 0">
+        <Box width={'100%'} id={id} borderBottom={borderBottom} padding="4px 0">
             <Flex h="36px" overflow="hidden" justify={'space-between'} align={'center'}>
-                <Flex align={'end'}>
+                <Flex overflow={'hidden'} width={'80%'} align={'end'}>
                     <Text fontSize="sm" mr={'16px'}>
-                        1
+                        {number + 1}
                     </Text>
-                    <Link href={'#'}>
-                        <Text
-                            textOverflow={'ellipsis'}
-                            overflow="hidden"
-                            whiteSpace={'nowrap'}
-                            width={'500px'}
-                            fontSize="sm"
-                        >
+                    <Text textOverflow={'ellipsis'} overflow="hidden" whiteSpace={'nowrap'} fontSize="sm">
+                        <Link to={`/music/${id}`} width={'90%'}>
                             {songName}
-                        </Text>
-                    </Link>
+                        </Link>
+                    </Text>
                 </Flex>
                 <Flex alignItems="center" margin="0 24px">
                     <LikeIcon />

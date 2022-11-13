@@ -11,6 +11,7 @@ const ProfilePage = () => {
     const { id } = useParams();
 
     const [data, setData] = useState(null);
+
     useEffect(() => {
         (async () => {
             try {
@@ -33,14 +34,14 @@ const ProfilePage = () => {
                 </Box>
             </Box>
             <Flex margin="0 56px" flexWrap="wrap" justifyContent="space-between">
-                <Box flexBasis="50%">
-                    <FeaturedTracks />
+                <Box flexBasis={['100%', '100%', '100%', '50%']} width={['100%', '100%', '100%', '50%']}>
+                    <FeaturedTracks userId={id} />
                 </Box>
-                <Box flexBasis="38%">
-                    <RecentlyLikes />
+                <Box flexBasis={['100%', '100%', '100%', '38%']} width={['100%', '100%', '100%', '38%']}>
+                    <RecentlyLikes userId={id} />
                 </Box>
-                <Box mt={'48px'} mb={'36px'} flex="100%">
-                    <Albums />
+                <Box mt={'48px'} mb={'36px'} flex="100%" width={['100%']}>
+                    <Albums userId={id} />
                 </Box>
             </Flex>
         </Box>

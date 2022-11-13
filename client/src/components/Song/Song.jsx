@@ -1,36 +1,30 @@
-import { Flex, Image, Box, Text, Link } from '@chakra-ui/react';
+import { Flex, Image, Box, Text } from '@chakra-ui/react';
 import { LikeIcon } from '../Icon';
+import { Link } from 'react-router-dom';
 
 const Song = ({ ...props }) => {
     const { isLikeIcon } = props;
     const { borderBottom } = props;
-    const { id, url_img, songName, singerName, userName } = props;
+    const { id, title, url, thumbnail, author, likeNumber, playCount, genre } = props;
+    const [songName, singerName] = title.split(' - ');
 
     return (
         <Box id={id} borderBottom={borderBottom} padding="12px 0">
             <Flex h="42px" overflow="hidden">
-                <Box boxSize="42px" bg="white" padding="4px">
-                    <Image src={url_img} alt="song image" boxSize="100%" objectFit="cover" borderRadius="full" />
+                <Box boxSize="42px" bg="white" overflow={'hidden'} borderRadius={'2px'}>
+                    <Image src={thumbnail} alt="song image" boxSize="100%" />
                 </Box>
-                <Box ml={2} flex="1">
+                <Box ml={2} flex="1" width={'70%'}>
                     {/* Song name */}
-                    <Link href={'#'}>
-                        <Text
-                            textOverflow={'ellipsis'}
-                            overflow="hidden"
-                            whiteSpace={'nowrap'}
-                            width={'280px'}
-                            fontSize="md"
-                        >
-                            {songName}
-                        </Text>
-                    </Link>
-                    <Flex fontSize="xs" overflow="hidden" whiteSpace={'nowrap'} width={'260px'}>
-                        <Link href={'#'}>{userName}</Link>
+                    <Text textOverflow={'ellipsis'} overflow="hidden" whiteSpace={'nowrap'} width={'90%'} fontSize="md">
+                        <Link to={`/music/${id}`}>{songName}</Link>
+                    </Text>
+                    <Flex fontSize="xs" overflow={'hidden'} whiteSpace={'nowrap'} width={'80%'}>
+                        <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
                         <Text m="0 4px">-</Text>
-                        <Link href={'#'} overflow="hidden" textOverflow={'ellipsis'}>
-                            {singerName}
-                        </Link>{' '}
+                        <Text textOverflow={'ellipsis'} overflow="hidden">
+                            <Link to={''}>{'singer sdfdsf dsf dsf dsf dName dsfdsf sf sdf ds fsdf sdf dsf'}</Link>
+                        </Text>
                         {/* singer */}
                     </Flex>
                 </Box>

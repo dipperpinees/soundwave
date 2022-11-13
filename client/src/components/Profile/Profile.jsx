@@ -1,27 +1,21 @@
-import { Box, Avatar, Heading, Flex, Text, Button } from '@chakra-ui/react';
-import { useContext } from 'react';
-import { UserContext } from '../../stores';
+import { Avatar, Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import Describe from './Describe';
 
-const Profile = ({id, name, avatar, followerNumber}) => {
-    const user = useContext(UserContext)[0];
+const Profile = (props) => {
+    const { name, avatar } = props;
+
     return (
         <Box m={'0 24px'} maxW={['100%', '100%', '150px', '180px']}>
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
-                <Avatar
-                    mb="16px"
-                    size="xl"
-                    name={name}
-                    src={avatar}
-                />
+                <Avatar mb="16px" size="xl" name="user avatar" src={avatar} />
                 <Heading class="user-name" fontSize="xl" mb="16px">
                     {name}
                 </Heading>
                 <Text mb="16px">{followerNumber} Followers</Text>
                 <Flex flexDirection="column">
-                    {user.id !== id && <Button bg="#fff" textColor="#000" borderRadius="20px" margin="8px 0">
+                    <Button textColor="#000" borderRadius="20px" margin="8px 0">
                         Following
-                    </Button>}
+                    </Button>
                     {/* <Button
                         colorScheme="whiteAlpha"
                         variant="outline"
@@ -34,9 +28,9 @@ const Profile = ({id, name, avatar, followerNumber}) => {
                     </Button> */}
                 </Flex>
             </Flex>
-            {/* <Box>
-                <Describe />
-            </Box> */}
+            <Box>
+                <Describe {...props} />
+            </Box>
         </Box>
     );
 };

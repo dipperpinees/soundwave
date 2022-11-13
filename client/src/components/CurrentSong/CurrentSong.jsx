@@ -1,27 +1,119 @@
-import { Box, Flex, Heading, Text, Image, Link } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Image, HStack } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { GiPauseButton } from 'react-icons/gi';
+import { FaPlay } from 'react-icons/fa';
+import { BsDownload, BsThreeDotsVertical } from 'react-icons/bs';
+import { LikeIcon } from '../Icon';
+import { useState, useContext, Fragment } from 'react';
+import { PlayerContext } from '../../stores/playerStore';
 
-const CurrentSong = () => {
+const CurrentSong = (props) => {
+    // const [showPlay, setShowPlay] = useState(false);
+    const { id, title, url, thumbnail, author, likeNumber, playCount, genre } = props;
+
+    const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
+
+    const addAndPlay = () => setPlayer({ type: 'Add', payload: { id, url } });
+
+    const togglePlay = () => setPlayer({ type: 'Toggle' });
+
+    const isPlayThisSong = id === songList[indexSongPlayed]?.id;
+    const showPauseIcon = id === songList[indexSongPlayed]?.id && isPlayed;
+    console.log('title', title);
+    let songName;
+    let singerName;
+    const titles = title?.split(' - ');
+    if (titles) {
+        songName = titles[0];
+        singerName = titles[1];
+    }
+    // const [isPlayed, hasPlayed] = useState(false);
+    const download = () => window.open(url.replace('/upload/', '/upload/fl_attachment/'), '_blank');
+
     return (
-        <Flex>
-            <Box boxSize="300px" bg="white" borderRadius={'10px'} overflow="hidden">
+        <Flex id={id}>
+            <Box boxSize="260px" bg="white" borderRadius={'10px'} overflow="hidden">
                 {/* current song image */}
-                <Image
-                    src={
-                        'https://images.macrumors.com/t/hi1_a2IdFGRGMsJ0x31SdD_IcRk=/1600x/article-new/2018/05/apple-music-note.jpg'
-                    }
-                    alt="song image"
-                    boxSize="100%"
-                    objectFit="cover"
-                />
+                <Image src={thumbnail} alt="song image" boxSize="100%" objectFit="cover" />
             </Box>
-            <Flex flexDirection={'column'}>
-                <Flex>
-                    <Heading fontSize="3xl">Hãy Trao Cho Anh</Heading>
-                    <Link fontSize={'3xl'}>Sơn Tùng M-TP</Link>
+            <Flex flex={1} m={'0 48px'} flexDirection={'column'}>
+                <Flex align={'center'}>
+                    <Heading fontSize="3xl" mb={'12px'}>
+                        {songName}
+                    </Heading>
+                    {/* <Link fontSize={'3xl'}>Sơn Tùng M-TP</Link> */}
                 </Flex>
-                <Link href="#">
-                    <Text size={'xs'}>user name</Text>
-                </Link>
+                <HStack mb={'24px'} color={'text'} fontSize="md">
+                    <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
+                    <Box m="0 4px">-</Box>
+                    <Link to={''}>{singerName}</Link>
+                </HStack>
+                <Flex justify={'space-between'} align={'center'}>
+                    <Flex gap={'16px'}>
+                        <Button
+                            borderRadius={'full'}
+                            colorScheme={'red'}
+                            onClick={isPlayThisSong ? togglePlay : addAndPlay}
+                            width={'120px'}
+                        >
+                            {showPauseIcon ? (
+                                <Fragment>
+                                    <GiPauseButton fontSize={'20px'} />
+                                    <Box ml={'8px'} lineHeight={'100%'}>
+                                        Pause
+                                    </Box>
+                                </Fragment>
+                            ) : (
+                                <Fragment>
+                                    <FaPlay fontSize={'16px'} />
+                                    <Box ml={'18px'} lineHeight={'100%'}>
+                                        Play
+                                    </Box>
+                                </Fragment>
+                            )}
+                        </Button>
+                        <Flex
+                            boxSize={'40px'}
+                            borderRadius={'full'}
+                            border={'1px solid white'}
+                            color="white"
+                            align="center"
+                            justify="center"
+                        >
+                            <LikeIcon />
+                        </Flex>
+                    </Flex>
+                    <Flex gap={'16px'}>
+                        <Button
+                            colorScheme="whiteAlpha"
+                            _hover={{ background: 'hoverColor' }}
+                            variant="outline"
+                            borderRadius={'full'}
+                            display={'flex'}
+                            alignItems="center"
+                            justify="center"
+                            color={'white'}
+                            onClick={download}
+                        >
+                            <BsDownload />
+                            <Box ml={'8px'} lineHeight={'100%'}>
+                                Download
+                            </Box>
+                        </Button>
+                        <Flex
+                            boxSize={'40px'}
+                            borderRadius={'full'}
+                            border={'1px solid white'}
+                            color="white"
+                            align="center"
+                            justify="center"
+                            cursor={'pointer'}
+                            _hover={{ background: 'hoverColor' }}
+                        >
+                            <BsThreeDotsVertical fontSize={'20px'} />
+                        </Flex>
+                    </Flex>
+                </Flex>
             </Flex>
         </Flex>
     );
