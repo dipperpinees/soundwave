@@ -1,4 +1,5 @@
-import { Box, Button, Flex, Heading, Image, Link, HStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Image, HStack } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 import { GiPauseButton } from 'react-icons/gi';
 import { FaPlay } from 'react-icons/fa';
 import { BsDownload, BsThreeDotsVertical } from 'react-icons/bs';
@@ -43,9 +44,9 @@ const CurrentSong = (props) => {
                     {/* <Link fontSize={'3xl'}>Sơn Tùng M-TP</Link> */}
                 </Flex>
                 <HStack mb={'24px'} color={'text'} fontSize="md">
-                    <Link href={`../../profile/${author?.id}`}>{author?.name}</Link>
+                    <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
                     <Box m="0 4px">-</Box>
-                    <Link href="#">{singerName}</Link>
+                    <Link to={''}>{singerName}</Link>
                 </HStack>
                 <Flex justify={'space-between'} align={'center'}>
                     <Flex gap={'16px'}>
