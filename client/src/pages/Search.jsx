@@ -158,7 +158,7 @@ export default function Search({ type }) {
                     }`}
             </Text>
             {type === 'tracks' && (
-                <Grid templateColumns="repeat(4, 1fr)" gap={12}>
+                <Grid templateColumns="repeat(6, 1fr)" gap={12}>
                     {searchTracksData
                         ? searchTracksData.map((song, id) => <SongPreview key={id} song={song} />)
                         : [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)}

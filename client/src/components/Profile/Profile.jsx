@@ -1,7 +1,5 @@
-import { Box, Avatar, Heading, Flex, Text, Button } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import Describe from './Describe';
-import { useEffect, useState } from 'react';
-import fetchAPI from '../../utils/fetchAPI';
 
 const Profile = (props) => {
     const { name, avatar } = props;
@@ -13,12 +11,12 @@ const Profile = (props) => {
                 <Heading class="user-name" fontSize="xl" mb="16px">
                     {name}
                 </Heading>
-                <Text mb="16px">900 Followers</Text>
+                <Text mb="16px">{followerNumber} Followers</Text>
                 <Flex flexDirection="column">
                     <Button textColor="#000" borderRadius="20px" margin="8px 0">
                         Following
                     </Button>
-                    <Button
+                    {/* <Button
                         colorScheme="whiteAlpha"
                         variant="outline"
                         textColor="#fff"
@@ -27,7 +25,7 @@ const Profile = (props) => {
                         padding="4px 48px"
                     >
                         Message
-                    </Button>
+                    </Button> */}
                 </Flex>
             </Flex>
             <Box>

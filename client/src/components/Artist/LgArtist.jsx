@@ -30,6 +30,7 @@ export default function LgArtist({ id, name, avatar, followerNumber, trackNumber
                         flex
                         alignItems="center"
                         gap={1}
+                        width="120px"
                     >
                         <IoIosPersonAdd />
                         Follow

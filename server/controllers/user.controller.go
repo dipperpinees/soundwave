@@ -125,12 +125,27 @@ func (UserController) GetSongOfUser(c *gin.Context) {
 	}
 
 	songs, err := userService.GetSongOfUser(params.ID)
-
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, &songs)
+}
+
+func (UserController) GetPlaylistOfUser(c *gin.Context) {
+	params := dtos.IdParams{}
+	if err := c.ShouldBindUri(&params); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
+		return
+	}
+
+	playlists, err := userService.GetPlaylistOfUser(params.ID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, &playlists)
 }
 
 func (UserController) Follow(c *gin.Context) {

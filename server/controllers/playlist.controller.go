@@ -16,8 +16,8 @@ var playlistService = services.PlaylistService{}
 func (PlaylistController) Create(c *gin.Context) {
 	user := c.Keys["user"].(*userModel)
 	type Body struct {
-		Name  string `json:"name" binding:"required"`
-		Songs []uint `json:"songs"`
+		Name string `json:"name" binding:"required"`
+		// Songs []uint `json:"songs"`
 	}
 	body := Body{}
 	if err := c.BindJSON(&body); err != nil {
@@ -29,10 +29,10 @@ func (PlaylistController) Create(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	if err := playlistService.AddSong(body.Songs, newPlaylist.ID); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
-	}
+	// if err := playlistService.AddSong(body.Songs, newPlaylist.ID); err != nil {
+	// 	c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+	// 	return
+	// }
 	newPlaylist.Author = *user
 	c.JSON(http.StatusOK, &newPlaylist)
 }
@@ -52,21 +52,6 @@ func (PlaylistController) FindByID(c *gin.Context) {
 	c.JSON(http.StatusOK, &playlist)
 }
 
-func (PlaylistController) GetSongs(c *gin.Context) {
-	params := dtos.IdParams{}
-	if err := c.ShouldBindUri(&params); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid playlist id"})
-		return
-	}
-	songs, err := playlistService.GetSongsOfPlaylist(params.ID)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, &songs)
-}
-
 func (PlaylistController) AddSong(c *gin.Context) {
 	params := dtos.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
@@ -74,14 +59,15 @@ func (PlaylistController) AddSong(c *gin.Context) {
 		return
 	}
 	type Body struct {
-		SongID uint `json:"songID,string,omitempty" binding:"required"`
+		SongID uint `json:"songID,omitempty" binding:"required"`
 	}
 	body := Body{}
+
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	if err := playlistService.AddSong([]uint{body.SongID}, params.ID); err != nil {
+	if err := playlistService.AddSong(body.SongID, params.ID); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -95,7 +81,7 @@ func (PlaylistController) RemoveSong(c *gin.Context) {
 		return
 	}
 	type Body struct {
-		SongID uint `json:"songID,string,omitempty" binding:"required"`
+		SongID uint `json:"songID,omitempty" binding:"required"`
 	}
 	body := Body{}
 	if err := c.BindJSON(&body); err != nil {

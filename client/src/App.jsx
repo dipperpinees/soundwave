@@ -5,13 +5,13 @@ import Layout from './components/Layout';
 import Player from './components/Player';
 import { GOOGLE_CLIENT_ID } from './config';
 import HomePage from './pages/HomePage';
+import Library from './pages/Library';
 import MusicPage from './pages/MusicPage';
 import ProfilePage from './pages/ProfilePage';
 import Search from './pages/Search';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Upload from './pages/Upload';
-import TrackLibrary from './pages/TrackLibrary';
 import { Store } from './stores';
 import theme from './utils/theme';
 import ScrollToTop from './utils/ScrollToTop';
@@ -34,7 +34,7 @@ function App() {
                                         <Route path="/upload" element={<Upload />} />
                                         <Route path="/search" element={<Search type="tracks" />} />
                                         <Route path="/search/people" element={<Search type="people" />} />
-                                        <Route path="/library" element={<TrackLibrary />} />
+                                        <Route path="/library" element={<Library />} />
                                     </Routes>
                                     <Player />
                                 </Layout>
