@@ -16,7 +16,17 @@ func (PlaylistService) FindByID(id uint) (models.Playlist, error) {
 	var playlist models.Playlist
 
 	err := common.GetDB().
+		Preload("Songs").
+		Preload("Songs.Genre").
 		Preload("Author", func(db *gorm.DB) *gorm.DB {
+			return db.Select(
+				"*",
+				"(Select count(*) from songs where author_id = users.id) as track_number",
+				"(Select count(*) from follows where following_id = users.id) as follower_number",
+				"(Select count(*) from follows where follower_id = users.id) as following_number",
+			)
+		}).
+		Preload("Songs.Author", func(db *gorm.DB) *gorm.DB {
 			return db.Select(
 				"*",
 				"(Select count(*) from songs where author_id = users.id) as track_number",
@@ -28,35 +38,8 @@ func (PlaylistService) FindByID(id uint) (models.Playlist, error) {
 	return playlist, err
 }
 
-func (PlaylistService) GetSongsOfPlaylist(id uint) ([]models.Song, error) {
-	var playlist models.Playlist
-	err := common.GetDB().
-		Preload("Songs", func(db *gorm.DB) *gorm.DB {
-			return db.Select(
-				"*",
-				"(Select count(*) from user_like_songs Where song_id = songs.id) as like_number",
-			)
-		}).
-		Preload("Songs.Genre").
-		Preload("Songs.Author", func(db *gorm.DB) *gorm.DB {
-			return db.Select(
-				"*",
-				"(Select count(*) from songs where author_id = users.id) as track_number",
-				"(Select count(*) from follows where following_id = users.id) as follower_number",
-				"(Select count(*) from follows where follower_id = users.id) as following_number",
-			)
-		}).
-		First(&playlist, id).Error
-
-	return playlist.Songs, err
-}
-
-func (PlaylistService) AddSong(songsID []uint, playlistID uint) error {
-	playlistSongs := make([]models.PlaylistsSongs, len(songsID))
-	for songID, i := range songsID {
-		playlistSongs[i] = models.PlaylistsSongs{PlaylistID: playlistID, SongID: uint(songID)}
-	}
-	err := common.GetDB().Create(&playlistSongs).Error
+func (PlaylistService) AddSong(songID uint, playlistID uint) error {
+	err := common.GetDB().Create(&models.PlaylistsSongs{SongID: songID, PlaylistID: playlistID}).Error
 	return err
 }
 

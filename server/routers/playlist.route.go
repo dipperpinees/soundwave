@@ -12,7 +12,6 @@ func playlistRouter(router *gin.RouterGroup) {
 	router.POST("/", middlewares.AuthGuard(), playlistController.Create)
 	router.GET("/:id", playlistController.FindByID)
 	router.DELETE("/:id", middlewares.AuthGuard(), middlewares.PlaylistGuard(), playlistController.Delete)
-	router.GET("/:id/songs", playlistController.GetSongs)
 	router.POST("/:id/songs", middlewares.AuthGuard(), middlewares.PlaylistGuard(), playlistController.AddSong)
 	router.DELETE("/:id/songs", middlewares.AuthGuard(), middlewares.PlaylistGuard(), playlistController.RemoveSong)
 }

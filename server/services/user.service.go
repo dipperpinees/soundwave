@@ -5,6 +5,7 @@ import (
 
 	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/models"
+	"gorm.io/gorm"
 )
 
 type userModel = models.User
@@ -160,4 +161,30 @@ func (UserService) ResetPassword(userID uint, code string, newPassword string) e
 	hash, _ := common.HashPassword(newPassword)
 	err = common.GetDB().Model(&userModel{}).Where("id = ?", userID).Update("password", hash).Error
 	return err
+}
+
+func (u UserService) GetPlaylistOfUser(userID uint) ([]models.Playlist, error) {
+	var playlists []models.Playlist
+	err := common.GetDB().
+		Where("author_id = ?", userID).
+		Preload("Songs").
+		Preload("Songs.Genre").
+		Preload("Author", func(db *gorm.DB) *gorm.DB {
+			return db.Select(
+				"*",
+				"(Select count(*) from songs where author_id = users.id) as track_number",
+				"(Select count(*) from follows where following_id = users.id) as follower_number",
+				"(Select count(*) from follows where follower_id = users.id) as following_number",
+			)
+		}).
+		Preload("Songs.Author", func(db *gorm.DB) *gorm.DB {
+			return db.Select(
+				"*",
+				"(Select count(*) from songs where author_id = users.id) as track_number",
+				"(Select count(*) from follows where following_id = users.id) as follower_number",
+				"(Select count(*) from follows where follower_id = users.id) as following_number",
+			)
+		}).
+		Find(&playlists).Error
+	return playlists, err
 }

@@ -3,18 +3,20 @@ import {
     Box,
     Button,
     Flex,
+    Icon,
     Input,
     InputGroup,
     InputLeftElement,
     Menu,
     MenuButton,
     MenuItem,
-    MenuList,
-    VStack
+    MenuList, VStack
 } from '@chakra-ui/react';
 import queryString from 'query-string';
 import { useContext, useEffect, useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
+import { MdNotifications, MdOutlineCircleNotifications, MdOutlineNotifications } from 'react-icons/md';
+import { VscTriangleDown } from 'react-icons/vsc';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../stores';
 import fetchAPI from '../../utils/fetchAPI';
@@ -55,42 +57,6 @@ export default function Header() {
 
     return (
         <Flex alignItems="center" className="header" color="white" zIndex={3}>
-            {!!user.id ? (
-                <Menu>
-                    <MenuButton>
-                        <Avatar
-                            className="header-avatar"
-                            size="md"
-                            name={user.name}
-                            alt={user.name}
-                            src={user.avatar}
-                        />
-                    </MenuButton>
-                    <MenuList minWidth={44} bgColor="blackAlpha.900" border="none">
-                        <Link to={`/profile/${user.id}`} _hover={{}}>
-                            <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}}>
-                                Profile
-                            </MenuItem>
-                        </Link>
-                        <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} onClick={logOut}>
-                            Sign Out
-                        </MenuItem>
-                    </MenuList>
-                </Menu>
-            ) : (
-                <>
-                    <Link to="/signin" _hover={{}}>
-                        <Button variant="outline" _hover={{ color: 'var(--primary-color)' }} colorScheme="white">
-                            Sign in
-                        </Button>
-                    </Link>
-                    <Link to="/signup">
-                        <Button variant="ghost" _hover={{ color: 'var(--primary-color)' }} colorScheme="white">
-                            Sign up
-                        </Button>
-                    </Link>
-                </>
-            )}
             <Box position={'relative'} width="50%">
                 <InputGroup width="100%" marginLeft="8px" size="sm">
                     <InputLeftElement pointerEvents="none" children={<BiSearchAlt color="gray.300" />} />
@@ -122,6 +88,47 @@ export default function Header() {
                     </VStack>
                 )}
             </Box>
+            {!!user.id && <Icon as={MdOutlineNotifications} fontSize={20} ml="auto"/>}
+            {!!user.id ? (
+                <Menu>
+                    <MenuButton>
+                        <Flex align="center">
+                            <Avatar
+                                className="header-avatar"
+                                size="sm"
+                                name={user.name}
+                                alt={user.name}
+                                src={user.avatar}
+                                margin={2}
+                            />
+                            <VscTriangleDown />
+                        </Flex>
+                    </MenuButton>
+                    <MenuList minWidth={44} bgColor="blackAlpha.900" border="none">
+                        <Link to={`/profile/${user.id}`} _hover={{}}>
+                            <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}}>
+                                Profile
+                            </MenuItem>
+                        </Link>
+                        <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} onClick={logOut}>
+                            Sign Out
+                        </MenuItem>
+                    </MenuList>
+                </Menu>
+            ) : (
+                <Box ml="auto">
+                    <Link to="/signin" _hover={{}}>
+                        <Button variant="outline" _hover={{ color: 'var(--primary-color)' }} colorScheme="white">
+                            Sign in
+                        </Button>
+                    </Link>
+                    <Link to="/signup">
+                        <Button variant="ghost" _hover={{ color: 'var(--primary-color)' }} colorScheme="white">
+                            Sign up
+                        </Button>
+                    </Link>
+                </Box>
+            )}
         </Flex>
     );
 }

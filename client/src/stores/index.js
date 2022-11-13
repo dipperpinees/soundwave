@@ -1,6 +1,7 @@
 import { GenreStore } from './genreStore';
 import { LoadingStore } from './loadingStore';
 import { PlayerStore } from './playerStore';
+import { PlaylistStore } from './playlistStore';
 import { UserStore } from './userStore';
 
 export function Store({ children }) {
@@ -8,7 +9,9 @@ export function Store({ children }) {
         <PlayerStore>
             <GenreStore>
                 <LoadingStore>
-                    <UserStore>{children}</UserStore>
+                    <UserStore>
+                        <PlaylistStore>{children}</PlaylistStore>
+                    </UserStore>
                 </LoadingStore>
             </GenreStore>
         </PlayerStore>
@@ -18,4 +21,4 @@ export function Store({ children }) {
 export { GenreContext } from './genreStore';
 export { PlayerContext } from './playerStore';
 export { UserContext } from './userStore';
-
+export { PlaylistContext } from './playlistStore';

@@ -1,4 +1,4 @@
-import { Flex, Icon } from '@chakra-ui/react';
+import { Flex, Icon, Text } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { HiHeart, HiHome, HiMusicalNote } from 'react-icons/hi2';
 import { MdLibraryMusic } from 'react-icons/md';
@@ -23,7 +23,9 @@ export default function Navbar() {
             bottom={0}
             width="120px"
             gap={10}
+            zIndex={10}
         >
+            <Text position="absolute" top={5}>LOGO</Text>
             <NavLink to="/" end style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>
                 <Icon as={HiHome} fontSize={28} />
             </NavLink>
@@ -35,7 +37,7 @@ export default function Navbar() {
                     <Icon as={RiUploadCloud2Fill} fontSize={28} />
                 </NavLink>
             )}
-            {!!user.id && <NavLink to="/songs-manager" style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>
+            {!!user.id && <NavLink to="/library" style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>
                 <Icon as={MdLibraryMusic} fontSize={28} />
             </NavLink>}
         </Flex>

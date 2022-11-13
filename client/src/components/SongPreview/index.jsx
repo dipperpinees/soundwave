@@ -1,14 +1,25 @@
 import { AspectRatio, Box, Flex, Icon, Image, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
 import { AiFillHeart, AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
-import { MdDeleteOutline, MdDownload, MdModeEditOutline, MdOutlineContentCopy, MdOutlineMoreHoriz, MdPlaylistAdd } from 'react-icons/md';
+import { FiEdit } from 'react-icons/fi';
+import {
+    MdDeleteOutline,
+    MdDownload, MdModeEditOutline,
+    MdOutlineContentCopy,
+    MdOutlineLibraryAdd,
+    MdOutlineMoreHoriz,
+    MdPlaylistAdd
+} from 'react-icons/md';
 import defaultPreview from '../../assets/song_preview.jpg';
+import { UserContext } from '../../stores';
 import { PlayerContext } from '../../stores/playerStore';
+import { PlaylistContext } from '../../stores/playlistStore';
 
 export default function SongPreview({ song, isOwner, onDelete }) {
     const [showPlay, setShowPlay] = useState(false);
     const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
-
+    const user = useContext(UserContext)[0];
+    const playlistDispatch = useContext(PlaylistContext)[1];
     const addAndPlay = () => setPlayer({ type: 'Add', payload: song });
 
     const togglePlay = () => setPlayer({ type: 'Toggle' });
@@ -48,7 +59,7 @@ export default function SongPreview({ song, isOwner, onDelete }) {
                         onClick={isPlayThisSong ? togglePlay : addAndPlay}
                     />
                 )}
-                {showPlay && !isOwner && (
+                {showPlay && (
                     <Flex position="absolute" bottom={1} right={1} gap={1} align="center">
                         <Icon as={AiFillHeart} fontSize={12} />
                         <Icon as={MdPlaylistAdd} />
@@ -56,7 +67,7 @@ export default function SongPreview({ song, isOwner, onDelete }) {
                             <MenuButton>
                                 <Icon as={MdOutlineMoreHoriz} display="flex" />
                             </MenuButton>
-                            <MenuList minWidth={24} bgColor="blackAlpha.900" border="none" fontSize={12}>
+                            <MenuList minWidth={24} bgColor="blackAlpha.900" border="none" fontSize={12} marginTop={-3}>
                                 <MenuItem
                                     _focus={{ color: 'var(--primary-color)' }}
                                     _active={{}}
@@ -70,6 +81,17 @@ export default function SongPreview({ song, isOwner, onDelete }) {
                                     <Icon as={MdOutlineContentCopy} marginRight={1} />
                                     Copy link
                                 </MenuItem>
+                                {!!user.id && (
+                                    <MenuItem
+                                        _focus={{ color: 'var(--primary-color)' }}
+                                        _active={{}}
+                                        padding="2px 8px"
+                                        onClick={() => playlistDispatch({ type: 'ShowAddSong', payload: song.id })}
+                                    >
+                                        <Icon as={MdOutlineLibraryAdd} marginRight={1} />
+                                        Add to playlist
+                                    </MenuItem>
+                                )}
                             </MenuList>
                         </Menu>
                     </Flex>
@@ -89,14 +111,19 @@ export default function SongPreview({ song, isOwner, onDelete }) {
                         </Text>
                         <Menu>
                             <MenuButton>
-                                <Icon as={MdOutlineMoreHoriz} display="flex" fontSize={20} />
+                                <Icon as={FiEdit} display="flex" fontSize={20} />
                             </MenuButton>
                             <MenuList minWidth={24} bgColor="blackAlpha.900" border="none" fontSize={12}>
                                 <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} padding="2px 8px">
                                     <Icon as={MdModeEditOutline} marginRight={1} />
                                     Edit
                                 </MenuItem>
-                                <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} padding="2px 8px" onClick={onDelete}>
+                                <MenuItem
+                                    _focus={{ color: 'var(--primary-color)' }}
+                                    _active={{}}
+                                    padding="2px 8px"
+                                    onClick={onDelete}
+                                >
                                     <Icon as={MdDeleteOutline} marginRight={1} />
                                     Delete
                                 </MenuItem>

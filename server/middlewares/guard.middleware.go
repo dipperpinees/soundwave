@@ -89,7 +89,7 @@ func PlaylistGuard() gin.HandlerFunc {
 		}
 
 		var thisPlaylist models.Playlist
-		err := common.GetDB().First(&thisPlaylist, params.ID)
+		err := common.GetDB().First(&thisPlaylist, params.ID).Error
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This playlist does not exist"})
 			return

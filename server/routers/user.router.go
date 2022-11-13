@@ -28,6 +28,9 @@ func userRouter(router *gin.RouterGroup) {
 	//get user's song
 	router.GET("/:id/songs", userController.GetSongOfUser)
 
+	//get user's playlist
+	router.GET("/:id/playlists", userController.GetPlaylistOfUser)
+
 	//follow feature
 	router.POST("/follow/:id", middlewares.AuthGuard(), userController.Follow)
 	router.POST("/unfollow/:id", middlewares.AuthGuard(), userController.UnFollow)

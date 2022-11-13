@@ -8,7 +8,8 @@ type Playlist struct {
 	Thumbnail string    `gorm:"-" json:"thumbnail"`
 	Name      string    `json:"name"`
 	Author    User      `json:"author"`
-	Songs     []Song    `gorm:"many2many:playlists_songs;" json:"-"`
+	Songs     []Song    `gorm:"many2many:playlists_songs;" json:"songs"`
 	CreatedAt time.Time `gorm:"autoCreateTime;column:created_at" json:"created_at"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime;column:updated_at" json:"updated_at"`
+	Public    bool      `json:"public"`
 }

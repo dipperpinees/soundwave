@@ -1,25 +1,28 @@
 import { Box, Avatar, Heading, Flex, Text, Button } from '@chakra-ui/react';
+import { useContext } from 'react';
+import { UserContext } from '../../stores';
 import Describe from './Describe';
 
-const Profile = ({name}) => {
+const Profile = ({id, name, avatar, followerNumber}) => {
+    const user = useContext(UserContext)[0];
     return (
         <Box m={'0 24px'} maxW={['100%', '100%', '150px', '180px']}>
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
                 <Avatar
                     mb="16px"
                     size="xl"
-                    name="user avatar"
-                    src="https://photo-cms-plo.epicdn.me/w850/Uploaded/2022/nkxrxqeiox/2020_12_04/1_fppt.jpeg"
+                    name={name}
+                    src={avatar}
                 />
                 <Heading class="user-name" fontSize="xl" mb="16px">
                     {name}
                 </Heading>
-                <Text mb="16px">900 Followers</Text>
+                <Text mb="16px">{followerNumber} Followers</Text>
                 <Flex flexDirection="column">
-                    <Button bg="#fff" textColor="#000" borderRadius="20px" margin="8px 0">
+                    {user.id !== id && <Button bg="#fff" textColor="#000" borderRadius="20px" margin="8px 0">
                         Following
-                    </Button>
-                    <Button
+                    </Button>}
+                    {/* <Button
                         colorScheme="whiteAlpha"
                         variant="outline"
                         textColor="#fff"
@@ -28,12 +31,12 @@ const Profile = ({name}) => {
                         padding="4px 48px"
                     >
                         Message
-                    </Button>
+                    </Button> */}
                 </Flex>
             </Flex>
-            <Box>
+            {/* <Box>
                 <Describe />
-            </Box>
+            </Box> */}
         </Box>
     );
 };
