@@ -58,7 +58,7 @@ export default function SignUp() {
         <Container>
             <VStack display="flex" justifyContent="center" alignItems="center" height="100%">
                 <Box className="logo">
-                    <Text fontSize="2xl" fontWeight="bold" textAlign="center" mt="2">
+                    <Text fontSize="2xl" fontWeight="bold" textAlign="center" mt="5px">
                         <Link href="/" color="#f48004" style={{ textDecoration: 'none' }}>
                             SOUNDGROUND
                         </Link>

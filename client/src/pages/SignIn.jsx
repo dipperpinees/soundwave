@@ -7,7 +7,15 @@ import {
     FormLabel,
     Input,
     Link,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Text,
+    useDisclosure,
     useToast,
 } from '@chakra-ui/react';
 import { useContext } from 'react';
@@ -26,9 +34,14 @@ export default function SignIn() {
     } = useForm();
     const [user, userDispatch] = useContext(UserContext);
     const navigate = useNavigate();
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const toast = useToast();
 
     if (user.id) navigate('/');
+
+    const forgotPassword = () => {
+        console.log('forgotPassword')
+    }
 
     const onSubmit = async ({ email, password }) => {
         try {
@@ -130,10 +143,38 @@ export default function SignIn() {
                     </Button>
                 </form>
             </Box>
+            <Box id='gtp'>
+                        <Button style={{textDecoration:'none', color: '#f48004', backgroundColor: 'transparent'}} onClick={onOpen} >FORGOT YOUR PASSWORD?</Button>
+                        <Modal isOpen={isOpen} onClose={onClose}>
+                            <ModalOverlay />
+                            <ModalContent>
+                            <ModalHeader>Modal Title</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                            <FormControl isInvalid = {errors.email}>
+                            <FormLabel className="inputLabel" color='black'>Email address</FormLabel>
+                                <Input type='email'
+                                id = 'email'
+                                {...register('email', {required: 'Email is required'},
+                                {pattern: {
+                                    value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                    message: 'Please enter a valid email',
+                                }}
+                                )}
+                                className="inputUser" style={{height: '58px', fontSize: '14px', backgroundColor:'#FFFFFF', border:"1px solid #000"}}/>
+                                <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+                        </FormControl>
+                            </ModalBody>
 
-            <Text fontSize={12} mt={4}>
-                FORGOT YOUR PASSWORD?
-            </Text>
+                            <ModalFooter>
+                                <Button colorScheme='red' mr={3} onClick={onClose}>
+                                    Close
+                                </Button>
+                                <Button colorScheme='green'onClick={forgotPassword}>Send code</Button>
+                            </ModalFooter>
+                            </ModalContent>
+                        </Modal>
+                </Box>
         </Flex>
     );
 }
