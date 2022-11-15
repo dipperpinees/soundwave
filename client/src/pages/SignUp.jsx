@@ -36,7 +36,7 @@ export default function SignUp() {
 
     const onSubmit = async ({ email, password, name }) => {
         try {
-            const { avatar, name, id } = await fetchAPI('/signup', {
+            const { avatar, id } = await fetchAPI('/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ export default function SignUp() {
                         backgroundColor="#f48004"
                         color="#FFF"
                     >
-                        <Text>Log in</Text>
+                        <Text>Sign Up</Text>
                     </Button>
                 </form>
             </VStack>
