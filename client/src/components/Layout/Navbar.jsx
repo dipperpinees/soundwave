@@ -23,7 +23,7 @@ export default function Navbar() {
             bottom={0}
             width="120px"
             gap={10}
-            zIndex={10}
+            zIndex="calc(var(--chakra-zIndices-modal) -1)"
         >
             <Text position="absolute" top={5}>LOGO</Text>
             <NavLink to="/" end style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>

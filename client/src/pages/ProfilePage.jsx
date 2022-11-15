@@ -22,7 +22,7 @@ const ProfilePage = () => {
     }, [id]);
 
     return (
-        <Box className="profile-wrapper" ml="360px">
+        <Box className="profile-wrapper" ml="360px" minHeight="100vh">
             <Box
                 pos={['initial', 'fixed']}
                 className="profile-user"

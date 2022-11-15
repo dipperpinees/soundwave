@@ -15,7 +15,7 @@ import {
 import queryString from 'query-string';
 import { useContext, useEffect, useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
-import { MdNotifications, MdOutlineCircleNotifications, MdOutlineNotifications } from 'react-icons/md';
+import { MdOutlineNotifications } from 'react-icons/md';
 import { VscTriangleDown } from 'react-icons/vsc';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../stores';
@@ -56,7 +56,7 @@ export default function Header() {
     };
 
     return (
-        <Flex alignItems="center" className="header" color="white" zIndex={3}>
+        <Flex alignItems="center" className="header" color="white" zIndex="calc(var(--chakra-zIndices-modal) -1)">
             <Box position={'relative'} width="50%">
                 <InputGroup width="100%" marginLeft="8px" size="sm">
                     <InputLeftElement pointerEvents="none" children={<BiSearchAlt color="gray.300" />} />
@@ -106,11 +106,11 @@ export default function Header() {
                     </MenuButton>
                     <MenuList minWidth={44} bgColor="blackAlpha.900" border="none">
                         <Link to={`/profile/${user.id}`} _hover={{}}>
-                            <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}}>
+                            <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} _hover={{}}>
                                 Profile
                             </MenuItem>
                         </Link>
-                        <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} onClick={logOut}>
+                        <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} onClick={logOut} _hover={{}}>
                             Sign Out
                         </MenuItem>
                     </MenuList>

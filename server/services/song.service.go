@@ -114,7 +114,7 @@ func (SongService) DeleteByID(songID uint) error {
 	return common.GetDB().Delete(&songModel{}, songID).Error
 }
 
-func (SongService) Update(songID uint, title string, url string, thumbnail string) (map[string]interface{}, error) {
+func (SongService) Update(songID uint, title string, url string, thumbnail string, genreID uint) (map[string]interface{}, error) {
 	updateData := make(map[string]interface{})
 
 	if title != "" {
@@ -126,7 +126,9 @@ func (SongService) Update(songID uint, title string, url string, thumbnail strin
 	if thumbnail != "" {
 		updateData["thumbnail"] = thumbnail
 	}
-
+	if genreID != 0 {
+		updateData["genre_id"] = genreID
+	}
 	err := common.GetDB().Model(&songModel{}).Where("id = ?", songID).Updates(updateData).Error
 	return updateData, err
 }

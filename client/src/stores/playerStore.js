@@ -48,6 +48,9 @@ export function PlayerStore({ children }) {
                 playAudio();
                 return { ...state, isPlayed: true };
             }
+            case 'PlayPlaylist': {
+                
+            }
             case 'Pause': {
                 pauseAudio();
                 return { ...state, isPlayed: false };

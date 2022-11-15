@@ -17,7 +17,8 @@ export function LoadingStore({ children }) {
                     left={0}
                     right={0}
                     bottom={0}
-                    zIndex={2}
+                    zIndex="calc(var(--chakra-zIndices-modal) + 1)"
+                    bgColor="blackAlpha.600"
                 >
                     <motion.div
                         className="loading"
