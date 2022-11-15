@@ -5,6 +5,7 @@ import (
 
 	"os"
 
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/middlewares"
@@ -34,6 +35,9 @@ func main() {
 	//middleware
 	app.Use(middlewares.CORSMiddleware())
 	app.Use(middlewares.AuthMiddleware())
+
+	//serve client
+	app.Use(static.Serve("/", static.LocalFile("../client/build", false)))
 
 	router := app.Group("/api")
 
