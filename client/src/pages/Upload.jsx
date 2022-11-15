@@ -1,6 +1,6 @@
 import { Box, Button, Center, Container, Flex, Icon, Image, Input, Select, Stack, Text, useToast } from '@chakra-ui/react';
-import * as _buffer from 'buffer';
 import { motion } from 'framer-motion';
+import * as _buffer from 'buffer';
 import * as musicMetadata from 'music-metadata-browser';
 import * as process from 'process';
 import { useContext, useRef, useState } from 'react';
@@ -191,7 +191,7 @@ export default function Upload() {
                                 boxSize="180px"
                                 borderRadius={8}
                                 objectFit="cover"
-                                alt="Dan Abramov"
+                                alt="thumbnail"
                             />
                             <Center position="absolute" top={0} bottom={0} left={0} right={0}>
                                 <AiFillCamera fontSize={24} />

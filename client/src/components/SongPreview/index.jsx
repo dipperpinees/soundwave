@@ -43,7 +43,7 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
                     <Image
                         objectFit="cover"
                         src={song.thumbnail || defaultPreview}
-                        alt="Dan Abramov"
+                        alt={song.title}
                         borderRadius={16}
                         opacity={showPlay && 0.6}
                     />
