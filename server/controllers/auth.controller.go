@@ -39,7 +39,7 @@ func (AuthController) SignUp(c *gin.Context) {
 
 	tokenString, _ := common.GenerateJWT(newUser.ID)
 	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
+	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", false, true)
 	c.JSON(http.StatusAccepted, gin.H{"id": newUser.ID, "name": newUser.Name, "avatar": newUser.Avatar, "role": newUser.Role})
 }
 
@@ -69,7 +69,7 @@ func (AuthController) SignIn(c *gin.Context) {
 	tokenString, _ := common.GenerateJWT(user.ID)
 
 	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
+	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", false, true)
 	c.JSON(http.StatusAccepted, gin.H{"id": user.ID, "name": user.Name, "avatar": user.Avatar, "role": user.Role})
 }
 
@@ -80,7 +80,7 @@ func (AuthController) Auth(c *gin.Context) {
 
 func (AuthController) LogOut(c *gin.Context) {
 	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("access_token", "", -1, "/", "", true, true)
+	c.SetCookie("access_token", "", -1, "/", "", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Log out successfully"})
 }
 
@@ -152,6 +152,6 @@ func (AuthController) GoogleLogin(c *gin.Context) {
 	tokenString, _ := common.GenerateJWT(user.ID)
 
 	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
+	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", false, true)
 	c.JSON(http.StatusAccepted, gin.H{"id": user.ID, "name": user.Name, "avatar": user.Avatar, "role": user.Role})
 }
