@@ -1,9 +1,13 @@
-import { Button, Flex, Grid, Icon, Text } from '@chakra-ui/react';
-import { useContext } from 'react';
-import { useEffect, useState } from 'react';
+import {
+    Button, Flex,
+    Grid,
+    Icon, Text
+} from '@chakra-ui/react';
+import { useContext, useEffect, useState } from 'react';
 import { BsFillPeopleFill, BsSoundwave } from 'react-icons/bs';
 import { Link, useSearchParams } from 'react-router-dom';
-import SongPreview from '../components/SongPreview';
+import { SongsLibrary } from '../components/Library';
+import PlaylistPreview from '../components/Playlists/PlaylistPreview';
 import SongSkeleton from '../components/SquareSkeleton';
 import { UserContext } from '../stores';
 import fetchAPI from '../utils/fetchAPI';
@@ -53,61 +57,32 @@ export default function Library() {
                     </Button>
                 </Link>
             </Flex>
-            {type === "songs" && <SongsLibrary />}
-            {type === "playlists" && <PlaylistLibrary />}
+            {type === 'songs' && <SongsLibrary />}
+            {type === 'playlists' && <PlaylistLibrary />}
         </Flex>
     );
 }
 
-const SongsLibrary = () => {
+const PlaylistLibrary = () => {
     const user = useContext(UserContext)[0];
-    const [tracks, setTracks] = useState(null);
-
+    const [playlists, setPlaylists] = useState(null);
     useEffect(() => {
-        if (!user.id) return;
         (async () => {
             try {
-                const data = await fetchAPI(`/user/${user.id}/songs`);
-                setTracks(data);
+                setPlaylists(await fetchAPI(`/user/${user.id}/playlists`));
             } catch (e) {}
         })();
     }, [user]);
-
-    const handleDelete = async (deleteID) => {
-        try {
-            setTracks(tracks.filter(({ id }) => id !== deleteID));
-            await fetchAPI(`/song/${deleteID}`, { method: 'DELETE' });
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
     return (
         <>
             <Text as="h3" fontSize={20} fontWeight={600}>
-                Songs Library
+                Playlist Library
             </Text>
-            <Grid templateColumns="repeat(4, 1fr)" gap={12}>
-                {tracks
-                    ? tracks.map((song, id) => (
-                          <SongPreview key={id} song={song} isOwner={true} onDelete={() => handleDelete(song.id)} />
-                      ))
+            <Grid templateColumns="repeat(6, 1fr)" gap={6}>
+                {playlists
+                    ? playlists.map((playlist, index) => <PlaylistPreview key={index} {...playlist} />)
                     : [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)}
             </Grid>
-            {tracks?.length === 0 && <Text>You haven't uploaded any songs or albums yet</Text>}
         </>
     );
 };
-
-const PlaylistLibrary = () => {
-    const user = useContext(UserContext)[0];
-    const [playlist, setPlaylist] = useState([])
-    useEffect(() => {
-
-    }, [])
-
-    return (
-        <>
-        </>
-    )
-}

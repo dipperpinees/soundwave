@@ -36,5 +36,4 @@ func userRouter(router *gin.RouterGroup) {
 	router.POST("/unfollow/:id", middlewares.AuthGuard(), userController.UnFollow)
 	router.GET("/follower/:id", userController.GetFollowers)
 	router.GET("/following/:id", userController.GetFollowings)
-	// router.GET("/checkFollow/:id", userController.CheckIsFollow)
 }

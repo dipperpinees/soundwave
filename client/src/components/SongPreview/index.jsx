@@ -4,18 +4,20 @@ import { AiFillHeart, AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai
 import { FiEdit } from 'react-icons/fi';
 import {
     MdDeleteOutline,
-    MdDownload, MdModeEditOutline,
+    MdDownload,
+    MdModeEditOutline,
     MdOutlineContentCopy,
     MdOutlineLibraryAdd,
     MdOutlineMoreHoriz,
-    MdPlaylistAdd
+    MdPlaylistAdd,
 } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 import defaultPreview from '../../assets/song_preview.jpg';
 import { UserContext } from '../../stores';
 import { PlayerContext } from '../../stores/playerStore';
 import { PlaylistContext } from '../../stores/playlistStore';
 
-export default function SongPreview({ song, isOwner, onDelete }) {
+export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
     const [showPlay, setShowPlay] = useState(false);
     const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
     const user = useContext(UserContext)[0];
@@ -71,13 +73,19 @@ export default function SongPreview({ song, isOwner, onDelete }) {
                                 <MenuItem
                                     _focus={{ color: 'var(--primary-color)' }}
                                     _active={{}}
+                                    _hover={{}}
                                     padding="2px 8px"
                                     onClick={download}
                                 >
                                     <Icon as={MdDownload} marginRight={1} />
                                     Download
                                 </MenuItem>
-                                <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} padding="2px 8px">
+                                <MenuItem
+                                    _focus={{ color: 'var(--primary-color)' }}
+                                    _active={{}}
+                                    _hover={{}}
+                                    padding="2px 8px"
+                                >
                                     <Icon as={MdOutlineContentCopy} marginRight={1} />
                                     Copy link
                                 </MenuItem>
@@ -85,6 +93,7 @@ export default function SongPreview({ song, isOwner, onDelete }) {
                                     <MenuItem
                                         _focus={{ color: 'var(--primary-color)' }}
                                         _active={{}}
+                                        _hover={{}}
                                         padding="2px 8px"
                                         onClick={() => playlistDispatch({ type: 'ShowAddSong', payload: song.id })}
                                     >
@@ -114,13 +123,20 @@ export default function SongPreview({ song, isOwner, onDelete }) {
                                 <Icon as={FiEdit} display="flex" fontSize={20} />
                             </MenuButton>
                             <MenuList minWidth={24} bgColor="blackAlpha.900" border="none" fontSize={12}>
-                                <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} padding="2px 8px">
+                                <MenuItem
+                                    _focus={{ color: 'var(--primary-color)' }}
+                                    _active={{}}
+                                    padding="2px 8px"
+                                    onClick={onEdit}
+                                    _hover={{}}
+                                >
                                     <Icon as={MdModeEditOutline} marginRight={1} />
                                     Edit
                                 </MenuItem>
                                 <MenuItem
                                     _focus={{ color: 'var(--primary-color)' }}
                                     _active={{}}
+                                    _hover={{}}
                                     padding="2px 8px"
                                     onClick={onDelete}
                                 >
@@ -133,7 +149,7 @@ export default function SongPreview({ song, isOwner, onDelete }) {
                 )}
                 {!isOwner && (
                     <Text as="span" fontSize={11} color="gray" fontWeight={600}>
-                        {song.author.name}
+                        <Link to={`/profile/${song.author.id}`}>{song.author.name}</Link>
                     </Text>
                 )}
             </Flex>

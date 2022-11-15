@@ -1,5 +1,4 @@
-import { useToast } from '@chakra-ui/react';
-import { Box, Button, Center, Container, Flex, Icon, Image, Input, Select, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Container, Flex, Icon, Image, Input, Select, Stack, Text, useToast } from '@chakra-ui/react';
 import * as _buffer from 'buffer';
 import { motion } from 'framer-motion';
 import * as musicMetadata from 'music-metadata-browser';
@@ -8,9 +7,10 @@ import { useContext, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { AiFillCamera } from 'react-icons/ai';
 import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
-import { API_ENDPOINT } from '../config';
 import { GenreContext } from '../stores';
 import { LoadingContext } from '../stores/loadingStore';
+import { DEFAULT_THUMBNAIL } from '../utils/constant';
+import fetchAPI from '../utils/fetchAPI';
 
 window.process = process;
 window.global = window;
@@ -110,20 +110,26 @@ export default function Upload() {
         formData.append('genreID', genre);
 
         setLoading(true);
-        const response = await fetch(API_ENDPOINT + '/song/', {
-            method: 'POST',
-            credentials: 'include',
-            body: formData,
-        });
-        // const responseJSON = await response.json();
-        if (response.ok) {
+        try {
+            await fetchAPI("/song/",  {
+                method: 'POST',
+                body: formData,
+            })
             toast({
                 title: 'Upload song successfully.',
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
             });
+        } catch (e) {
+            toast({
+                title: e.message,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            });
         }
+        
         setLoading(false);
     };
 
@@ -232,6 +238,3 @@ export default function Upload() {
         </form>
     );
 }
-
-const DEFAULT_THUMBNAIL =
-    'https://img.freepik.com/free-vector/music-speaker-grungy-art_1394-1262.jpg?w=826&t=st=1666428737~exp=1666429337~hmac=aa488f2233ab9f5026c70b416a721c14a128eb71c1bdaee61c6ce8fbc6b4d7a2';

@@ -158,7 +158,8 @@ func (SongController) UpdateSong(c *gin.Context) {
 	type UpdateSongForm struct {
 		Title     string                `form:"title"`
 		File      *multipart.FileHeader `form:"file"`
-		Thumbnail *multipart.FileHeader `form:"file"`
+		Thumbnail *multipart.FileHeader `form:"thumbnail"`
+		GenreID   uint                  `form:"genreID"`
 	}
 
 	formData := UpdateSongForm{}
@@ -183,7 +184,7 @@ func (SongController) UpdateSong(c *gin.Context) {
 		return
 	}
 
-	updateData, err := songService.Update(params.ID, formData.Title, uploadUrl["song"], uploadUrl["thumbnail"])
+	updateData, err := songService.Update(params.ID, formData.Title, uploadUrl["song"], uploadUrl["thumbnail"], formData.GenreID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
