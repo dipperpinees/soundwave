@@ -17,6 +17,10 @@ func SetTokenCookie(c *gin.Context, token string) {
 }
 
 func ClearTokenCookie(c *gin.Context) {
+	if configs.Environment() == "production" {
+		c.SetCookie("access_token", "", -1, "/", "", false, true)
+		return
+	}
 	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("access_token", "", -1, "/", "", false, true)
+	c.SetCookie("access_token", "", -1, "/", "", true, true)
 }
