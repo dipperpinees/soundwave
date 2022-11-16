@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hiepnguyen223/int3306-project/dtos"
+	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/services"
 )
@@ -38,7 +38,7 @@ func (PlaylistController) Create(c *gin.Context) {
 }
 
 func (PlaylistController) FindByID(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid playlist id"})
 	}
@@ -53,7 +53,7 @@ func (PlaylistController) FindByID(c *gin.Context) {
 }
 
 func (PlaylistController) AddSong(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid playlist id"})
 		return
@@ -75,7 +75,7 @@ func (PlaylistController) AddSong(c *gin.Context) {
 }
 
 func (PlaylistController) RemoveSong(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid playlist id"})
 		return
@@ -96,7 +96,7 @@ func (PlaylistController) RemoveSong(c *gin.Context) {
 }
 
 func (PlaylistController) Delete(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid playlist id"})
 		return

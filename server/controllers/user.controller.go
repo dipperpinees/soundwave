@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
-	"github.com/hiepnguyen223/int3306-project/dtos"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/services"
 )
@@ -55,7 +54,7 @@ func (UserController) UploadAvatar(c *gin.Context) {
 }
 
 func (UserController) GetUser(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
@@ -117,7 +116,7 @@ func (UserController) GetFavoriteSong(c *gin.Context) {
 }
 
 func (UserController) GetSongOfUser(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
@@ -133,7 +132,7 @@ func (UserController) GetSongOfUser(c *gin.Context) {
 }
 
 func (UserController) GetPlaylistOfUser(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
 		return
@@ -149,7 +148,7 @@ func (UserController) GetPlaylistOfUser(c *gin.Context) {
 }
 
 func (UserController) Follow(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid following ID"})
 		return
@@ -166,7 +165,7 @@ func (UserController) Follow(c *gin.Context) {
 }
 
 func (UserController) UnFollow(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid following ID"})
 		return
@@ -183,7 +182,7 @@ func (UserController) UnFollow(c *gin.Context) {
 }
 
 func (UserController) GetFollowers(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
 		return
@@ -199,7 +198,7 @@ func (UserController) GetFollowers(c *gin.Context) {
 }
 
 func (UserController) GetFollowings(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
 		return
@@ -215,7 +214,7 @@ func (UserController) GetFollowings(c *gin.Context) {
 }
 
 // func (UserController) CheckIsFollow(c *gin.Context) {
-// 	params := dtos.IdParams{}
+// 	params := common.IdParams{}
 // 	if err := c.ShouldBindUri(&params); err != nil {
 // 		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid user ID")
 // 		return

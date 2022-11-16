@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hiepnguyen223/int3306-project/dtos"
+	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/services"
 )
@@ -69,7 +69,7 @@ func (SongController) CreateSong(c *gin.Context) {
 }
 
 func (SongController) GetByID(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
@@ -115,7 +115,7 @@ func (SongController) FindMany(c *gin.Context) {
 }
 
 func (SongController) CreateFavoriteSong(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
@@ -134,7 +134,7 @@ func (SongController) CreateFavoriteSong(c *gin.Context) {
 }
 
 func (SongController) DeleteSong(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
@@ -149,7 +149,7 @@ func (SongController) DeleteSong(c *gin.Context) {
 }
 
 func (SongController) UpdateSong(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
@@ -198,7 +198,7 @@ func (SongController) CreateComment(c *gin.Context) {
 		Content string `json:"content" binding:"required"`
 	}
 
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	body := CommentBody{}
 	if err := c.ShouldBind(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -223,7 +223,7 @@ func (SongController) CreateComment(c *gin.Context) {
 }
 
 func (SongController) GetCommentOfSong(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
@@ -239,7 +239,7 @@ func (SongController) GetCommentOfSong(c *gin.Context) {
 }
 
 func (SongController) DeleteComment(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid comment ID"})
 		return
@@ -254,7 +254,7 @@ func (SongController) DeleteComment(c *gin.Context) {
 }
 
 func (SongController) UpdateComment(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid comment ID"})
 		return
@@ -279,7 +279,7 @@ func (SongController) UpdateComment(c *gin.Context) {
 }
 
 func (SongController) IncrementPlayCount(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := common.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 		return
