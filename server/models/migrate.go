@@ -11,5 +11,5 @@ func Migrate() {
 	db.AutoMigrate(&User{}, &Song{}, &Comment{}, &Follow{}, &Genre{}, &Playlist{}, &Forget{})
 
 	//bulk insert data
-	BulkInsertGenre()
+	// BulkInsertGenre()
 }
