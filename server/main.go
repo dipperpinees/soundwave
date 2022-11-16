@@ -8,6 +8,7 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
+	"github.com/hiepnguyen223/int3306-project/configs"
 	"github.com/hiepnguyen223/int3306-project/middlewares"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/routers"
@@ -37,14 +38,16 @@ func main() {
 	app.Use(middlewares.AuthMiddleware())
 
 	//serve client
-	app.Use(static.Serve("/", static.LocalFile("../client/build", false)))
+	if configs.Environment() == "production" {
+		app.Use(static.Serve("/", static.LocalFile("../client/build", false)))
+	}
 
 	router := app.Group("/api")
 
 	routers.HandleRoute(router)
 
 	var PORT string
-	if os.Getenv("PORT") != "" {
+	if configs.EnvPort() != "" {
 		PORT = ":" + os.Getenv("PORT")
 	} else {
 		PORT = ":3001"
