@@ -19,6 +19,13 @@
     --primary-color: #f48004;
     --header-height: 60px;
     --navbar-width: 120px;
+    --player-height: 80px
+}
+
+@media screen and (max-width: 48em) {
+    :root {
+        --navbar-width: 0;
+    }
 }
 
 select {
@@ -42,7 +49,7 @@ select {
 }
 
 ::-webkit-scrollbar-track {
-    background: #1F1223;
+    background: #1f1223;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -51,4 +58,42 @@ select {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+    from {
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+#rotate {
+    -webkit-animation: rotating 6s linear infinite;
+    -moz-animation: rotating 6s linear infinite;
+    -ms-animation: rotating 6s linear infinite;
+    -o-animation: rotating 6s linear infinite;
+    animation: rotating 6s linear infinite;
 }

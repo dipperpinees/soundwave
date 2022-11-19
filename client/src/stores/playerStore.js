@@ -1,4 +1,5 @@
 import { createContext, useReducer, useRef } from 'react';
+import fetchAPI from "../utils/fetchAPI";
 
 const initialState = {
     isPlayed: false,
@@ -26,14 +27,21 @@ export function PlayerStore({ children }) {
     const setVolumeAudio = (volume) => {
         audioRef.current.volume = volume;
     };
+    const incrementPlayCount = (songID) => {
+        try {
+            fetchAPI(`/song/play/${songID}`, {method: "POST"})
+        } catch (e) {}
+    }
     const [state, dispatch] = useReducer((state, action) => {
         switch (action.type) {
             case 'Add': {
+                const song = action.payload;
+                incrementPlayCount(song.id);
                 setTimeout(() => {
                     playAudio();
                     setCurrentTimeAudio(0);
                 }, 100);
-                return { ...state, indexSongPlayed: 0, isPlayed: true, currentTime: 0, songList: [action.payload] };
+                return { ...state, indexSongPlayed: 0, isPlayed: true, currentTime: 0, songList: [song] };
             }
             case 'Toggle': {
                 if (state.isPlayed) {
@@ -49,7 +57,7 @@ export function PlayerStore({ children }) {
                 return { ...state, isPlayed: true };
             }
             case 'PlayPlaylist': {
-                
+                break;
             }
             case 'Pause': {
                 pauseAudio();

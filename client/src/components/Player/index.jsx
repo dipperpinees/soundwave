@@ -1,4 +1,5 @@
 import { Avatar, Flex, Heading, Icon, Progress, Text } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import { useContext, useRef, useState } from 'react';
 import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
 import { CgHeart } from 'react-icons/cg';
@@ -20,7 +21,7 @@ export default function Player() {
     const [showPlaylist, setShowPlaylist] = useState(false);
     const progressRef = useRef();
     const handleTogglePlay = () => dispatch({ type: 'Toggle' });
- 
+
     const handleChangeProgress = (e) => {
         const progress = ((e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth) * 100;
         dispatch({ type: 'ChangeTime', payload: progress });
@@ -45,7 +46,17 @@ export default function Player() {
     };
 
     return (
-        <Flex className="player" color="white" gap={8} alignItems="center" justifyContent="space-between">
+        <Flex
+            className="player"
+            color="white"
+            gap={8}
+            alignItems="center"
+            justifyContent="space-between"
+            as={motion.div}
+            initial={{ marginBottom: 'calc(var(--player-height) * -1)' }}
+            animate={{ marginBottom: 0 }}
+            transition={{ duration: 1 }}
+        >
             {/* mobile progress bar */}
             <Progress
                 value={songDuration === 0 ? 0 : (currentTime / songDuration) * 100}
@@ -62,7 +73,7 @@ export default function Player() {
             />
 
             <Flex alignItems="center" gap={2}>
-                <Avatar name="thumbnail" src={songList[indexSongPlayed]?.thumbnail || defaultPreview} />
+                <Avatar name="thumbnail" src={songList[indexSongPlayed]?.thumbnail || defaultPreview} id={'rotate'} />
                 <div>
                     <Heading color="white" fontSize={12} as="h4">
                         {songList[indexSongPlayed]?.title}
@@ -104,7 +115,7 @@ export default function Player() {
                     className={autoPlay === 'shuffle' && 'player-choose'}
                 />
                 <CgHeart />
-                <MdPlaylistPlay onClick={() => setShowPlaylist(true)}/>
+                <MdPlaylistPlay onClick={() => setShowPlaylist(true)} />
                 <SoundVolume />
             </Flex>
 
@@ -113,7 +124,7 @@ export default function Player() {
                 <CgHeart />
                 <button onClick={handleTogglePlay}>{isPlayed ? <BsPauseFill /> : <BsFillPlayFill />}</button>
             </Flex>
-            <NextUp isOpen={showPlaylist} toggleOpen={() => setShowPlaylist(!showPlaylist)}/>
+            <NextUp isOpen={showPlaylist} toggleOpen={() => setShowPlaylist(!showPlaylist)} />
         </Flex>
     );
 }
