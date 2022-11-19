@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { AiFillPlayCircle } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import { MdDeleteOutline, MdModeEditOutline } from 'react-icons/md';
+import { DEFAULT_PLAYLIST_THUMBNAIL } from '../../utils/image';
 
 export default function PlaylistPreview({ id, name, songs, onDelete }) {
     const [showPlay, setShowPlay] = useState(false);
@@ -15,7 +16,7 @@ export default function PlaylistPreview({ id, name, songs, onDelete }) {
                 onMouseLeave={() => setShowPlay(false)}
             >
                 <AspectRatio width="100%" ratio={1}>
-                    <Image objectFit="cover" src={songs?.[0].thumbnail} alt="Dan Abramov" borderRadius={16} />
+                    <Image objectFit="cover" src={songs?.[0]?.thumbnail || DEFAULT_PLAYLIST_THUMBNAIL} alt="Dan Abramov" borderRadius={16} />
                 </AspectRatio>
                 {showPlay && (
                     <Icon
@@ -33,7 +34,7 @@ export default function PlaylistPreview({ id, name, songs, onDelete }) {
             </Box>
             <Flex direction="column" mt={1}>
                 <Flex justify="space-between">
-                    <Text fontSize={14} fontWeight={600}>
+                    <Text fontSize={14} fontWeight={600} className="one-line-title">
                         {name}
                     </Text>
                     <Menu>

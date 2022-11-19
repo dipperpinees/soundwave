@@ -7,7 +7,7 @@ const Profile = (props) => {
     return (
         <Box m={'0 24px'} maxW={['100%', '100%', '150px', '180px']}>
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
-                <Avatar mb="16px" size="xl" name="user avatar" src={avatar} />
+                <Avatar mb="16px" size="xl" name={name} src={avatar} />
                 <Heading class="user-name" fontSize="xl" mb="16px">
                     {name}
                 </Heading>
