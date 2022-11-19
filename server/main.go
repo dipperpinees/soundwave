@@ -25,6 +25,9 @@ func main() {
 	//initialize database
 	common.InitDB()
 
+	//initialize cache storage
+	common.InitCache()
+
 	//migrate database
 	models.Migrate()
 

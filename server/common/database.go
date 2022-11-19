@@ -12,8 +12,6 @@ var db *gorm.DB
 
 func InitDB() *gorm.DB {
 	db = connectDb()
-	//enable event schedule
-	// db.Exec("SET GLOBAL event_scheduler = ON")
 	return db
 }
 

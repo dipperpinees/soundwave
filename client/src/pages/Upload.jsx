@@ -11,21 +11,21 @@ import {
     Select,
     Stack,
     Text,
-    useToast,
+    useToast
 } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
 import * as _buffer from 'buffer';
+import { motion } from 'framer-motion';
 import * as musicMetadata from 'music-metadata-browser';
 import * as process from 'process';
 import { useContext, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { AiFillCamera } from 'react-icons/ai';
 import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 import { GenreContext } from '../stores';
 import { LoadingContext } from '../stores/loadingStore';
-import { DEFAULT_THUMBNAIL } from '../utils/constant';
 import fetchAPI from '../utils/fetchAPI';
-import { useNavigate } from 'react-router-dom';
+import { DEFAULT_SONG_THUMBNAIL } from '../utils/image';
 
 window.process = process;
 window.global = window;
@@ -208,7 +208,7 @@ export default function Upload() {
                         >
                             <AspectRatio width="180px" ratio={1}>
                                 <Image
-                                    src={thumbnail.src || DEFAULT_THUMBNAIL}
+                                    src={thumbnail.src || DEFAULT_SONG_THUMBNAIL}
                                     boxSize="180px"
                                     borderRadius={8}
                                     objectFit="cover"

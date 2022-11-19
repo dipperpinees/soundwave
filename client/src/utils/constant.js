@@ -1,2 +1,0 @@
-export const DEFAULT_THUMBNAIL =
-    'https://img.freepik.com/free-vector/music-speaker-grungy-art_1394-1262.jpg?w=826&t=st=1666428737~exp=1666429337~hmac=aa488f2233ab9f5026c70b416a721c14a128eb71c1bdaee61c6ce8fbc6b4d7a2';

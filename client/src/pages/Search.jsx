@@ -161,7 +161,7 @@ export default function Search({ type }) {
             {type === 'tracks' && (
                 <Grid
                     templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)', lg: 'repeat(6, 1fr)' }}
-                    gap={{ base: 4, md: 12 }}
+                    gap={{ base: 4, md: 5 }}
                 >
                     {searchTracksData
                         ? searchTracksData.map((song, id) => <SongPreview key={id} song={song} />)

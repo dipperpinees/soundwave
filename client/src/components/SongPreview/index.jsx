@@ -109,13 +109,13 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
 
             <Flex direction="column" mt={1}>
                 {!isOwner && (
-                    <Text fontSize={14} fontWeight={600}>
+                    <Text fontSize={14} fontWeight={600} className="one-line-title">
                         {song.title}
                     </Text>
                 )}
                 {isOwner && (
                     <Flex justify="space-between">
-                        <Text fontSize={14} fontWeight={600}>
+                        <Text fontSize={14} fontWeight={600} className="one-line-title">
                             {song.title}
                         </Text>
                         <Menu>

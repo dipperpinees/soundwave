@@ -27,7 +27,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AiFillCamera } from 'react-icons/ai';
 import { GenreContext, UserContext } from '../../stores';
 import { LoadingContext } from '../../stores/loadingStore';
-import { DEFAULT_THUMBNAIL } from '../../utils/constant';
+import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
 import fetchAPI from '../../utils/fetchAPI';
 import SongPreview from '../SongPreview';
 import SongSkeleton from '../SquareSkeleton';
@@ -90,7 +90,9 @@ export default function SongsLibrary() {
             {editedTrack && (
                 <EditTrack editedTrack={editedTrack} onClose={() => setEditedTrack(null)} onUpdate={updateTrack} />
             )}
-            {deleteTrack && <DeleteTrackAlert onClose={() => setDeleteTrack(null)} onDelete={() => handleDelete(deleteTrack)} />}
+            {deleteTrack && (
+                <DeleteTrackAlert onClose={() => setDeleteTrack(null)} onDelete={() => handleDelete(deleteTrack)} />
+            )}
         </>
     );
 }
@@ -107,7 +109,9 @@ const DeleteTrackAlert = ({ onClose, onDelete }) => {
                     <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
 
                     <AlertDialogFooter>
-                        <Button onClick={onClose} color="black">Cancel</Button>
+                        <Button onClick={onClose} color="black">
+                            Cancel
+                        </Button>
                         <Button
                             colorScheme="red"
                             onClick={() => {
@@ -207,7 +211,7 @@ const EditTrack = ({ editedTrack, onClose, onUpdate }) => {
                             onClick={handleChangeThumbnail}
                         >
                             <Image
-                                src={thumbnail.src || DEFAULT_THUMBNAIL}
+                                src={thumbnail.src || DEFAULT_SONG_THUMBNAIL}
                                 boxSize="136px"
                                 borderRadius={8}
                                 objectFit="cover"
