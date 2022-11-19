@@ -26,7 +26,7 @@ func (UploadService) SingleFileUpload(file multipart.File) (string, error) {
 		return "", err
 	}
 
-	return uploadParams.SecureURL, nil
+	return uploadParams.URL, nil
 }
 
 func (u UploadService) MultipleFileUpload(files map[string]multipart.File) (map[string]string, error) {

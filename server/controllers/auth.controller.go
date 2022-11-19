@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
+	"github.com/hiepnguyen223/int3306-project/helper"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/services"
 )
@@ -140,7 +141,7 @@ func (AuthController) GoogleLogin(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	var user = userModel{Email: googleProfile.Email, Name: googleProfile.Name, Avatar: googleProfile.Picture, Password: common.RandStr(8)}
+	var user = userModel{Email: googleProfile.Email, Name: googleProfile.Name, Avatar: googleProfile.Picture, Password: helper.RandStr(8)}
 	if err := userService.FindOneOrCreate(&user); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return

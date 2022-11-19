@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/hiepnguyen223/int3306-project/common"
+	"github.com/hiepnguyen223/int3306-project/helper"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"gorm.io/gorm"
 )
@@ -17,7 +18,7 @@ func (SongService) CreateSong(data interface{}) error {
 	return err
 }
 
-func (SongService) FindByID(id uint) (songModel, error) {
+func (SongService) FindByID(id uint, userID uint) (songModel, error) {
 	song := songModel{}
 	err := common.GetDB().
 		Select("*, (Select count(*) from user_like_songs Where song_id = songs.id) as like_number").
@@ -28,13 +29,14 @@ func (SongService) FindByID(id uint) (songModel, error) {
 				"(Select count(*) from songs where author_id = users.id) as track_number",
 				"(Select count(*) from follows where following_id = users.id) as follower_number",
 				"(Select count(*) from follows where follower_id = users.id) as following_number",
+				helper.CheckFollowedSubquery(userID),
 			)
 		}).
 		First(&song, id).Error
 	return song, err
 }
 
-func (SongService) FindMany(page int, search string, orderBy string, genreID int, limit int) (*[]songModel, int64, error) {
+func (SongService) FindMany(page int, search string, orderBy string, genreID int, limit int, userID uint) (*[]songModel, int64, error) {
 	var listSong []songModel
 	var count int64
 	offSet := (page - 1) * limit
@@ -75,6 +77,7 @@ func (SongService) FindMany(page int, search string, orderBy string, genreID int
 					"(Select count(*) from songs where author_id = users.id) as track_number",
 					"(Select count(*) from follows where following_id = users.id) as follower_number",
 					"(Select count(*) from follows where follower_id = users.id) as following_number",
+					helper.CheckFollowedSubquery(userID),
 				)
 			}).
 			Limit(limit).Offset(offSet).Order(order).Find(&listSong).Error
@@ -98,7 +101,7 @@ func (SongService) GetLikeNumber(songID uint) (int64, error) {
 
 func (SongService) DeleteByID(songID uint) error {
 	var waitGroup sync.WaitGroup
-	waitGroup.Add(2)
+	waitGroup.Add(3)
 
 	go func() {
 		common.GetDB().Where("song_id = ?", songID).Delete(&models.UserLikeSong{})
@@ -107,6 +110,11 @@ func (SongService) DeleteByID(songID uint) error {
 
 	go func() {
 		common.GetDB().Where("song_id = ?", songID).Delete(&models.Comment{})
+		waitGroup.Done()
+	}()
+
+	go func() {
+		common.GetDB().Where("song_id = ?", songID).Delete(&models.PlaylistsSongs{})
 		waitGroup.Done()
 	}()
 

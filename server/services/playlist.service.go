@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/hiepnguyen223/int3306-project/common"
+	"github.com/hiepnguyen223/int3306-project/helper"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"gorm.io/gorm"
 )
@@ -12,7 +13,7 @@ func (PlaylistService) Create(data interface{}) error {
 	return common.GetDB().Create(data).Error
 }
 
-func (PlaylistService) FindByID(id uint) (models.Playlist, error) {
+func (PlaylistService) FindByID(id uint, userID uint) (models.Playlist, error) {
 	var playlist models.Playlist
 
 	err := common.GetDB().
@@ -24,6 +25,7 @@ func (PlaylistService) FindByID(id uint) (models.Playlist, error) {
 				"(Select count(*) from songs where author_id = users.id) as track_number",
 				"(Select count(*) from follows where following_id = users.id) as follower_number",
 				"(Select count(*) from follows where follower_id = users.id) as following_number",
+				helper.CheckFollowedSubquery(userID),
 			)
 		}).
 		Preload("Songs.Author", func(db *gorm.DB) *gorm.DB {

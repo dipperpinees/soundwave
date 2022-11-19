@@ -1,4 +1,18 @@
-import { Box, Button, Center, Container, Flex, Icon, Image, Input, Select, Stack, Text, useToast } from '@chakra-ui/react';
+import {
+    AspectRatio,
+    Box,
+    Button,
+    Center,
+    Container,
+    Flex,
+    Icon,
+    Image,
+    Input,
+    Select,
+    Stack,
+    Text,
+    useToast,
+} from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import * as _buffer from 'buffer';
 import * as musicMetadata from 'music-metadata-browser';
@@ -11,6 +25,7 @@ import { GenreContext } from '../stores';
 import { LoadingContext } from '../stores/loadingStore';
 import { DEFAULT_THUMBNAIL } from '../utils/constant';
 import fetchAPI from '../utils/fetchAPI';
+import { useNavigate } from 'react-router-dom';
 
 window.process = process;
 window.global = window;
@@ -30,6 +45,7 @@ export default function Upload() {
     const setLoading = useContext(LoadingContext)[1];
     const [audioFile, setAudioFile] = useState(null);
     const toast = useToast();
+    const navigate = useNavigate();
 
     const onDrop = (acceptedFiles) => {
         if (!acceptedFiles || !acceptedFiles[0]) return;
@@ -111,16 +127,17 @@ export default function Upload() {
 
         setLoading(true);
         try {
-            await fetchAPI("/song/",  {
+            await fetchAPI('/song/', {
                 method: 'POST',
                 body: formData,
-            })
+            });
             toast({
                 title: 'Upload song successfully.',
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
             });
+            navigate('/library');
         } catch (e) {
             toast({
                 title: e.message,
@@ -129,7 +146,7 @@ export default function Upload() {
                 isClosable: true,
             });
         }
-        
+
         setLoading(false);
     };
 
@@ -158,6 +175,7 @@ export default function Upload() {
                     as={motion.div}
                     {...getRootProps()}
                     width="100%"
+                    direction={{ base: 'column', sm: 'row' }}
                 >
                     <input {...getInputProps()} />
                     <Stack>
@@ -180,19 +198,23 @@ export default function Upload() {
                         gap={8}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
+                        direction={{ base: 'column', sm: 'row' }}
+                        align="center"
                     >
                         <Box
                             position="relative"
                             _hover={{ opacity: 0.6, cursor: 'pointer' }}
                             onClick={handleChangeThumbnail}
                         >
-                            <Image
-                                src={thumbnail.src || DEFAULT_THUMBNAIL}
-                                boxSize="180px"
-                                borderRadius={8}
-                                objectFit="cover"
-                                alt="thumbnail"
-                            />
+                            <AspectRatio width="180px" ratio={1}>
+                                <Image
+                                    src={thumbnail.src || DEFAULT_THUMBNAIL}
+                                    boxSize="180px"
+                                    borderRadius={8}
+                                    objectFit="cover"
+                                    alt="thumbnail"
+                                />
+                            </AspectRatio>
                             <Center position="absolute" top={0} bottom={0} left={0} right={0}>
                                 <AiFillCamera fontSize={24} />
                             </Center>
