@@ -19,32 +19,33 @@ var commentService = services.CommentService{}
 type songModel = models.Song
 
 func (SongController) CreateSong(c *gin.Context) {
-	type CreateSongForm struct {
-		Title     string                `form:"title" binding:"required"`
-		File      *multipart.FileHeader `form:"file" binding:"required"`
-		Thumbnail *multipart.FileHeader `form:"file"`
-		GenreID   uint                  `form:"genreID" binding:"required"`
-	}
 	user := c.Keys["user"].(*userModel)
 
 	//validate form data
-	formData := CreateSongForm{}
+	formData := models.SongCreateInput{}
 	if err := c.ShouldBind(&formData); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	//start upload file
-	songFile, _, _ := c.Request.FormFile("file")
-	thumbnailFile, _, _ := c.Request.FormFile("thumbnail")
-
-	//start upload avatar
 	var listFile = make(map[string]multipart.File)
+
+	songFile, _, _ := c.Request.FormFile("file")
+	//check audio file type is valid
+	if !common.IsValidContentType("audio", songFile) {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Invalid audio file type"})
+		return
+	}
 	listFile["song"] = songFile
+
+	thumbnailFile, _, _ := c.Request.FormFile("thumbnail")
 	if thumbnailFile != nil {
+		if !common.IsValidContentType("image", thumbnailFile) {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Invalid thumbnail file type"})
+			return
+		}
 		listFile["thumbnail"] = thumbnailFile
 	}
-
 	uploadUrl, err := uploadService.MultipleFileUpload(listFile)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -87,15 +88,7 @@ func (SongController) GetByID(c *gin.Context) {
 }
 
 func (SongController) FindMany(c *gin.Context) {
-	type QueryBinding struct {
-		Page    int    `form:"page,default=1"`
-		Search  string `form:"search"`
-		Limit   int    `form:"limit,default=10"`
-		GenreID int    `form:"genreID"`
-		OrderBy string `form:"orderBy"` // like, listen
-	}
-
-	query := QueryBinding{}
+	query := models.SongFilterInput{}
 	c.BindQuery(&query)
 
 	listSong, total, err := songService.FindMany(query.Page, query.Search, query.OrderBy, query.GenreID, query.Limit)
@@ -155,14 +148,7 @@ func (SongController) UpdateSong(c *gin.Context) {
 		return
 	}
 
-	type UpdateSongForm struct {
-		Title     string                `form:"title"`
-		File      *multipart.FileHeader `form:"file"`
-		Thumbnail *multipart.FileHeader `form:"thumbnail"`
-		GenreID   uint                  `form:"genreID"`
-	}
-
-	formData := UpdateSongForm{}
+	formData := models.SongUpdateInput{}
 	c.ShouldBind(&formData)
 
 	//start upload file
@@ -194,12 +180,8 @@ func (SongController) UpdateSong(c *gin.Context) {
 }
 
 func (SongController) CreateComment(c *gin.Context) {
-	type CommentBody struct {
-		Content string `json:"content" binding:"required"`
-	}
-
 	params := common.IdParams{}
-	body := CommentBody{}
+	body := models.CommentCreateInput{}
 	if err := c.ShouldBind(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return

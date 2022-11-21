@@ -74,13 +74,7 @@ func (UserController) GetUser(c *gin.Context) {
 func (UserController) SearchUser(c *gin.Context) {
 	user := c.Keys["user"]
 
-	type SearchUserQuery struct {
-		Search  string `form:"search"`
-		Page    int    `form:"page,default=1"`
-		Limit   int    `form:"limit,default=10"`
-		OrderBy string `form:"orderBy"` //follower, track
-	}
-	query := SearchUserQuery{}
+	query := models.UserFilterInput{}
 	if err := c.BindQuery(&query); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -212,12 +206,3 @@ func (UserController) GetFollowings(c *gin.Context) {
 
 	c.JSON(http.StatusOK, &followings)
 }
-
-// func (UserController) CheckIsFollow(c *gin.Context) {
-// 	params := common.IdParams{}
-// 	if err := c.ShouldBindUri(&params); err != nil {
-// 		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid user ID")
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, )
-// }

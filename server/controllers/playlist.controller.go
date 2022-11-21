@@ -17,7 +17,6 @@ func (PlaylistController) Create(c *gin.Context) {
 	user := c.Keys["user"].(*userModel)
 	type Body struct {
 		Name string `json:"name" binding:"required"`
-		// Songs []uint `json:"songs"`
 	}
 	body := Body{}
 	if err := c.BindJSON(&body); err != nil {
