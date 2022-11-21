@@ -18,6 +18,7 @@ type User struct {
 	TrackNumber     int       `gorm:"-:migration <-:false" json:"trackNumber"`
 	FollowerNumber  int       `gorm:"-:migration <-:false" json:"followerNumber"`
 	FollowingNumber int       `gorm:"-:migration <-:false" json:"followingNumber"`
+	IsFollowed      bool      `gorm:"-:migration <-:false" json:"isFollowed"`
 }
 
 type UserSignInInput struct {

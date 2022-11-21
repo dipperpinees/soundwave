@@ -63,7 +63,7 @@ export function PlaylistStore({ children }) {
                     {type === 'create' && (
                         <CreatePlaylist
                             isBack={isBack}
-                            showAddSong={() => dispatch({ type: 'ShowAddSong' })}
+                            showAddSong={() => dispatch({ type: 'ShowAddSong', payload: songID })}
                             onClose={() => dispatch({ type: 'Close' })}
                         />
                     )}

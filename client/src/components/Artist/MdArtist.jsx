@@ -10,14 +10,14 @@ import { Link } from 'react-router-dom';
 
 export default function MdArtist({ id, name, avatar, followerNumber, trackNumber }) {
     return (
-        <Flex align="center" justify="space-between" my={2} width="100%">
+        <Flex align="center" justify="space-between" my={2} width="100%" gap={3}>
             <Flex align="center" gap={1}>
                 <Link to={`/profile/${id}`}>
                     <Avatar name={name} src={avatar} size="lg" />
                 </Link>
                 <Stack>
                     <Link to={`/profile/${id}`}>
-                        <Text fontSize={14}>{name}</Text>
+                        <Text fontSize={14} width={{base: 160, md: 36}} whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">{name}</Text>
                     </Link>
                     <Flex fontSize={12}>
                         <Icon as={IoMdPeople} fontSize={16} mr={1} /> {followerNumber}
