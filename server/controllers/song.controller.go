@@ -60,7 +60,7 @@ func (SongController) CreateSong(c *gin.Context) {
 		AuthorID:  user.ID,
 		GenreID:   formData.GenreID,
 	}
-	if err := songService.CreateSong(&newSong); err != nil {
+	if err := songService.CreateOne(&newSong); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -173,7 +173,7 @@ func (SongController) UpdateSong(c *gin.Context) {
 		return
 	}
 
-	updateData, err := songService.Update(params.ID, formData.Title, uploadUrl["song"], uploadUrl["thumbnail"], formData.GenreID)
+	updateData, err := songService.UpdateOne(params.ID, formData.Title, uploadUrl["song"], uploadUrl["thumbnail"], formData.GenreID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -198,7 +198,7 @@ func (SongController) CreateComment(c *gin.Context) {
 
 	comment := models.Comment{AuthorID: user.ID, SongID: params.ID, Content: body.Content}
 
-	err := commentService.CreateComment(&comment)
+	err := commentService.CreateOne(&comment)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -214,7 +214,7 @@ func (SongController) GetCommentOfSong(c *gin.Context) {
 		return
 	}
 
-	comments, err := commentService.GetCommentOfSong(params.ID)
+	comments, err := commentService.GetCommentsOfSong(params.ID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -230,7 +230,7 @@ func (SongController) DeleteComment(c *gin.Context) {
 		return
 	}
 
-	if err := commentService.DeleteComment(params.ID); err != nil {
+	if err := commentService.DeleteOne(params.ID); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -255,7 +255,7 @@ func (SongController) UpdateComment(c *gin.Context) {
 		return
 	}
 
-	if err := commentService.UpdateComment(params.ID, body.Content); err != nil {
+	if err := commentService.UpdateOne(params.ID, body.Content); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}

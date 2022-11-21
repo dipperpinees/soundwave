@@ -45,8 +45,8 @@ func (AuthController) SignIn(c *gin.Context) {
 		return
 	}
 
-	user, err := userService.FindOne(&userModel{Email: body.Email})
-	if err != nil {
+	var user userModel
+	if err := common.GetDB().Where("email = ?", body.Email).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This user is not exist"})
 		return
 	}
@@ -78,11 +78,13 @@ func (AuthController) ForgetPassword(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	user, err := userService.FindOne(&userModel{Email: body.Email})
-	if err != nil {
+
+	var user userModel
+	if err := common.GetDB().Where("email = ?", body.Email).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This user doesn't exist"})
 		return
 	}
+
 	code, err := userService.CreateForget(user.ID)
 	emailService.SendForgotPassword([]string{user.Email}, code)
 	if err != nil {

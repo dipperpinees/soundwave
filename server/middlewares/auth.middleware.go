@@ -6,10 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/models"
-	"github.com/hiepnguyen223/int3306-project/services"
 )
-
-var userService = services.UserService{}
 
 type userModel = models.User
 
@@ -33,7 +30,8 @@ func AuthMiddleware() gin.HandlerFunc {
 		if userCache != nil {
 			c.Set("user", userCache)
 		} else {
-			user, err := userService.FindOne(userModel{ID: userID})
+			var user userModel
+			err := common.GetDB().First(&user, userID).Error
 			if err != nil {
 				c.Set("user", nil)
 				return

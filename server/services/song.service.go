@@ -13,7 +13,7 @@ type songModel = models.Song
 
 type SongService struct{}
 
-func (SongService) CreateSong(data interface{}) error {
+func (SongService) CreateOne(data interface{}) error {
 	err := common.GetDB().Create(data).Error
 	return err
 }
@@ -93,12 +93,6 @@ func (SongService) CreateFavoriteSong(userID uint, songID uint) (*models.UserLik
 	return &newFavoriteSong, err
 }
 
-func (SongService) GetLikeNumber(songID uint) (int64, error) {
-	var count int64
-	err := common.GetDB().Model(&models.UserLikeSong{}).Where("song_id = ?", songID).Count(&count).Error
-	return count, err
-}
-
 func (SongService) DeleteByID(songID uint) error {
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(3)
@@ -122,7 +116,7 @@ func (SongService) DeleteByID(songID uint) error {
 	return common.GetDB().Delete(&songModel{}, songID).Error
 }
 
-func (SongService) Update(songID uint, title string, url string, thumbnail string, genreID uint) (map[string]interface{}, error) {
+func (SongService) UpdateOne(songID uint, title string, url string, thumbnail string, genreID uint) (map[string]interface{}, error) {
 	updateData := make(map[string]interface{})
 
 	if title != "" {
