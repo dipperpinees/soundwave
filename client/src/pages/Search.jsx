@@ -27,7 +27,7 @@ export default function Search({ type }) {
                     limit: 12,
                     ...(search && { search }),
                     ...(orderBy && { orderBy }),
-                    ...(genreID && {genreID})
+                    ...(genreID && { genreID }),
                 })
         );
         if (response.ok) {
@@ -82,10 +82,11 @@ export default function Search({ type }) {
             color="white"
             direction="column"
             paddingBottom={40}
-            paddingRight={12}
+            paddingRight={{ base: 4, md: 12 }}
+            paddingLeft={{ base: 4, md: 0 }}
             minHeight={'calc(100vh - var(--header-height))'}
         >
-            <Flex>
+            <Flex flexWrap={{ base: 'wrap', md: 'inherit' }} gap={{ base: 2, md: 0 }}>
                 <Link to="/search">
                     <Button
                         variant="ghost"
@@ -113,9 +114,9 @@ export default function Search({ type }) {
                 {type === 'tracks' && (
                     <>
                         <Select
-                            marginLeft="auto"
-                            marginRight={4}
-                            width={40}
+                            marginLeft={{ base: 0, sm: 'auto' }}
+                            marginRight={{ base: 0, md: 4 }}
+                            width={{ base: 'auto', md: 40 }}
                             defaultValue={searchParams.get('genre')}
                             focusBorderColor="primary.500"
                             onChange={(e) => handleChangeSearch({ genre: e.target.value })}
@@ -126,7 +127,7 @@ export default function Search({ type }) {
                             ))}
                         </Select>
                         <Select
-                            width={40}
+                            width={{ base: 'auto', md: 40 }}
                             defaultValue={searchParams.get('order')}
                             focusBorderColor="primary.500"
                             onChange={(e) => handleChangeSearch({ order: e.target.value })}
@@ -139,7 +140,7 @@ export default function Search({ type }) {
                 )}
                 {type === 'people' && (
                     <Select
-                        marginLeft="auto"
+                        marginLeft={{ base: 0, sm: 'auto' }}
                         width={40}
                         defaultValue={searchParams.get('order')}
                         focusBorderColor="primary.500"
@@ -158,9 +159,12 @@ export default function Search({ type }) {
                     }`}
             </Text>
             {type === 'tracks' && (
-                <Grid templateColumns="repeat(6, 1fr)" gap={12}>
+                <Grid
+                    templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)', lg: 'repeat(6, 1fr)' }}
+                    gap={{ base: 4, md: 5 }}
+                >
                     {searchTracksData
-                        ? searchTracksData.map((song, id) => <SongPreview key={id} song={song} />)
+                        ? searchTracksData.map((song) => <SongPreview key={song.id} song={song} />)
                         : [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)}
                 </Grid>
             )}

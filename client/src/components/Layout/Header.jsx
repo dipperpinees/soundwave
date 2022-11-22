@@ -10,7 +10,8 @@ import {
     Menu,
     MenuButton,
     MenuItem,
-    MenuList, VStack
+    MenuList,
+    VStack,
 } from '@chakra-ui/react';
 import queryString from 'query-string';
 import { useContext, useEffect, useState } from 'react';
@@ -39,6 +40,7 @@ export default function Header() {
     async function logOut() {
         fetchAPI('/logout', { method: 'POST' });
         userDispatch({ type: 'Delete' });
+        navigate('/signin');
     }
 
     const handleSearch = () => {
@@ -56,8 +58,8 @@ export default function Header() {
     };
 
     return (
-        <Flex alignItems="center" className="header" color="white" zIndex="calc(var(--chakra-zIndices-modal) -1)">
-            <Box position={'relative'} width="50%">
+        <Flex alignItems="center" className="header" color="white" zIndex={10}>
+            <Box position={'relative'} width="50%" display={{base: "none", sm: "block"}} ml={{base: 0, sm: 16, md: 0}}>
                 <InputGroup width="100%" marginLeft="8px" size="sm">
                     <InputLeftElement pointerEvents="none" children={<BiSearchAlt color="gray.300" />} />
                     <Input
@@ -88,7 +90,7 @@ export default function Header() {
                     </VStack>
                 )}
             </Box>
-            {!!user.id && <Icon as={MdOutlineNotifications} fontSize={20} ml="auto"/>}
+            {!!user.id && <Icon as={MdOutlineNotifications} fontSize={20} ml="auto" />}
             {!!user.id ? (
                 <Menu>
                     <MenuButton>

@@ -13,11 +13,11 @@ export default function LgArtist({ id, name, avatar, followerNumber, trackNumber
         <Flex align="center" my={2} width="100%">
             <Flex align="center" gap={1}>
                 <Link to={`/profile/${id}`}>
-                    <Avatar name={name} src={avatar} size="2xl" mr={4} />
+                    <Avatar name={name} src={avatar} size={{base: "xl", md: "2xl"}} mr={4} />
                 </Link>
                 <Stack>
                     <Link to={`/profile/${id}`}>
-                        <Text fontSize={20}>{name}</Text>
+                        <Text fontSize={{base: 16, md: 20}}>{name}</Text>
                     </Link>
                     <Flex fontSize={12}>
                         <Icon as={IoMdPeople} fontSize={16} mr={1} /> {followerNumber}

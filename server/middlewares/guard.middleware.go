@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
-	"github.com/hiepnguyen223/int3306-project/dtos"
+	"github.com/hiepnguyen223/int3306-project/helper"
 	"github.com/hiepnguyen223/int3306-project/models"
 )
 
@@ -20,7 +20,7 @@ func AuthGuard() gin.HandlerFunc {
 
 func SongGuard() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		params := dtos.IdParams{}
+		params := helper.IdParams{}
 		if err := c.ShouldBindUri(&params); err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
 			return
@@ -48,7 +48,7 @@ func SongGuard() gin.HandlerFunc {
 
 func CommentGuard() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		params := dtos.IdParams{}
+		params := helper.IdParams{}
 		if err := c.ShouldBindUri(&params); err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid comment ID"})
 			return
@@ -76,7 +76,7 @@ func CommentGuard() gin.HandlerFunc {
 
 func PlaylistGuard() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		params := dtos.IdParams{}
+		params := helper.IdParams{}
 		if err := c.ShouldBindUri(&params); err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid playlist ID"})
 			return

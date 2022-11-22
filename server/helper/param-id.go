@@ -1,4 +1,4 @@
-package dtos
+package helper
 
 type IdParams struct {
 	ID uint `uri:"id"`

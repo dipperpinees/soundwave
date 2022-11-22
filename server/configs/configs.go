@@ -49,3 +49,11 @@ func EnvEmail() (string, string) {
 func EnvClientDomain() string {
 	return os.Getenv("CLIENT_DOMAIN")
 }
+
+func Environment() string {
+	return os.Getenv("ENV")
+}
+
+func EnvPort() string {
+	return os.Getenv("PORT")
+}

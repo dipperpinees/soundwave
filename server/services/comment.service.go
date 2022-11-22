@@ -8,12 +8,11 @@ import (
 
 type CommentService struct{}
 
-func (CommentService) CreateComment(data *models.Comment) error {
-	err := common.GetDB().Create(&data).Error
-	return err
+func (CommentService) CreateOne(data *models.Comment) error {
+	return common.GetDB().Create(&data).Error
 }
 
-func (CommentService) GetCommentByID(id uint) (models.Comment, error) {
+func (CommentService) FindByID(id uint) (models.Comment, error) {
 	var comment models.Comment
 	err := common.GetDB().
 		Preload("Author", func(db *gorm.DB) *gorm.DB {
@@ -28,7 +27,7 @@ func (CommentService) GetCommentByID(id uint) (models.Comment, error) {
 	return comment, err
 }
 
-func (CommentService) GetCommentOfSong(songID uint) (*[]models.Comment, error) {
+func (CommentService) GetCommentsOfSong(songID uint) (*[]models.Comment, error) {
 	comments := []models.Comment{}
 
 	err := common.GetDB().
@@ -47,10 +46,10 @@ func (CommentService) GetCommentOfSong(songID uint) (*[]models.Comment, error) {
 	return &comments, err
 }
 
-func (CommentService) DeleteComment(commentID uint) error {
+func (CommentService) DeleteOne(commentID uint) error {
 	return common.GetDB().Delete(&models.Comment{}, commentID).Error
 }
 
-func (CommentService) UpdateComment(commentID uint, content string) error {
+func (CommentService) UpdateOne(commentID uint, content string) error {
 	return common.GetDB().Model(&models.Comment{}).Where("id = ?", commentID).Update("content", content).Error
 }

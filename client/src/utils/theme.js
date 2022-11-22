@@ -22,13 +22,6 @@ const theme = extendTheme({
         hoverColor: 'rgba(255, 255, 255, 0.1)',
         primaryBorderColor: 'rgba(255, 255, 255, 0.2)',
     },
-    breakpoints: {
-        sm: '320px',
-        md: '768px',
-        lg: '960px',
-        xl: '1200px',
-        '2xl': '1536px',
-    },
     fontSizes: {
         xs: '0.7rem',
         md: '1rem',

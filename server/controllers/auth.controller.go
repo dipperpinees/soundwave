@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
+	"github.com/hiepnguyen223/int3306-project/helper"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/services"
 )
@@ -17,12 +18,7 @@ type userModel = models.User
 type AuthController struct{}
 
 func (AuthController) SignUp(c *gin.Context) {
-	type Body struct {
-		Email    string `json:"email" binding:"required,email"`
-		Name     string `json:"name" binding:"required,min=6"`
-		Password string `json:"password" binding:"required,min=6"`
-	}
-	body := Body{}
+	body := models.UserCreateInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -38,25 +34,19 @@ func (AuthController) SignUp(c *gin.Context) {
 	}
 
 	tokenString, _ := common.GenerateJWT(newUser.ID)
-	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
+	common.SetTokenCookie(c, tokenString)
 	c.JSON(http.StatusAccepted, gin.H{"id": newUser.ID, "name": newUser.Name, "avatar": newUser.Avatar, "role": newUser.Role})
 }
 
 func (AuthController) SignIn(c *gin.Context) {
-	type Body struct {
-		Email    string `json:"email" binding:"required,email"`
-		Password string `json:"password" binding:"required,min=6"`
-	}
-
-	body := Body{}
+	body := models.UserSignInInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	user, err := userService.FindOne(&userModel{Email: body.Email})
-	if err != nil {
+	var user userModel
+	if err := common.GetDB().Where("email = ?", body.Email).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This user is not exist"})
 		return
 	}
@@ -68,8 +58,7 @@ func (AuthController) SignIn(c *gin.Context) {
 
 	tokenString, _ := common.GenerateJWT(user.ID)
 
-	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
+	common.SetTokenCookie(c, tokenString)
 	c.JSON(http.StatusAccepted, gin.H{"id": user.ID, "name": user.Name, "avatar": user.Avatar, "role": user.Role})
 }
 
@@ -79,25 +68,23 @@ func (AuthController) Auth(c *gin.Context) {
 }
 
 func (AuthController) LogOut(c *gin.Context) {
-	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("access_token", "", -1, "/", "", true, true)
+	common.ClearTokenCookie(c)
 	c.JSON(http.StatusOK, gin.H{"message": "Log out successfully"})
 }
 
 func (AuthController) ForgetPassword(c *gin.Context) {
-	type Body struct {
-		Email string `json:"email"`
-	}
-	body := Body{}
+	body := models.UserEmailInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	user, err := userService.FindOne(&userModel{Email: body.Email})
-	if err != nil {
+
+	var user userModel
+	if err := common.GetDB().Where("email = ?", body.Email).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This user doesn't exist"})
 		return
 	}
+
 	code, err := userService.CreateForget(user.ID)
 	emailService.SendForgotPassword([]string{user.Email}, code)
 	if err != nil {
@@ -108,12 +95,7 @@ func (AuthController) ForgetPassword(c *gin.Context) {
 }
 
 func (AuthController) ResetPassword(c *gin.Context) {
-	type Body struct {
-		UserID      uint   `json:"userID,string,omitempty" binding:"required"`
-		Code        string `json:"code,omitempty" binding:"required"`
-		NewPassword string `json:"newPassword,omitempty" binding:"required,min=6"`
-	}
-	body := Body{}
+	body := models.UserResetPasswordInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -126,14 +108,7 @@ func (AuthController) ResetPassword(c *gin.Context) {
 }
 
 func (AuthController) GoogleLogin(c *gin.Context) {
-	type Body struct {
-		AccessToken string `json:"access_token" binding:"required"`
-		AuthUser    string `json:"authuser"`
-		ExpiresIn   string `json:"prompt"`
-		Scope       string `json:"scope"`
-		TokenType   string `json:"bearer"`
-	}
-	body := Body{}
+	body := models.UserGoogleInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -143,7 +118,7 @@ func (AuthController) GoogleLogin(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	var user = userModel{Email: googleProfile.Email, Name: googleProfile.Name, Avatar: googleProfile.Picture, Password: common.RandStr(8)}
+	var user = userModel{Email: googleProfile.Email, Name: googleProfile.Name, Avatar: googleProfile.Picture, Password: helper.RandStr(8)}
 	if err := userService.FindOneOrCreate(&user); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -151,7 +126,6 @@ func (AuthController) GoogleLogin(c *gin.Context) {
 
 	tokenString, _ := common.GenerateJWT(user.ID)
 
-	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("access_token", tokenString, 365*60*60*24, "/", "", true, true)
+	common.SetTokenCookie(c, tokenString)
 	c.JSON(http.StatusAccepted, gin.H{"id": user.ID, "name": user.Name, "avatar": user.Avatar, "role": user.Role})
 }

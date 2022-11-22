@@ -1,45 +1,126 @@
-import { Flex, Icon, Text } from '@chakra-ui/react';
-import { useContext } from 'react';
+import { Box, Flex, Icon, Text, useMediaQuery } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+import { useContext, useEffect, useState } from 'react';
+import { FiMenu } from 'react-icons/fi';
 import { HiHeart, HiHome, HiMusicalNote } from 'react-icons/hi2';
-import { MdLibraryMusic } from 'react-icons/md';
+import { MdClose, MdLibraryMusic } from 'react-icons/md';
 import { RiUploadCloud2Fill } from 'react-icons/ri';
 import { NavLink, useLocation } from 'react-router-dom';
 import { UserContext } from '../../stores';
 
-export default function Navbar() {
+function Navbar() {
     const location = useLocation();
     const user = useContext(UserContext)[0];
+    const [showMobileBar, setShowMobileBar] = useState(false);
+    const [isMobile] = useMediaQuery('(max-width: 48em)');
+
+    useEffect(() => {
+        setShowMobileBar(!isMobile);
+    }, [isMobile]);
+
     if (location.pathname === '/signin' || location.pathname === '/signup') return null;
 
-    return (
-        <Flex
-            position="fixed"
-            color="gray"
-            justifyContent="center"
-            alignItems="center"
-            direction="column"
-            top={0}
-            left={0}
-            bottom={0}
-            width="120px"
-            gap={10}
-            zIndex="calc(var(--chakra-zIndices-modal) -1)"
-        >
-            <Text position="absolute" top={5}>LOGO</Text>
-            <NavLink to="/" end style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>
-                <Icon as={HiHome} fontSize={28} />
-            </NavLink>
+    const closeMobileBar = () => {
+        setShowMobileBar(false);
+    };
 
-            <Icon as={HiMusicalNote} fontSize={28} />
-            <Icon as={HiHeart} fontSize={28} />
-            {!!user.id && (
-                <NavLink to="/upload" style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>
-                    <Icon as={RiUploadCloud2Fill} fontSize={28} />
-                </NavLink>
+    const mobileNavbarAnimation = {
+        as: motion.div,
+        initial: { marginLeft: '-120px' },
+        animate: showMobileBar ? { marginLeft: 0 } : { marginLeft: '-120px' },
+        transition: { duration: 1 },
+    };
+
+    return (
+        <>
+            {isMobile && (
+                <Icon
+                    as={FiMenu}
+                    position="fixed"
+                    top="calc(var(--header-height) / 2 - 12px)"
+                    fontSize={24}
+                    left={6}
+                    zIndex={10}
+                    color="white"
+                    _hover={{ cursor: 'pointer', color: 'var(--primary-color)' }}
+                    onClick={() => setShowMobileBar(!showMobileBar)}
+                />
             )}
-            {!!user.id && <NavLink to="/library" style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>
-                <Icon as={MdLibraryMusic} fontSize={28} />
-            </NavLink>}
-        </Flex>
+            {isMobile && showMobileBar && (
+                <Box
+                    position="fixed"
+                    top={0}
+                    left={0}
+                    right={0}
+                    bottom={0}
+                    bgColor="blackAlpha.500"
+                    zIndex={9}
+                    onClick={closeMobileBar}
+                ></Box>
+            )}
+            <Flex
+                position="fixed"
+                color="gray"
+                justifyContent="center"
+                alignItems="center"
+                direction="column"
+                top={0}
+                left={0}
+                bottom={0}
+                width="120px"
+                gap={10}
+                zIndex={10}
+                bgColor={{ base: 'blackAlpha.900', md: 'transparent' }}
+                {...(isMobile && mobileNavbarAnimation)}
+            >
+                {!isMobile && (
+                    <Text position="absolute" top={5}>
+                        LOGO
+                    </Text>
+                )}
+                {isMobile && (
+                    <Icon
+                        as={MdClose}
+                        position="absolute"
+                        top={8}
+                        fontSize={28}
+                        color="white"
+                        _hover={{ cursor: 'pointer', color: 'var(--primary-color)' }}
+                        onClick={closeMobileBar}
+                    />
+                )}
+                <NavLink
+                    to="/"
+                    end
+                    style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}
+                    onClick={closeMobileBar}
+                >
+                    <Icon as={HiHome} fontSize={28} />
+                </NavLink>
+
+                <Icon as={HiMusicalNote} fontSize={28} onClick={closeMobileBar} />
+                <Icon as={HiHeart} fontSize={28} onClick={closeMobileBar} />
+                {!!user.id && (
+                    <NavLink
+                        to="/upload"
+                        style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}
+                        onClick={closeMobileBar}
+                    >
+                        <Icon as={RiUploadCloud2Fill} fontSize={28} />
+                    </NavLink>
+                )}
+                {!!user.id && (
+                    <NavLink
+                        to="/library"
+                        style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}
+                        onClick={closeMobileBar}
+                    >
+                        <Icon as={MdLibraryMusic} fontSize={28} />
+                    </NavLink>
+                )}
+            </Flex>
+        </>
     );
 }
+
+export default Navbar;

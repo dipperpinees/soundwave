@@ -8,11 +8,11 @@ import (
 
 type FollowService struct{}
 
-func (FollowService) Follow(followerID uint, follwingID uint) error {
+func (FollowService) CreateOne(followerID uint, follwingID uint) error {
 	return common.GetDB().Create(&models.Follow{FollowerID: followerID, FollowingID: follwingID}).Error
 }
 
-func (FollowService) UnFollow(followerID uint, followingID uint) error {
+func (FollowService) DeleteOne(followerID uint, followingID uint) error {
 	return common.GetDB().Where("follower_id = ?", followerID).Where("following_id = ?", followingID).Delete(&models.Follow{}).Error
 }
 
@@ -62,18 +62,4 @@ func (FollowService) GetFollowings(userID uint) ([]userModel, error) {
 	}
 
 	return followings, err
-}
-
-func (FollowService) GetFollowerNumber(userID uint) (int64, error) {
-	var count int64
-	err := common.GetDB().Where("following_id = ?", userID).Count(&count).Error
-
-	return count, err
-}
-
-func (FollowService) GetFollowingNumber(userID uint) (int64, error) {
-	var count int64
-	err := common.GetDB().Where("follower_id = ?", userID).Count(&count).Error
-
-	return count, err
 }

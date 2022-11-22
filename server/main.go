@@ -5,8 +5,10 @@ import (
 
 	"os"
 
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
+	"github.com/hiepnguyen223/int3306-project/configs"
 	"github.com/hiepnguyen223/int3306-project/middlewares"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/routers"
@@ -23,6 +25,9 @@ func main() {
 	//initialize database
 	common.InitDB()
 
+	//initialize cache storage
+	common.InitCache()
+
 	//migrate database
 	models.Migrate()
 
@@ -35,12 +40,17 @@ func main() {
 	app.Use(middlewares.CORSMiddleware())
 	app.Use(middlewares.AuthMiddleware())
 
+	//serve client
+	if configs.Environment() == "production" {
+		app.Use(static.Serve("/", static.LocalFile("../client/build", false)))
+	}
+
 	router := app.Group("/api")
 
 	routers.HandleRoute(router)
 
 	var PORT string
-	if os.Getenv("PORT") != "" {
+	if configs.EnvPort() != "" {
 		PORT = ":" + os.Getenv("PORT")
 	} else {
 		PORT = ":3001"

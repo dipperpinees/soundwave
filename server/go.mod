@@ -4,9 +4,11 @@ go 1.18
 
 require (
 	github.com/cloudinary/cloudinary-go/v2 v2.2.0
+	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.8.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/joho/godotenv v1.4.0
+	github.com/patrickmn/go-cache v2.1.0+incompatible
 	golang.org/x/crypto v0.0.0-20220926161630-eccd6366d1be
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gorm.io/driver/mysql v1.3.6

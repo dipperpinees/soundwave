@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { AiFillPlayCircle } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import { MdDeleteOutline, MdModeEditOutline } from 'react-icons/md';
+import { DEFAULT_PLAYLIST_THUMBNAIL } from '../../utils/image';
 
-export default function PlaylistPreview({ name, songs }) {
+export default function PlaylistPreview({ id, name, songs, onDelete }) {
     const [showPlay, setShowPlay] = useState(false);
     return (
         <Box width="100%">
@@ -15,7 +16,7 @@ export default function PlaylistPreview({ name, songs }) {
                 onMouseLeave={() => setShowPlay(false)}
             >
                 <AspectRatio width="100%" ratio={1}>
-                    <Image objectFit="cover" src={songs?.[0].thumbnail} alt="Dan Abramov" borderRadius={16} />
+                    <Image objectFit="cover" src={songs?.[0]?.thumbnail || DEFAULT_PLAYLIST_THUMBNAIL} alt="Dan Abramov" borderRadius={16} />
                 </AspectRatio>
                 {showPlay && (
                     <Icon
@@ -31,29 +32,30 @@ export default function PlaylistPreview({ name, songs }) {
                     />
                 )}
             </Box>
-            <Flex justify="space-between">
-                <Text fontSize={14} fontWeight={600}>
-                    {name}
+            <Flex direction="column" mt={1}>
+                <Flex justify="space-between">
+                    <Text fontSize={14} fontWeight={600} className="one-line-title">
+                        {name}
+                    </Text>
+                    <Menu>
+                        <MenuButton>
+                            <Icon as={FiEdit} display="flex" fontSize={20} />
+                        </MenuButton>
+                        <MenuList minWidth={24} bgColor="blackAlpha.900" border="none" fontSize={12}>
+                            <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} padding="2px 8px">
+                                <Icon as={MdModeEditOutline} marginRight={1} />
+                                Edit
+                            </MenuItem>
+                            <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} padding="2px 8px" onClick={() => onDelete(id)}>
+                                <Icon as={MdDeleteOutline} marginRight={1} />
+                                Delete
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>
+                </Flex>
+                <Text fontSize={12} fontWeight={600} color="whiteAlpha.700" as="span">
+                    Playlist • {songs.length} songs
                 </Text>
-                <Menu>
-                    <MenuButton>
-                        <Icon as={FiEdit} display="flex" fontSize={20} />
-                    </MenuButton>
-                    <MenuList minWidth={24} bgColor="blackAlpha.900" border="none" fontSize={12}>
-                        <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} padding="2px 8px">
-                            <Icon as={MdModeEditOutline} marginRight={1} />
-                            Edit
-                        </MenuItem>
-                        <MenuItem
-                            _focus={{ color: 'var(--primary-color)' }}
-                            _active={{}}
-                            padding="2px 8px"
-                        >
-                            <Icon as={MdDeleteOutline} marginRight={1} />
-                            Delete
-                        </MenuItem>
-                    </MenuList>
-                </Menu>
             </Flex>
         </Box>
     );

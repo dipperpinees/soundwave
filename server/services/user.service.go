@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/hiepnguyen223/int3306-project/common"
+	"github.com/hiepnguyen223/int3306-project/helper"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"gorm.io/gorm"
 )
@@ -17,17 +18,11 @@ func (UserService) CreateOne(data interface{}) error {
 	return err
 }
 
-func (UserService) FindOne(condition interface{}) (userModel, error) {
-	user := userModel{}
-	err := common.GetDB().Where(condition).First(&user).Error
-	return user, err
-}
-
 func (UserService) FindOneOrCreate(user *userModel) error {
 	return common.GetDB().FirstOrCreate(&user, userModel{Email: user.Email}).Error
 }
 
-func (UserService) GetProfile(id uint) (userModel, error) {
+func (UserService) FindOne(profileID uint, userID uint) (userModel, error) {
 	user := userModel{}
 	err := common.
 		GetDB().
@@ -35,8 +30,9 @@ func (UserService) GetProfile(id uint) (userModel, error) {
 			"(Select count(*) from songs where author_id = users.id) as track_number",
 			"(Select count(*) from follows where following_id = users.id) as follower_number",
 			"(Select count(*) from follows where follower_id = users.id) as following_number",
+			helper.CheckFollowedSubquery(userID),
 		).
-		First(&user, id).Error
+		First(&user, profileID).Error
 	return user, err
 }
 
@@ -46,7 +42,7 @@ func (UserService) UpdateOne(userId uint, data interface{}) error {
 	return err
 }
 
-func (UserService) Search(page int, search string, orderBy string, limit int, user interface{}) (*[]userModel, int64, error) {
+func (UserService) FindMany(page int, search string, orderBy string, limit int, userID uint) (*[]userModel, int64, error) {
 	var userList []userModel
 	offSet := (page - 1) * limit
 	queueErr := make(chan error, 1)
@@ -59,8 +55,8 @@ func (UserService) Search(page int, search string, orderBy string, limit int, us
 		if search != "" {
 			db = db.Where("name LIKE ?", "%"+search+"%")
 		}
-		if user != nil {
-			db = db.Where("id <> ?", user.(*userModel).ID)
+		if userID != 0 {
+			db = db.Where("id <> ?", userID)
 		}
 		queueErr <- db.Find(&userModel{}).Count(&i).Error
 		count <- i
@@ -78,14 +74,15 @@ func (UserService) Search(page int, search string, orderBy string, limit int, us
 		if orderBy == "follower" {
 			order = "follower_number desc"
 		}
-		if user != nil {
-			db = db.Where("id <> ?", user.(*userModel).ID)
+		if userID != 0 {
+			db = db.Where("id <> ?", userID)
 		}
 		queueErr <- db.
 			Select("*",
 				"(Select count(*) from songs where author_id = users.id) as track_number",
 				"(Select count(*) from follows where following_id = users.id) as follower_number",
 				"(Select count(*) from follows where follower_id = users.id) as following_number",
+				helper.CheckFollowedSubquery(userID),
 			).
 			Limit(limit).
 			Offset(offSet).
@@ -113,18 +110,18 @@ func (UserService) GetFavoriteSong(userID uint) ([]songModel, error) {
 	return songs, err
 }
 
-func (u UserService) GetSongOfUser(userID uint) ([]songModel, error) {
+func (u UserService) GetSongOfUser(authorID uint, userID uint) ([]songModel, error) {
 	var songs []songModel
 	var author userModel
 	queueErr := make(chan error, 1)
 
 	go func() {
-		queueErr <- common.GetDB().Select("*, (Select count(*) from user_like_songs Where song_id = songs.id) as like_number").Preload("Genre").Where("author_id = ?", userID).Find(&songs).Error
+		queueErr <- common.GetDB().Select("*, (Select count(*) from user_like_songs Where song_id = songs.id) as like_number").Preload("Genre").Where("author_id = ?", authorID).Find(&songs).Error
 	}()
 
 	go func(author *userModel) {
 		var err error
-		*author, err = u.GetProfile(userID)
+		*author, err = u.FindOne(authorID, userID)
 		queueErr <- err
 	}(&author)
 
@@ -138,7 +135,7 @@ func (u UserService) GetSongOfUser(userID uint) ([]songModel, error) {
 }
 
 func (UserService) CreateForget(userID uint) (string, error) {
-	randStr := common.RandStr(8)
+	randStr := helper.RandStr(8)
 	err := common.GetDB().Create(&models.Forget{UserID: userID, Code: randStr}).Error
 	return randStr, err
 }

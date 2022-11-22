@@ -13,8 +13,8 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Upload from './pages/Upload';
 import { Store } from './stores';
-import theme from './utils/theme';
 import ScrollToTop from './utils/ScrollToTop';
+import theme from './utils/theme';
 
 function App() {
     return (

@@ -16,12 +16,18 @@ import {
     Stack,
     Text,
     useToast,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay,
 } from '@chakra-ui/react';
 import { useContext, useEffect, useState } from 'react';
 import { AiFillCamera } from 'react-icons/ai';
 import { GenreContext, UserContext } from '../../stores';
 import { LoadingContext } from '../../stores/loadingStore';
-import { DEFAULT_THUMBNAIL } from '../../utils/constant';
+import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
 import fetchAPI from '../../utils/fetchAPI';
 import SongPreview from '../SongPreview';
 import SongSkeleton from '../SquareSkeleton';
@@ -30,6 +36,7 @@ export default function SongsLibrary() {
     const user = useContext(UserContext)[0];
     const [tracks, setTracks] = useState(null);
     const [editedTrack, setEditedTrack] = useState(null);
+    const [deleteTrack, setDeleteTrack] = useState(null);
 
     useEffect(() => {
         if (!user.id) return;
@@ -66,26 +73,61 @@ export default function SongsLibrary() {
             <Text as="h3" fontSize={20} fontWeight={600}>
                 Songs Library
             </Text>
-            <Grid templateColumns="repeat(6, 1fr)" gap={6}>
+            <Grid templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)', lg: 'repeat(6, 1fr)' }} gap={6}>
                 {tracks
-                    ? tracks.map((song, id) => (
+                    ? tracks.map((song) => (
                           <SongPreview
-                              key={id}
+                              key={song.id}
                               song={song}
                               isOwner={true}
-                              onDelete={() => handleDelete(song.id)}
+                              onDelete={() => setDeleteTrack(song.id)}
                               onEdit={() => setEditedTrack(song)}
                           />
                       ))
                     : [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)}
             </Grid>
-            {tracks?.length === 0 && <Text>You haven't uploaded any songs or albums yet</Text>}
+            {tracks?.length === 0 && <Text>You haven't uploaded any songs yet</Text>}
             {editedTrack && (
                 <EditTrack editedTrack={editedTrack} onClose={() => setEditedTrack(null)} onUpdate={updateTrack} />
+            )}
+            {deleteTrack && (
+                <DeleteTrackAlert onClose={() => setDeleteTrack(null)} onDelete={() => handleDelete(deleteTrack)} />
             )}
         </>
     );
 }
+
+const DeleteTrackAlert = ({ onClose, onDelete }) => {
+    return (
+        <AlertDialog isOpen={true} onClose={onClose}>
+            <AlertDialogOverlay>
+                <AlertDialogContent bgColor="blackAlpha.800" color="white">
+                    <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                        Delete Track
+                    </AlertDialogHeader>
+
+                    <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+
+                    <AlertDialogFooter>
+                        <Button onClick={onClose} color="black">
+                            Cancel
+                        </Button>
+                        <Button
+                            colorScheme="red"
+                            onClick={() => {
+                                onDelete();
+                                onClose();
+                            }}
+                            ml={3}
+                        >
+                            Delete
+                        </Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialogOverlay>
+        </AlertDialog>
+    );
+};
 
 const EditTrack = ({ editedTrack, onClose, onUpdate }) => {
     const [title, setTitle] = useState(editedTrack.title);
@@ -156,14 +198,20 @@ const EditTrack = ({ editedTrack, onClose, onUpdate }) => {
                 <ModalHeader>Edit Song</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                    <Flex justifyContent="space-between" gap={8} mb={8}>
+                    <Flex
+                        justifyContent="space-between"
+                        gap={8}
+                        mb={8}
+                        align="center"
+                        direction={{ base: 'column', sm: 'row' }}
+                    >
                         <Box
                             position="relative"
                             _hover={{ opacity: 0.6, cursor: 'pointer' }}
                             onClick={handleChangeThumbnail}
                         >
                             <Image
-                                src={thumbnail.src || DEFAULT_THUMBNAIL}
+                                src={thumbnail.src || DEFAULT_SONG_THUMBNAIL}
                                 boxSize="136px"
                                 borderRadius={8}
                                 objectFit="cover"
@@ -173,7 +221,7 @@ const EditTrack = ({ editedTrack, onClose, onUpdate }) => {
                                 <AiFillCamera fontSize={24} />
                             </Center>
                         </Box>
-                        <Stack flex={1}>
+                        <Stack flex={1} width={{ base: '100%', sm: 'auto' }}>
                             <Input
                                 placeholder="Title"
                                 value={title}

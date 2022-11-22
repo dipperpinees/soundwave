@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/hiepnguyen223/int3306-project/common"
+	"github.com/hiepnguyen223/int3306-project/helper"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"gorm.io/gorm"
 )
@@ -12,15 +13,18 @@ type songModel = models.Song
 
 type SongService struct{}
 
-func (SongService) CreateSong(data interface{}) error {
+func (SongService) CreateOne(data interface{}) error {
 	err := common.GetDB().Create(data).Error
 	return err
 }
 
-func (SongService) FindByID(id uint) (songModel, error) {
+func (SongService) FindByID(id uint, userID uint) (songModel, error) {
 	song := songModel{}
 	err := common.GetDB().
-		Select("*, (Select count(*) from user_like_songs Where song_id = songs.id) as like_number").
+		Select("*",
+			"(Select count(*) from user_like_songs Where song_id = songs.id) as like_number",
+			helper.CheckLikeSubquery(userID),
+		).
 		Preload("Genre").
 		Preload("Author", func(db *gorm.DB) *gorm.DB {
 			return db.Select(
@@ -28,13 +32,14 @@ func (SongService) FindByID(id uint) (songModel, error) {
 				"(Select count(*) from songs where author_id = users.id) as track_number",
 				"(Select count(*) from follows where following_id = users.id) as follower_number",
 				"(Select count(*) from follows where follower_id = users.id) as following_number",
+				helper.CheckFollowedSubquery(userID),
 			)
 		}).
 		First(&song, id).Error
 	return song, err
 }
 
-func (SongService) FindMany(page int, search string, orderBy string, genreID int, limit int) (*[]songModel, int64, error) {
+func (SongService) FindMany(page int, search string, orderBy string, genreID int, limit int, userID uint) (*[]songModel, int64, error) {
 	var listSong []songModel
 	var count int64
 	offSet := (page - 1) * limit
@@ -67,7 +72,10 @@ func (SongService) FindMany(page int, search string, orderBy string, genreID int
 			order = "play_count desc"
 		}
 		queueErr <- db.
-			Select("*", "(Select count(*) from user_like_songs Where song_id = songs.id) as like_number").
+			Select(
+				"*",
+				"(Select count(*) from user_like_songs Where song_id = songs.id) as like_number",
+				helper.CheckLikeSubquery(userID)).
 			Preload("Genre").
 			Preload("Author", func(db *gorm.DB) *gorm.DB {
 				return db.Select(
@@ -75,6 +83,7 @@ func (SongService) FindMany(page int, search string, orderBy string, genreID int
 					"(Select count(*) from songs where author_id = users.id) as track_number",
 					"(Select count(*) from follows where following_id = users.id) as follower_number",
 					"(Select count(*) from follows where follower_id = users.id) as following_number",
+					helper.CheckFollowedSubquery(userID),
 				)
 			}).
 			Limit(limit).Offset(offSet).Order(order).Find(&listSong).Error
@@ -90,6 +99,10 @@ func (SongService) CreateFavoriteSong(userID uint, songID uint) (*models.UserLik
 	return &newFavoriteSong, err
 }
 
+func (SongService) DeleteFavoriteSong(userID uint, songID uint) error {
+	return common.GetDB().Where("user_id = ?", userID).Where("song_id = ?", songID).Delete(&models.UserLikeSong{}).Error
+}
+
 func (SongService) GetLikeNumber(songID uint) (int64, error) {
 	var count int64
 	err := common.GetDB().Model(&models.UserLikeSong{}).Where("song_id = ?", songID).Count(&count).Error
@@ -98,7 +111,7 @@ func (SongService) GetLikeNumber(songID uint) (int64, error) {
 
 func (SongService) DeleteByID(songID uint) error {
 	var waitGroup sync.WaitGroup
-	waitGroup.Add(2)
+	waitGroup.Add(3)
 
 	go func() {
 		common.GetDB().Where("song_id = ?", songID).Delete(&models.UserLikeSong{})
@@ -110,11 +123,16 @@ func (SongService) DeleteByID(songID uint) error {
 		waitGroup.Done()
 	}()
 
+	go func() {
+		common.GetDB().Where("song_id = ?", songID).Delete(&models.PlaylistsSongs{})
+		waitGroup.Done()
+	}()
+
 	waitGroup.Wait()
 	return common.GetDB().Delete(&songModel{}, songID).Error
 }
 
-func (SongService) Update(songID uint, title string, url string, thumbnail string, genreID uint) (map[string]interface{}, error) {
+func (SongService) UpdateOne(songID uint, title string, url string, thumbnail string, genreID uint) (map[string]interface{}, error) {
 	updateData := make(map[string]interface{})
 
 	if title != "" {

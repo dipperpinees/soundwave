@@ -5,8 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hiepnguyen223/int3306-project/common"
-	"github.com/hiepnguyen223/int3306-project/dtos"
+	"github.com/hiepnguyen223/int3306-project/helper"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/services"
 )
@@ -17,7 +16,7 @@ var followService = services.FollowService{}
 type UserController struct{}
 
 func (UserController) UploadAvatar(c *gin.Context) {
-	userID := c.Keys["user"].(*userModel).ID
+	userID := helper.GetUserID(c)
 
 	formFile, _, err := c.Request.FormFile("avatar")
 	if err != nil {
@@ -30,7 +29,7 @@ func (UserController) UploadAvatar(c *gin.Context) {
 	}
 
 	//check file type is valid
-	if !common.IsValidContentType("image", formFile) {
+	if !helper.IsValidContentType("image", formFile) {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Invalid file type"})
 		return
 	}
@@ -55,14 +54,15 @@ func (UserController) UploadAvatar(c *gin.Context) {
 }
 
 func (UserController) GetUser(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := helper.IdParams{}
+	userID := helper.GetUserID(c)
 
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
 		return
 	}
 
-	user, err := userService.GetProfile(params.ID)
+	user, err := userService.FindOne(params.ID, userID)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -73,21 +73,15 @@ func (UserController) GetUser(c *gin.Context) {
 }
 
 func (UserController) SearchUser(c *gin.Context) {
-	user := c.Keys["user"]
+	userID := helper.GetUserID(c)
 
-	type SearchUserQuery struct {
-		Search  string `form:"search"`
-		Page    int    `form:"page,default=1"`
-		Limit   int    `form:"limit,default=10"`
-		OrderBy string `form:"orderBy"` //follower, track
-	}
-	query := SearchUserQuery{}
+	query := models.UserFilterInput{}
 	if err := c.BindQuery(&query); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	userList, total, err := userService.Search(query.Page, query.Search, query.OrderBy, query.Limit, user)
+	userList, total, err := userService.FindMany(query.Page, query.Search, query.OrderBy, query.Limit, userID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -105,7 +99,7 @@ func (UserController) SearchUser(c *gin.Context) {
 }
 
 func (UserController) GetFavoriteSong(c *gin.Context) {
-	userID := c.Keys["user"].(*userModel).ID
+	userID := helper.GetUserID(c)
 
 	songs, err := userService.GetFavoriteSong(userID)
 	if err != nil {
@@ -117,14 +111,15 @@ func (UserController) GetFavoriteSong(c *gin.Context) {
 }
 
 func (UserController) GetSongOfUser(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := helper.IdParams{}
+	userID := helper.GetUserID(c)
 
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
 		return
 	}
 
-	songs, err := userService.GetSongOfUser(params.ID)
+	songs, err := userService.GetSongOfUser(params.ID, userID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -133,7 +128,7 @@ func (UserController) GetSongOfUser(c *gin.Context) {
 }
 
 func (UserController) GetPlaylistOfUser(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := helper.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
 		return
@@ -149,15 +144,15 @@ func (UserController) GetPlaylistOfUser(c *gin.Context) {
 }
 
 func (UserController) Follow(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := helper.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid following ID"})
 		return
 	}
 
-	userID := c.Keys["user"].(*userModel).ID
-	err := followService.Follow(userID, params.ID)
-	if err != nil {
+	userID := helper.GetUserID(c)
+
+	if err := followService.CreateOne(userID, params.ID); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -166,15 +161,14 @@ func (UserController) Follow(c *gin.Context) {
 }
 
 func (UserController) UnFollow(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := helper.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid following ID"})
 		return
 	}
 
 	userID := c.Keys["user"].(*userModel).ID
-	err := followService.UnFollow(userID, params.ID)
-	if err != nil {
+	if err := followService.DeleteOne(userID, params.ID); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -183,7 +177,7 @@ func (UserController) UnFollow(c *gin.Context) {
 }
 
 func (UserController) GetFollowers(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := helper.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
 		return
@@ -199,7 +193,7 @@ func (UserController) GetFollowers(c *gin.Context) {
 }
 
 func (UserController) GetFollowings(c *gin.Context) {
-	params := dtos.IdParams{}
+	params := helper.IdParams{}
 	if err := c.ShouldBindUri(&params); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid user ID"})
 		return
@@ -213,12 +207,3 @@ func (UserController) GetFollowings(c *gin.Context) {
 
 	c.JSON(http.StatusOK, &followings)
 }
-
-// func (UserController) CheckIsFollow(c *gin.Context) {
-// 	params := dtos.IdParams{}
-// 	if err := c.ShouldBindUri(&params); err != nil {
-// 		c.AbortWithStatusJSON(http.StatusBadRequest, "Invalid user ID")
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, )
-// }
