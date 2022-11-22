@@ -126,13 +126,31 @@ func (SongController) CreateFavoriteSong(c *gin.Context) {
 
 	user := c.Keys["user"].(*userModel)
 
-	data, err := songService.CreateFavoriteSong(user.ID, params.ID)
+	_, err := songService.CreateFavoriteSong(user.ID, params.ID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, &data)
+	c.JSON(http.StatusOK, gin.H{"message": "Like song successfully"})
+}
+
+func (SongController) DeleteFavoriteSong(c *gin.Context) {
+	params := helper.IdParams{}
+
+	if err := c.ShouldBindUri(&params); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
+		return
+	}
+
+	user := c.Keys["user"].(*userModel)
+
+	if err := songService.DeleteFavoriteSong(user.ID, params.ID); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Delete favorite song successfully"})
 }
 
 func (SongController) DeleteSong(c *gin.Context) {

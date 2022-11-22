@@ -45,8 +45,8 @@ const PlaylistLibrary = () => {
             </Text>
             <Grid templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)', lg: 'repeat(6, 1fr)' }} gap={6}>
                 {playlists
-                    ? playlists.map((playlist, index) => (
-                          <PlaylistPreview key={index} {...playlist} onDelete={handleDelete} />
+                    ? playlists.map((playlist) => (
+                          <PlaylistPreview key={playlist.id} {...playlist} onDelete={handleDelete} />
                       ))
                     : [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)}
             </Grid>

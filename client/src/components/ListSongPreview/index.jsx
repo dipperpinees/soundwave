@@ -18,7 +18,7 @@ export default function ListSongPreview({ title, songs, moreUrl }) {
             </Flex>
             <Grid templateColumns={{base: "repeat(2, 1fr)", md: "repeat(4, 1fr)"}} gap={6}>
                 {songs ? (
-                    songs.map((song, id) => <SongPreview key={id} song={song} />)
+                    songs.map((song) => <SongPreview key={song.id} song={song} />)
                 ) : (
                     <>
                         <SongSkeleton />

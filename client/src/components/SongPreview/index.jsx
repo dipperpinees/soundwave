@@ -1,4 +1,15 @@
-import { AspectRatio, Box, Flex, Icon, Image, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import {
+    AspectRatio,
+    Box,
+    Flex,
+    Icon,
+    Image,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
+    Text
+} from '@chakra-ui/react';
 import { useContext, useState } from 'react';
 import { AiFillHeart, AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
@@ -9,35 +20,40 @@ import {
     MdOutlineContentCopy,
     MdOutlineLibraryAdd,
     MdOutlineMoreHoriz,
-    MdPlaylistAdd,
+    MdPlaylistAdd
 } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import defaultPreview from '../../assets/song_preview.jpg';
 import { UserContext } from '../../stores';
 import { PlayerContext } from '../../stores/playerStore';
 import { PlaylistContext } from '../../stores/playlistStore';
+import fetchAPI from '../../utils/fetchAPI';
 
 export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
-    const [showPlay, setShowPlay] = useState(false);
+    const [isLiked, setIsLiked] = useState(song.isLiked);
     const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
     const user = useContext(UserContext)[0];
     const playlistDispatch = useContext(PlaylistContext)[1];
+
     const addAndPlay = () => setPlayer({ type: 'Add', payload: song });
-
     const togglePlay = () => setPlayer({ type: 'Toggle' });
-
     const isPlayThisSong = song.id === songList[indexSongPlayed]?.id;
     const showPauseIcon = song.id === songList[indexSongPlayed]?.id && isPlayed;
-
     const download = () => window.open(song.url.replace('/upload/', '/upload/fl_attachment/'), '_blank');
+    const likeSong = async () => {
+        try {
+            setIsLiked(!isLiked);
+            await fetchAPI(`/song/like/${song.id}`, {
+                method: isLiked ? 'DELETE' : 'POST',
+            });
+        } catch (e) {}
+    };
 
     return (
         <Box width="100%">
             <Box
                 position="relative"
-                _hover={{ cursor: 'pointer' }}
-                onMouseEnter={() => setShowPlay(true)}
-                onMouseLeave={() => setShowPlay(false)}
+                className="song-preview-thumbnail"
             >
                 <AspectRatio width="100%" ratio={1}>
                     <Image
@@ -45,10 +61,9 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
                         src={song.thumbnail || defaultPreview}
                         alt={song.title}
                         borderRadius={16}
-                        opacity={showPlay && 0.6}
                     />
                 </AspectRatio>
-                {showPlay && (
+                <div className="song-preview-control">
                     <Icon
                         color="var(--primary-color)"
                         as={showPauseIcon ? AiFillPauseCircle : AiFillPlayCircle}
@@ -60,16 +75,14 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
                         borderRadius="50%"
                         onClick={isPlayThisSong ? togglePlay : addAndPlay}
                     />
-                )}
-                {showPlay && (
                     <Flex position="absolute" bottom={1} right={1} gap={1} align="center">
-                        <Icon as={AiFillHeart} fontSize={12} />
+                        <Icon as={AiFillHeart} color={isLiked ? 'tomato' : 'white'} fontSize={12} onClick={likeSong} />
                         <Icon as={MdPlaylistAdd} />
-                        <Menu>
+                        <Menu strategy="fixed">
                             <MenuButton>
                                 <Icon as={MdOutlineMoreHoriz} display="flex" />
                             </MenuButton>
-                            <MenuList minWidth={24} bgColor="blackAlpha.900" border="none" fontSize={12} marginTop={-3}>
+                            <MenuList bgColor="blackAlpha.900" border="none" fontSize={12} marginTop={-3} minWidth={36}>
                                 <MenuItem
                                     _focus={{ color: 'var(--primary-color)' }}
                                     _active={{}}
@@ -104,9 +117,8 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
                             </MenuList>
                         </Menu>
                     </Flex>
-                )}
+                </div>
             </Box>
-
             <Flex direction="column" mt={1}>
                 {!isOwner && (
                     <Text fontSize={14} fontWeight={600} className="one-line-title">
@@ -122,7 +134,7 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
                             <MenuButton>
                                 <Icon as={FiEdit} display="flex" fontSize={20} />
                             </MenuButton>
-                            <MenuList minWidth={24} bgColor="blackAlpha.900" border="none" fontSize={12}>
+                            <MenuList minWidth={24} maxWidth={30} bgColor="blackAlpha.900" border="none" fontSize={12}>
                                 <MenuItem
                                     _focus={{ color: 'var(--primary-color)' }}
                                     _active={{}}

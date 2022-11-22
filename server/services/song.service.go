@@ -21,7 +21,10 @@ func (SongService) CreateSong(data interface{}) error {
 func (SongService) FindByID(id uint, userID uint) (songModel, error) {
 	song := songModel{}
 	err := common.GetDB().
-		Select("*, (Select count(*) from user_like_songs Where song_id = songs.id) as like_number").
+		Select("*",
+			"(Select count(*) from user_like_songs Where song_id = songs.id) as like_number",
+			helper.CheckLikeSubquery(userID),
+		).
 		Preload("Genre").
 		Preload("Author", func(db *gorm.DB) *gorm.DB {
 			return db.Select(
@@ -69,7 +72,10 @@ func (SongService) FindMany(page int, search string, orderBy string, genreID int
 			order = "play_count desc"
 		}
 		queueErr <- db.
-			Select("*", "(Select count(*) from user_like_songs Where song_id = songs.id) as like_number").
+			Select(
+				"*",
+				"(Select count(*) from user_like_songs Where song_id = songs.id) as like_number",
+				helper.CheckLikeSubquery(userID)).
 			Preload("Genre").
 			Preload("Author", func(db *gorm.DB) *gorm.DB {
 				return db.Select(
@@ -91,6 +97,10 @@ func (SongService) CreateFavoriteSong(userID uint, songID uint) (*models.UserLik
 	newFavoriteSong := models.UserLikeSong{UserID: userID, SongID: songID}
 	err := common.GetDB().Create(&newFavoriteSong).Error
 	return &newFavoriteSong, err
+}
+
+func (SongService) DeleteFavoriteSong(userID uint, songID uint) error {
+	return common.GetDB().Where("user_id = ?", userID).Where("song_id = ?", songID).Delete(&models.UserLikeSong{}).Error
 }
 
 func (SongService) GetLikeNumber(songID uint) (int64, error) {

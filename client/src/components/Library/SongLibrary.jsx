@@ -75,9 +75,9 @@ export default function SongsLibrary() {
             </Text>
             <Grid templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)', lg: 'repeat(6, 1fr)' }} gap={6}>
                 {tracks
-                    ? tracks.map((song, id) => (
+                    ? tracks.map((song) => (
                           <SongPreview
-                              key={id}
+                              key={song.id}
                               song={song}
                               isOwner={true}
                               onDelete={() => setDeleteTrack(song.id)}

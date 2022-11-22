@@ -164,7 +164,7 @@ export default function Search({ type }) {
                     gap={{ base: 4, md: 5 }}
                 >
                     {searchTracksData
-                        ? searchTracksData.map((song, id) => <SongPreview key={id} song={song} />)
+                        ? searchTracksData.map((song) => <SongPreview key={song.id} song={song} />)
                         : [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)}
                 </Grid>
             )}

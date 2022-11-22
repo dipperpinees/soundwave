@@ -328,7 +328,7 @@ var spec =
             post: {
                 tags: ["song"],
                 summary: "Like bài nhạc",
-                operationId: "GetSongByID",
+                operationId: "CreateFavoriteSong",
                 consumes: ["application/json"],
                 produces: ["application/json"],
                 parameters: [
@@ -346,6 +346,27 @@ var spec =
                     },
                 }
             },
+            delete: {
+                tags: ["song"],
+                summary: "Unlike bài nhạc",
+                operationId: "DeleteFavoriteSong",
+                consumes: ["application/json"],
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "songID",
+                        schema: {
+                            type: "interger"
+                        }  
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
         },
         "/song/{songID}/comment": {
             get: {
@@ -391,6 +412,9 @@ var spec =
                             "properties": {
                                 "content": {
                                     "type": "string"
+                                },
+                                "replyID": {
+                                    type: "string"
                                 }
                             }
                         }, 
