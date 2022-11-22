@@ -13,7 +13,7 @@ type songModel = models.Song
 
 type SongService struct{}
 
-func (SongService) CreateSong(data interface{}) error {
+func (SongService) CreateOne(data interface{}) error {
 	err := common.GetDB().Create(data).Error
 	return err
 }
@@ -132,7 +132,7 @@ func (SongService) DeleteByID(songID uint) error {
 	return common.GetDB().Delete(&songModel{}, songID).Error
 }
 
-func (SongService) Update(songID uint, title string, url string, thumbnail string, genreID uint) (map[string]interface{}, error) {
+func (SongService) UpdateOne(songID uint, title string, url string, thumbnail string, genreID uint) (map[string]interface{}, error) {
 	updateData := make(map[string]interface{})
 
 	if title != "" {

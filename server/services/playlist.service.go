@@ -9,7 +9,7 @@ import (
 
 type PlaylistService struct{}
 
-func (PlaylistService) Create(data interface{}) error {
+func (PlaylistService) CreateOne(data interface{}) error {
 	return common.GetDB().Create(data).Error
 }
 
@@ -41,16 +41,14 @@ func (PlaylistService) FindByID(id uint, userID uint) (models.Playlist, error) {
 }
 
 func (PlaylistService) AddSong(songID uint, playlistID uint) error {
-	err := common.GetDB().Create(&models.PlaylistsSongs{SongID: songID, PlaylistID: playlistID}).Error
-	return err
+	return common.GetDB().Create(&models.PlaylistsSongs{SongID: songID, PlaylistID: playlistID}).Error
 }
 
 func (PlaylistService) RemoveSong(songID uint, playlistID uint) error {
-	err := common.GetDB().Where("song_id = ?", songID).Where("playlist_id = ?", playlistID).Delete(&models.PlaylistsSongs{}).Error
-	return err
+	return common.GetDB().Where("song_id = ?", songID).Where("playlist_id = ?", playlistID).Delete(&models.PlaylistsSongs{}).Error
 }
 
-func (PlaylistService) Delete(playlistID uint) error {
+func (PlaylistService) DeleteByID(playlistID uint) error {
 	if err := common.GetDB().Where("playlist_id = ?", playlistID).Delete(&models.PlaylistsSongs{}).Error; err != nil {
 		return err
 	}

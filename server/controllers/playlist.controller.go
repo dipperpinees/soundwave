@@ -24,7 +24,7 @@ func (PlaylistController) Create(c *gin.Context) {
 		return
 	}
 	newPlaylist := models.Playlist{AuthorID: user.ID, Name: body.Name}
-	if err := playlistService.Create(&newPlaylist); err != nil {
+	if err := playlistService.CreateOne(&newPlaylist); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -100,7 +100,7 @@ func (PlaylistController) Delete(c *gin.Context) {
 		return
 	}
 
-	if err := playlistService.Delete(params.ID); err != nil {
+	if err := playlistService.DeleteByID(params.ID); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}

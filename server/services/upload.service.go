@@ -65,5 +65,4 @@ func (u UploadService) MultipleFileUpload(files map[string]multipart.File) (map[
 	}
 
 	return urlList, err
-
 }

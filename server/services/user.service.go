@@ -18,17 +18,11 @@ func (UserService) CreateOne(data interface{}) error {
 	return err
 }
 
-func (UserService) FindOne(condition interface{}) (userModel, error) {
-	user := userModel{}
-	err := common.GetDB().Where(condition).First(&user).Error
-	return user, err
-}
-
 func (UserService) FindOneOrCreate(user *userModel) error {
 	return common.GetDB().FirstOrCreate(&user, userModel{Email: user.Email}).Error
 }
 
-func (UserService) GetProfile(profileID uint, userID uint) (userModel, error) {
+func (UserService) FindOne(profileID uint, userID uint) (userModel, error) {
 	user := userModel{}
 	err := common.
 		GetDB().
@@ -48,7 +42,7 @@ func (UserService) UpdateOne(userId uint, data interface{}) error {
 	return err
 }
 
-func (UserService) Search(page int, search string, orderBy string, limit int, userID uint) (*[]userModel, int64, error) {
+func (UserService) FindMany(page int, search string, orderBy string, limit int, userID uint) (*[]userModel, int64, error) {
 	var userList []userModel
 	offSet := (page - 1) * limit
 	queueErr := make(chan error, 1)
@@ -127,7 +121,7 @@ func (u UserService) GetSongOfUser(authorID uint, userID uint) ([]songModel, err
 
 	go func(author *userModel) {
 		var err error
-		*author, err = u.GetProfile(authorID, userID)
+		*author, err = u.FindOne(authorID, userID)
 		queueErr <- err
 	}(&author)
 

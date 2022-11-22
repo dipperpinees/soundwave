@@ -18,12 +18,7 @@ type userModel = models.User
 type AuthController struct{}
 
 func (AuthController) SignUp(c *gin.Context) {
-	type Body struct {
-		Email    string `json:"email" binding:"required,email"`
-		Name     string `json:"name" binding:"required,min=6"`
-		Password string `json:"password" binding:"required,min=6"`
-	}
-	body := Body{}
+	body := models.UserCreateInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -44,19 +39,14 @@ func (AuthController) SignUp(c *gin.Context) {
 }
 
 func (AuthController) SignIn(c *gin.Context) {
-	type Body struct {
-		Email    string `json:"email" binding:"required,email"`
-		Password string `json:"password" binding:"required,min=6"`
-	}
-
-	body := Body{}
+	body := models.UserSignInInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	user, err := userService.FindOne(&userModel{Email: body.Email})
-	if err != nil {
+	var user userModel
+	if err := common.GetDB().Where("email = ?", body.Email).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This user is not exist"})
 		return
 	}
@@ -83,19 +73,18 @@ func (AuthController) LogOut(c *gin.Context) {
 }
 
 func (AuthController) ForgetPassword(c *gin.Context) {
-	type Body struct {
-		Email string `json:"email"`
-	}
-	body := Body{}
+	body := models.UserEmailInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	user, err := userService.FindOne(&userModel{Email: body.Email})
-	if err != nil {
+
+	var user userModel
+	if err := common.GetDB().Where("email = ?", body.Email).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This user doesn't exist"})
 		return
 	}
+
 	code, err := userService.CreateForget(user.ID)
 	emailService.SendForgotPassword([]string{user.Email}, code)
 	if err != nil {
@@ -106,12 +95,7 @@ func (AuthController) ForgetPassword(c *gin.Context) {
 }
 
 func (AuthController) ResetPassword(c *gin.Context) {
-	type Body struct {
-		UserID      uint   `json:"userID,string,omitempty" binding:"required"`
-		Code        string `json:"code,omitempty" binding:"required"`
-		NewPassword string `json:"newPassword,omitempty" binding:"required,min=6"`
-	}
-	body := Body{}
+	body := models.UserResetPasswordInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -124,14 +108,7 @@ func (AuthController) ResetPassword(c *gin.Context) {
 }
 
 func (AuthController) GoogleLogin(c *gin.Context) {
-	type Body struct {
-		AccessToken string `json:"access_token" binding:"required"`
-		AuthUser    string `json:"authuser"`
-		ExpiresIn   string `json:"prompt"`
-		Scope       string `json:"scope"`
-		TokenType   string `json:"bearer"`
-	}
-	body := Body{}
+	body := models.UserGoogleInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return

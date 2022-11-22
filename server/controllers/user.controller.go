@@ -62,7 +62,7 @@ func (UserController) GetUser(c *gin.Context) {
 		return
 	}
 
-	user, err := userService.GetProfile(params.ID, userID)
+	user, err := userService.FindOne(params.ID, userID)
 
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -75,19 +75,13 @@ func (UserController) GetUser(c *gin.Context) {
 func (UserController) SearchUser(c *gin.Context) {
 	userID := helper.GetUserID(c)
 
-	type SearchUserQuery struct {
-		Search  string `form:"search"`
-		Page    int    `form:"page,default=1"`
-		Limit   int    `form:"limit,default=10"`
-		OrderBy string `form:"orderBy"` //follower, track
-	}
-	query := SearchUserQuery{}
+	query := models.UserFilterInput{}
 	if err := c.BindQuery(&query); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	userList, total, err := userService.Search(query.Page, query.Search, query.OrderBy, query.Limit, userID)
+	userList, total, err := userService.FindMany(query.Page, query.Search, query.OrderBy, query.Limit, userID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -158,8 +152,7 @@ func (UserController) Follow(c *gin.Context) {
 
 	userID := helper.GetUserID(c)
 
-	err := followService.Follow(userID, params.ID)
-	if err != nil {
+	if err := followService.CreateOne(userID, params.ID); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -175,8 +168,7 @@ func (UserController) UnFollow(c *gin.Context) {
 	}
 
 	userID := c.Keys["user"].(*userModel).ID
-	err := followService.UnFollow(userID, params.ID)
-	if err != nil {
+	if err := followService.DeleteOne(userID, params.ID); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}

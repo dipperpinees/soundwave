@@ -12,3 +12,7 @@ type Comment struct {
 	CreatedAt time.Time `gorm:"autoCreateTime;column:created_at" json:"created_at"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime;column:updated_at" json:"updated_at"`
 }
+
+type CommentCreateInput struct {
+	Content string `json:"content" binding:"required"`
+}
