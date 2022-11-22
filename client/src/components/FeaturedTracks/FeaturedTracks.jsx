@@ -6,6 +6,7 @@ import fetchAPI from '../../utils/fetchAPI';
 
 const FeaturedTracks = ({ userId }) => {
     const [data, setData] = useState(null);
+    const [typeSort, setTypeSort] = useState();
 
     useEffect(() => {
         (async () => {
@@ -16,10 +17,23 @@ const FeaturedTracks = ({ userId }) => {
         })();
     }, [userId]);
 
-    // xử lý sắp xếp
-    const handleSortSongList = (e) => {
-        console.log(e);
-    };
+    useEffect(() => {
+        let sortFn;
+        switch (typeSort) {
+            case 'view':
+                sortFn = (a, b) => b.view - a.view;
+                break;
+            case 'like':
+                sortFn = (a, b) => b.like - a.like;
+                break;
+            // case 'download'
+            //     sortFunction = (a, b) => a.download > b.download;
+            default:
+                sortFn = (a, b) => 0;
+                break;
+        }
+        data.sort(sortFn);
+    }, [typeSort]);
 
     return (
         <Box>
@@ -35,21 +49,21 @@ const FeaturedTracks = ({ userId }) => {
                         <MenuList minW="20px">
                             <MenuItem
                                 onClick={() => {
-                                    handleSortSongList('View');
+                                    setTypeSort('view');
                                 }}
                             >
                                 View
                             </MenuItem>
                             <MenuItem
                                 onClick={() => {
-                                    handleSortSongList('Like');
+                                    setTypeSort('like');
                                 }}
                             >
                                 Like
                             </MenuItem>
                             <MenuItem
                                 onClick={() => {
-                                    handleSortSongList('Download');
+                                    setTypeSort('download');
                                 }}
                             >
                                 Download

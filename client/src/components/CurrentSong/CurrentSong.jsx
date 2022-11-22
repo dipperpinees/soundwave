@@ -13,7 +13,7 @@ const CurrentSong = (props) => {
 
     const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
 
-    const addAndPlay = () => setPlayer({ type: 'Add', payload: { id, url } });
+    const addAndPlay = () => setPlayer({ type: 'Add', payload: props });
 
     const togglePlay = () => setPlayer({ type: 'Toggle' });
 
@@ -22,10 +22,8 @@ const CurrentSong = (props) => {
     console.log('title', title);
     let songName;
     let singerName;
-    const titles = title?.split(' - ');
-    if (titles) {
-        songName = titles[0];
-        singerName = titles[1];
+    if (title) {
+        [songName, singerName] = title?.split(' - ');
     }
     // const [isPlayed, hasPlayed] = useState(false);
     const download = () => window.open(url.replace('/upload/', '/upload/fl_attachment/'), '_blank');

@@ -3,7 +3,7 @@ import CurrentSong from '../components/CurrentSong';
 import Comments from '../components/Comments';
 import RelatedTracks from '../components/RelatedTracks/RelatedTracks';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import fetchAPI from '../utils/fetchAPI';
 
 const MusicPage = () => {
@@ -11,7 +11,7 @@ const MusicPage = () => {
 
     const [data, setData] = useState(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         (async () => {
             try {
                 const data = await fetchAPI(`/song/${id}`);

@@ -33,17 +33,17 @@ const ProfilePage = () => {
                     <Profile {...data} />
                 </Box>
             </Box>
-            <Flex margin="0 56px" flexWrap="wrap" justifyContent="space-between">
-                <Box flexBasis={['100%', '100%', '100%', '50%']} width={['100%', '100%', '100%', '50%']}>
+            <Box margin="0 56px">
+                <Box>
                     <FeaturedTracks userId={id} />
                 </Box>
-                <Box flexBasis={['100%', '100%', '100%', '38%']} width={['100%', '100%', '100%', '38%']}>
+                {/* <Box flexBasis={['100%', '100%', '100%', '38%']} width={['100%', '100%', '100%', '38%']}>
                     <RecentlyLikes userId={id} />
-                </Box>
+                </Box> */}
                 <Box mt={'48px'} mb={'36px'} flex="100%" width={['100%']}>
                     <Albums userId={id} />
                 </Box>
-            </Flex>
+            </Box>
         </Box>
     );
 };
