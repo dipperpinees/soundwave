@@ -1,39 +1,46 @@
 import Song from '../Song';
 import { Box, Heading, List, Flex, Text, Link, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { LineRightIcon, LineDownIcon } from '../Icon';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import fetchAPI from '../../utils/fetchAPI';
 
-const FeaturedTracks = ({ userId }) => {
+const FeaturedTracks = ({ currentUserId }) => {
     const [data, setData] = useState(null);
-    const [typeSort, setTypeSort] = useState();
 
-    useEffect(() => {
-        (async () => {
+    useLayoutEffect(() => {
+        const fetchSong = async () => {
             try {
-                const data = await fetchAPI(`/user/${userId}/songs`);
+                const data = await fetchAPI(`/user/${currentUserId}/songs`);
                 setData(data);
             } catch (e) {}
-        })();
-    }, [userId]);
+        };
+        fetchSong();
+    }, [currentUserId]);
 
-    useEffect(() => {
+    console.log('re-render');
+    console.log(data);
+
+    const sortSongs = (typeSort) => {
         let sortFn;
         switch (typeSort) {
             case 'view':
-                sortFn = (a, b) => b.view - a.view;
+                sortFn = (a, b) => b.playCount - a.playCount;
                 break;
             case 'like':
-                sortFn = (a, b) => b.like - a.like;
+                sortFn = (a, b) => b.likeNumber - a.likeNumber;
                 break;
             // case 'download'
             //     sortFunction = (a, b) => a.download > b.download;
             default:
-                sortFn = (a, b) => 0;
+                sortFn = (a, b) => b.playCount - a.playCount;
                 break;
         }
-        data.sort(sortFn);
-    }, [typeSort]);
+        if (data) {
+            let newData = [...data];
+            newData.sort(sortFn);
+            setData(newData);
+        }
+    };
 
     return (
         <Box>
@@ -41,7 +48,7 @@ const FeaturedTracks = ({ userId }) => {
                 <Heading fontSize="xl">Featured Tracks</Heading>
                 <Flex align={'center'}>
                     <Menu autoSelect="false">
-                        <MenuButton as={Text} fontSize="xs">
+                        <MenuButton as={Text} fontSize="md">
                             <Flex align={'center'}>
                                 Sort <LineDownIcon />
                             </Flex>
@@ -49,25 +56,25 @@ const FeaturedTracks = ({ userId }) => {
                         <MenuList minW="20px">
                             <MenuItem
                                 onClick={() => {
-                                    setTypeSort('view');
+                                    sortSongs('view');
                                 }}
                             >
                                 View
                             </MenuItem>
                             <MenuItem
                                 onClick={() => {
-                                    setTypeSort('like');
+                                    sortSongs('like');
                                 }}
                             >
                                 Like
                             </MenuItem>
-                            <MenuItem
+                            {/* <MenuItem
                                 onClick={() => {
                                     setTypeSort('download');
                                 }}
                             >
                                 Download
-                            </MenuItem>
+                            </MenuItem> */}
                         </MenuList>
                     </Menu>
                 </Flex>
@@ -84,6 +91,7 @@ const FeaturedTracks = ({ userId }) => {
                                 {...song}
                                 userName={'user name'}
                                 isLikeIcon={true}
+                                isViewIcon={true}
                                 borderBottom="1px solid rgba(255, 255, 255, 0.2)"
                             />
                         );

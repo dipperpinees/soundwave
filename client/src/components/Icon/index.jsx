@@ -1,2 +1,2 @@
 export { LikeIcon } from './LikeIcon';
-export { LineRightIcon, LineDownIcon, LineUpIcon } from './Icon';
+export { LineRightIcon, LineDownIcon, LineUpIcon, DownLoadIcon } from './Icon';

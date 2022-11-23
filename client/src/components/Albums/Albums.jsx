@@ -5,17 +5,17 @@ import { LineRightIcon, LikeIcon } from '../Icon';
 import { useEffect, useState } from 'react';
 import fetchAPI from '../../utils/fetchAPI';
 
-const Albums = ({ userId }) => {
+const Albums = ({ currentUserId }) => {
     const [data, setData] = useState(null);
 
     useEffect(() => {
         (async () => {
             try {
-                const data = await fetchAPI(`/user/${userId}/songs`);
+                const data = await fetchAPI(`/user/${currentUserId}/songs`);
                 setData(data);
             } catch (e) {}
         })();
-    }, [userId]);
+    }, [currentUserId]);
 
     return (
         <Box>
@@ -34,7 +34,7 @@ const Albums = ({ userId }) => {
                         />
                     </Box>
                     <Flex justify={'space-between'} align={'center'} mt="8px">
-                        <LikeIcon />
+                        <LikeIcon showLikeNumber={false} />
                         <BsThreeDots />
                     </Flex>
                 </Box>

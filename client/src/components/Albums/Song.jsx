@@ -22,7 +22,7 @@ const Song = ({ ...props }) => {
                     </Text>
                 </Flex>
                 <Flex alignItems="center" margin="0 24px">
-                    <LikeIcon />
+                    <LikeIcon {...props} showLikeNumber={false} />
                     <Box ml={'32px'}>
                         <BsThreeDots />
                     </Box>

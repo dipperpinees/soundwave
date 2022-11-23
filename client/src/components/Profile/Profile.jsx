@@ -2,8 +2,8 @@ import { Avatar, Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import Describe from './Describe';
 
 const Profile = (props) => {
-    const { name, avatar, followerNumber } = props;
-
+    const { id, name, avatar, followerNumber } = props;
+    const { userId } = props;
     return (
         <Box m={'0 24px'} maxW={['100%', '100%', '150px', '180px']}>
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
@@ -13,9 +13,15 @@ const Profile = (props) => {
                 </Heading>
                 <Text mb="16px">{followerNumber} Followers</Text>
                 <Flex flexDirection="column">
-                    <Button textColor="#000" borderRadius="20px" margin="8px 0">
-                        Following
-                    </Button>
+                    {userId !== id ? (
+                        <Button textColor="#000" borderRadius="20px" margin="8px 0">
+                            Following
+                        </Button>
+                    ) : (
+                        <Button textColor="#000" borderRadius="20px" margin="8px 0">
+                            Edit Profile
+                        </Button>
+                    )}
                     {/* <Button
                         colorScheme="whiteAlpha"
                         variant="outline"
