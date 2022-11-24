@@ -1,42 +1,32 @@
 package services
 
-import (
-	"testing"
+// var userService = UserService{}
 
-	"github.com/gin-gonic/gin"
-	"github.com/hiepnguyen223/int3306-project/common"
-	"github.com/hiepnguyen223/int3306-project/models"
-	"github.com/joho/godotenv"
-)
+// func TestSendEmail(t *testing.T) {
+// 	godotenv.Load("../.env")
 
-var mailService = Email{}
-var userService = UserService{}
+// 	err := ht.SendForgotPassword([]string{"hiepnguyenno01@gmail.com"}, "https://go.dev/play/")
 
-func TestSendEmail(t *testing.T) {
-	godotenv.Load("../.env")
+// 	if err != nil {
+// 		t.Errorf("Don't send email %s", gin.H{"message": err.Error()})
+// 	}
+// }
 
-	err := mailService.SendForgotPassword([]string{"hiepnguyenno01@gmail.com"}, "https://go.dev/play/")
+// func TestForgetPassword(t *testing.T) {
+// 	godotenv.Load("../.env")
+// 	common.InitDB()
 
-	if err != nil {
-		t.Errorf("Don't send email %s", gin.H{"message": err.Error()})
-	}
-}
+// 	code, err := userService.CreateForget(1)
+// 	if err != nil {
+// 		t.Errorf("Don't create forget %s", gin.H{"message": err.Error()})
+// 	}
+// 	t.Log(code)
+// }
 
-func TestForgetPassword(t *testing.T) {
-	godotenv.Load("../.env")
-	common.InitDB()
-
-	code, err := userService.CreateForget(1)
-	if err != nil {
-		t.Errorf("Don't create forget %s", gin.H{"message": err.Error()})
-	}
-	t.Log(code)
-}
-
-func TestSelect(t *testing.T) {
-	godotenv.Load("../.env")
-	common.InitDB()
-	var count int64
-	err := common.GetDB().Model(&models.Forget{}).Where("user_id = ?", 1).Where("code = ?", "il06ElEj").Count(&count).Error
-	t.Log(err, count)
-}
+// func TestSelect(t *testing.T) {
+// 	godotenv.Load("../.env")
+// 	common.InitDB()
+// 	var count int64
+// 	err := common.GetDB().Model(&models.Forget{}).Where("user_id = ?", 1).Where("code = ?", "il06ElEj").Count(&count).Error
+// 	t.Log(err, count)
+// }

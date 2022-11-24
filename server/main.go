@@ -36,9 +36,10 @@ func main() {
 
 	//swagger ui
 	app.Static("/swagger", "./public/swagger")
+
 	//middleware
-	app.Use(middlewares.CORSMiddleware())
-	app.Use(middlewares.AuthMiddleware())
+	app.Use(middlewares.CORS())
+	app.Use(middlewares.Auth())
 
 	//serve client
 	if configs.Environment() == "production" {

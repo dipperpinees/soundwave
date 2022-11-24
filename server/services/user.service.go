@@ -90,7 +90,7 @@ func (UserService) FindMany(page int, search string, orderBy string, limit int, 
 			Find(&userList).Error
 	}()
 
-	err := common.GroupError(queueErr, 2)
+	err := helper.GroupError(queueErr, 2)
 
 	return &userList, <-count, err
 }
@@ -125,7 +125,7 @@ func (u UserService) GetSongOfUser(authorID uint, userID uint) ([]songModel, err
 		queueErr <- err
 	}(&author)
 
-	err := common.GroupError(queueErr, 2)
+	err := helper.GroupError(queueErr, 2)
 
 	for i := range songs {
 		songs[i].Author = author

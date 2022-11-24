@@ -1,11 +1,13 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Playlist struct {
 	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id"`
 	AuthorID  uint      `json:"-"`
-	Thumbnail string    `gorm:"-" json:"thumbnail"`
+	Thumbnail string    `json:"thumbnail"`
 	Name      string    `json:"name"`
 	Author    User      `json:"author"`
 	Songs     []Song    `gorm:"many2many:playlists_songs;" json:"songs"`

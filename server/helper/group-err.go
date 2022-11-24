@@ -1,4 +1,4 @@
-package common
+package helper
 
 func GroupError(queueErr chan error, len int) error {
 	var finalErr error
