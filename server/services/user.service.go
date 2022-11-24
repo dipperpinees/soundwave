@@ -116,7 +116,13 @@ func (u UserService) GetSongOfUser(authorID uint, userID uint) ([]songModel, err
 	queueErr := make(chan error, 1)
 
 	go func() {
-		queueErr <- common.GetDB().Select("*, (Select count(*) from user_like_songs Where song_id = songs.id) as like_number").Preload("Genre").Where("author_id = ?", authorID).Find(&songs).Error
+		queueErr <- common.GetDB().
+			Select(
+				"*",
+				"(Select count(*) from user_like_songs Where song_id = songs.id) as like_number",
+				helper.CheckLikeSubquery(userID),
+			).Preload("Genre").
+			Where("author_id = ?", authorID).Find(&songs).Error
 	}()
 
 	go func(author *userModel) {
