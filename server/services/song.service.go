@@ -89,7 +89,7 @@ func (SongService) FindMany(page int, search string, orderBy string, genreID int
 			Limit(limit).Offset(offSet).Order(order).Find(&listSong).Error
 	}()
 
-	err := common.GroupError(queueErr, 2)
+	err := helper.GroupError(queueErr, 2)
 	return &listSong, count, err
 }
 
@@ -153,10 +153,4 @@ func (SongService) UpdateOne(songID uint, title string, url string, thumbnail st
 
 func (SongService) IncrementPlayCount(songID uint) error {
 	return common.GetDB().Model(&songModel{}).Where("id = ?", songID).Update("play_count", gorm.Expr("play_count + ?", 1)).Error
-}
-
-func (SongService) GetTrackNumber(authorID uint) int64 {
-	var count int64
-	common.GetDB().Model(&songModel{}).Where("author_id = ?", authorID).Count(&count)
-	return count
 }

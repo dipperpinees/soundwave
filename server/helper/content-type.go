@@ -6,18 +6,19 @@ import (
 	"strings"
 )
 
-func getContentType(formFile multipart.File) (string, error) {
+func getContentType(formFile *multipart.FileHeader) (string, error) {
 	buff := make([]byte, 512)
-
-	if _, err := formFile.Read(buff); err != nil {
+	file, _ := formFile.Open()
+	if _, err := file.Read(buff); err != nil {
 		return "", err
 	}
+	defer file.Close()
 
 	return http.DetectContentType(buff), nil
 }
 
-func IsValidContentType(fileType string, formFile multipart.File) bool {
-	currentFileType, err := getContentType(formFile)
+func IsValidContentType(fileType string, file *multipart.FileHeader) bool {
+	currentFileType, err := getContentType(file)
 	if err != nil {
 		return false
 	}

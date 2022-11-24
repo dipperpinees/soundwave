@@ -1,4 +1,4 @@
-package models
+package dtos
 
 type Paginate struct {
 	Page       int   `json:"page"`
