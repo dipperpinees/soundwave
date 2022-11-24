@@ -5,7 +5,7 @@ import { FiEdit } from 'react-icons/fi';
 import { MdDeleteOutline, MdModeEditOutline } from 'react-icons/md';
 import { DEFAULT_PLAYLIST_THUMBNAIL } from '../../utils/image';
 
-export default function PlaylistPreview({ id, name, songs, onDelete }) {
+export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail }) {
     const [showPlay, setShowPlay] = useState(false);
     return (
         <Box width="100%">
@@ -16,7 +16,7 @@ export default function PlaylistPreview({ id, name, songs, onDelete }) {
                 onMouseLeave={() => setShowPlay(false)}
             >
                 <AspectRatio width="100%" ratio={1}>
-                    <Image objectFit="cover" src={songs?.[0]?.thumbnail || DEFAULT_PLAYLIST_THUMBNAIL} alt="Dan Abramov" borderRadius={16} />
+                    <Image objectFit="cover" src={thumbnail || DEFAULT_PLAYLIST_THUMBNAIL} alt={name} borderRadius={16} />
                 </AspectRatio>
                 {showPlay && (
                     <Icon

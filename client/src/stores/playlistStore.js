@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer, useState } from 'react';
+import { createContext, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import {
     Modal,
     ModalOverlay,
@@ -14,9 +14,15 @@ import {
     Stack,
     Spinner,
     Flex,
+    AspectRatio,
+    Image,
+    Center,
+    Box,
 } from '@chakra-ui/react';
 import fetchAPI from '../utils/fetchAPI';
 import { UserContext } from './userStore';
+import { AiFillCamera } from 'react-icons/ai';
+import { DEFAULT_PLAYLIST_THUMBNAIL } from '../utils/image';
 
 const initialState = {
     playlists: [],
@@ -77,12 +83,17 @@ export function PlaylistStore({ children }) {
 const CreatePlaylist = ({ onClose, showAddSong, isBack }) => {
     const [name, setName] = useState('');
     const toast = useToast();
-
+    const [thumbnail, setThumbnail] = useState({ src: '', file: null });
+    const thumbnailRef = useRef();
     const submit = async () => {
         try {
+            const formData = new FormData();
+            if (thumbnail.src) formData.append('thumbnail', thumbnailRef.current.files[0]);
+            formData.append('name', name);
             await fetchAPI('/playlist/', {
                 method: 'POST',
-                body: JSON.stringify({ name }),
+                
+                body: formData,
             });
             toast({
                 title: 'Create playlist successfully',
@@ -100,14 +111,48 @@ const CreatePlaylist = ({ onClose, showAddSong, isBack }) => {
             });
         }
     };
+
+    const handleChangeThumbnail = (e) => {
+        const file = e.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function () {
+            setThumbnail({ src: this.result });
+        };
+        reader.readAsDataURL(file);
+    };
+
     return (
         <Modal isOpen={true} onClose={onClose}>
             <ModalOverlay />
             <ModalContent bgColor="black" color="white">
                 <ModalHeader>Playlist</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody>
-                    <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Playlist name" />
+                <ModalBody display="flex" flexDirection="column" alignItems="center" gap={4}>
+                    <Box
+                        position="relative"
+                        _hover={{ opacity: 0.6, cursor: 'pointer' }}
+                        onClick={() => thumbnailRef.current.click()}
+                    >
+                        <AspectRatio width="180px" ratio={1}>
+                            <Image
+                                src={thumbnail.src || DEFAULT_PLAYLIST_THUMBNAIL}
+                                boxSize="180px"
+                                borderRadius={8}
+                                objectFit="cover"
+                                alt="thumbnail"
+                            />
+                        </AspectRatio>
+                        <Center position="absolute" top={0} bottom={0} left={0} right={0}>
+                            <AiFillCamera fontSize={24} />
+                        </Center>
+                    </Box>
+                    <Input type="file" display="none" accept="image/*" onChange={handleChangeThumbnail} ref={thumbnailRef}/>
+                    <Input
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Playlist name"
+                        required
+                    />
                 </ModalBody>
 
                 <ModalFooter>
