@@ -90,7 +90,7 @@ func (UserService) FindMany(page int, search string, orderBy string, limit int, 
 			Find(&userList).Error
 	}()
 
-	err := common.GroupError(queueErr, 2)
+	err := helper.GroupError(queueErr, 2)
 
 	return &userList, <-count, err
 }
@@ -116,7 +116,13 @@ func (u UserService) GetSongOfUser(authorID uint, userID uint) ([]songModel, err
 	queueErr := make(chan error, 1)
 
 	go func() {
-		queueErr <- common.GetDB().Select("*, (Select count(*) from user_like_songs Where song_id = songs.id) as like_number").Preload("Genre").Where("author_id = ?", authorID).Find(&songs).Error
+		queueErr <- common.GetDB().
+			Select(
+				"*",
+				"(Select count(*) from user_like_songs Where song_id = songs.id) as like_number",
+				helper.CheckLikeSubquery(userID),
+			).Preload("Genre").
+			Where("author_id = ?", authorID).Find(&songs).Error
 	}()
 
 	go func(author *userModel) {
@@ -125,7 +131,7 @@ func (u UserService) GetSongOfUser(authorID uint, userID uint) ([]songModel, err
 		queueErr <- err
 	}(&author)
 
-	err := common.GroupError(queueErr, 2)
+	err := helper.GroupError(queueErr, 2)
 
 	for i := range songs {
 		songs[i].Author = author

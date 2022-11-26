@@ -11,7 +11,7 @@ import {
     Select,
     Stack,
     Text,
-    useToast
+    useToast,
 } from '@chakra-ui/react';
 import * as _buffer from 'buffer';
 import { motion } from 'framer-motion';
@@ -24,6 +24,7 @@ import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { GenreContext } from '../stores';
 import { LoadingContext } from '../stores/loadingStore';
+import blobToFile from '../utils/blobToFile';
 import fetchAPI from '../utils/fetchAPI';
 import { DEFAULT_SONG_THUMBNAIL } from '../utils/image';
 
@@ -79,7 +80,7 @@ export default function Upload() {
             setPlayAudio(true);
         }
     };
-
+    
     const getMetaTagsFromAudio = (file) => {
         musicMetadata.parseBlob(file, { native: true }).then((metadata) => {
             if (metadata.common.picture) {
@@ -87,7 +88,10 @@ export default function Upload() {
                     src: `data:${metadata.common.picture[0].format};base64,${Buffer.from(
                         metadata.common.picture[0].data
                     ).toString('base64')}`,
-                    file: new Blob([metadata.common.picture[0].data], { type: metadata.common.picture[0].format }),
+                    file: blobToFile(
+                        new Blob([metadata.common.picture[0].data], { type: metadata.common.picture[0].format }),
+                        file.name.substring(0, file.name.lastIndexOf('.'))
+                    ),
                 });
             } else {
                 setThumbnail({ src: '', file: null });

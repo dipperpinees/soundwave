@@ -10,7 +10,7 @@ import (
 
 type userModel = models.User
 
-func AuthMiddleware() gin.HandlerFunc {
+func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token, err := c.Request.Cookie("access_token")
 		if err != nil {

@@ -1,18 +1,23 @@
-package services
+package upload
 
 import (
 	"context"
-	"mime/multipart"
+	"time"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/hiepnguyen223/int3306-project/configs"
 )
 
-type UploadService struct{}
+type mediaUpload struct{}
 
-func (UploadService) SingleFileUpload(file multipart.File) (string, error) {
-	ctx := context.Background()
+func NewMediaUpload() *mediaUpload {
+	return &mediaUpload{}
+}
+
+func (*mediaUpload) Single(input interface{}) (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
 
 	//create cloudinary instance
 	cld, err := cloudinary.NewFromParams(configs.EnvCloudinaryCloudName(), configs.EnvCloudinaryApiKey(), configs.EnvCloudinaryApiSecret())
@@ -21,30 +26,30 @@ func (UploadService) SingleFileUpload(file multipart.File) (string, error) {
 	}
 
 	//upload file
-	uploadParams, err2 := cld.Upload.Upload(ctx, file, uploader.UploadParams{Folder: configs.EnvCloudinaryUploadFolder()})
-	if err2 != nil {
+	uploadParam, err := cld.Upload.Upload(ctx, input, uploader.UploadParams{Folder: configs.EnvCloudinaryUploadFolder()})
+	if err != nil {
 		return "", err
 	}
 
-	return uploadParams.URL, nil
+	return uploadParam.SecureURL, nil
 }
 
-func (u UploadService) MultipleFileUpload(files map[string]multipart.File) (map[string]string, error) {
+func (m *mediaUpload) Multiple(files map[string]string) (map[string]string, error) {
 	cap := len(files)
 	queueUrl := make(chan [2]string, cap)
 	queueErr := make(chan error, cap)
 
 	//start goroutine to upload multiple file
 	for key := range files {
-		file := files[key]
-		go func(file multipart.File, key string) {
-			url, err := u.SingleFileUpload(file)
+		dst := files[key]
+		go func(dst string, key string) {
+			url, err := m.Single(dst)
 			var data [2]string
 			data[0] = key
 			data[1] = url
 			queueUrl <- data
 			queueErr <- err
-		}(file, key)
+		}(dst, key)
 	}
 
 	urlList := make(map[string]string, cap)

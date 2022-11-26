@@ -1,24 +1,26 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
+	"github.com/hiepnguyen223/int3306-project/dtos"
 	"github.com/hiepnguyen223/int3306-project/helper"
+	"github.com/hiepnguyen223/int3306-project/helper/mail"
 	"github.com/hiepnguyen223/int3306-project/models"
 	"github.com/hiepnguyen223/int3306-project/services"
 )
 
 var userService = services.UserService{}
-var emailService = services.Email{}
 
 type userModel = models.User
 
 type AuthController struct{}
 
 func (AuthController) SignUp(c *gin.Context) {
-	body := models.UserCreateInput{}
+	body := dtos.UserCreateInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -39,7 +41,7 @@ func (AuthController) SignUp(c *gin.Context) {
 }
 
 func (AuthController) SignIn(c *gin.Context) {
-	body := models.UserSignInInput{}
+	body := dtos.UserSignInInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -73,7 +75,7 @@ func (AuthController) LogOut(c *gin.Context) {
 }
 
 func (AuthController) ForgetPassword(c *gin.Context) {
-	body := models.UserEmailInput{}
+	body := dtos.UserEmailInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -86,7 +88,7 @@ func (AuthController) ForgetPassword(c *gin.Context) {
 	}
 
 	code, err := userService.CreateForget(user.ID)
-	emailService.SendForgotPassword([]string{user.Email}, code)
+	mail.Send([]string{user.Email}, "Reset your password", fmt.Sprintf("<p>Your code is <strong>%s</strong></p>", code))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -95,7 +97,7 @@ func (AuthController) ForgetPassword(c *gin.Context) {
 }
 
 func (AuthController) ResetPassword(c *gin.Context) {
-	body := models.UserResetPasswordInput{}
+	body := dtos.UserResetPasswordInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -108,7 +110,7 @@ func (AuthController) ResetPassword(c *gin.Context) {
 }
 
 func (AuthController) GoogleLogin(c *gin.Context) {
-	body := models.UserGoogleInput{}
+	body := dtos.UserGoogleInput{}
 	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
