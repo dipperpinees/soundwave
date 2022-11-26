@@ -1,8 +1,11 @@
 import { Avatar, Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { useState, useContext } from 'react';
+import { EditProfileContext } from '../../stores';
 import Describe from './Describe';
 
 const Profile = (props) => {
     const { id, name, avatar, followerNumber } = props;
+    const { setIsEditProfile } = props;
     const { userId } = props;
     return (
         <Box m={'0 24px'} maxW={['100%', '100%', '150px', '180px']}>
@@ -18,7 +21,12 @@ const Profile = (props) => {
                             Following
                         </Button>
                     ) : (
-                        <Button textColor="#000" borderRadius="20px" margin="8px 0">
+                        <Button
+                            textColor="#000"
+                            borderRadius="20px"
+                            margin="8px 0"
+                            onClick={() => setIsEditProfile(true)}
+                        >
                             Edit Profile
                         </Button>
                     )}

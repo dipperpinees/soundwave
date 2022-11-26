@@ -7,12 +7,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import fetchAPI from '../utils/fetchAPI';
 import { UserContext } from '../stores/userStore';
+import EditProfile from '../components/Profile/EditProfile/EditProfile';
 
 const ProfilePage = () => {
     const { id } = useParams();
-    const [user, userDispatch] = useContext(UserContext);
+    const [user] = useContext(UserContext);
     const navigate = useNavigate();
     const [data, setData] = useState(null);
+    const [isEditProfile, setIsEditProfile] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -24,15 +26,16 @@ const ProfilePage = () => {
     }, [id]);
 
     // chuyển hướng đăng nhập nếu chưa đăng nhập
-    // useLayoutEffect(() => {
-    //     if (!user.id) {
-    //         navigate('/signin');
-    //         return;
-    //     }
-    // }, []);
+    useLayoutEffect(() => {
+        if (!user.id) {
+            navigate('/signin');
+            return;
+        }
+    }, []);
 
     return (
         <Box className="profile-wrapper" ml="360px" minHeight="100vh">
+            <EditProfile {...[isEditProfile, setIsEditProfile]} />
             <Box
                 pos={['initial', 'fixed']}
                 className="profile-user"
@@ -40,7 +43,7 @@ const ProfilePage = () => {
                 borderRight="1px solid rgba(255, 255, 255, 0.2)"
             >
                 <Box className="profile-content" margin="0 auto">
-                    <Profile {...data} userId={user.id} />
+                    <Profile setIsEditProfile={setIsEditProfile} {...data} userId={user.id} />
                 </Box>
             </Box>
             <Box margin="0 56px">

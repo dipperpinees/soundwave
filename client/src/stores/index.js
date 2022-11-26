@@ -1,3 +1,4 @@
+import { EditProfileStore } from './editProfileStore';
 import { GenreStore } from './genreStore';
 import { LoadingStore } from './loadingStore';
 import { PlayerStore } from './playerStore';

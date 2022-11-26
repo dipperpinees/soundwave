@@ -23,12 +23,12 @@ const MusicPage = () => {
     }, [id]);
 
     // chuyển hướng nếu chưa đăng nhập
-    // useLayoutEffect(() => {
-    //     if (!user.id) {
-    //         navigate('/signin');
-    //         return;
-    //     }
-    // }, []);
+    useLayoutEffect(() => {
+        if (!user.id) {
+            navigate('/signin');
+            return;
+        }
+    }, []);
 
     return (
         <Box className="music-page">

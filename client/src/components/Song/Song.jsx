@@ -2,7 +2,7 @@ import { Flex, Image, Box, Text, Center, Icon, background } from '@chakra-ui/rea
 import { LikeIcon } from '../Icon';
 import { FaRegEye } from 'react-icons/fa';
 import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
 import { PlayerContext } from '../../stores/playerStore';
 import './styles.scss';
@@ -22,14 +22,6 @@ const Song = ({ ...props }) => {
     const { isLikeIcon, isViewIcon } = props;
     const { borderBottom } = props;
     const [songName, singerName] = title.split(' - ');
-    // const [likeNum, setLikeNumber] = useState(likeNumber);
-    // const [viewNumber, setViewNumber] = useState(playCount);
-
-    // useEffect(() => {
-    //     setViewNumber(playCount);
-    // }, [playCount]);
-
-    // console.log('song' + id);
 
     return (
         <Box id={id} borderBottom={borderBottom} padding="12px 0">

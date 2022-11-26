@@ -1,10 +1,10 @@
-import { useState, useCallback, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { RiHeartLine, RiHeartFill } from 'react-icons/ri';
 import { Text } from '@chakra-ui/react';
 import fetchAPI from '../../utils/fetchAPI';
 
 const LikeIcon = ({ showLikeNumber = true, ...props }) => {
-    const [isLiked, setLiked] = useState(props.isLiked);
+    const [isLiked, setLiked] = useState(false);
     const [likeNumber, setLikeNumber] = useState(props.likeNumber);
 
     // console.log('like icon', props.id, isLiked);
@@ -18,6 +18,16 @@ const LikeIcon = ({ showLikeNumber = true, ...props }) => {
             });
         } catch (e) {}
     };
+
+    useEffect(() => {
+        const fetchSong = async () => {
+            try {
+                const song = await fetchAPI(`/song/${props.id}`);
+                setLiked(song.isLiked);
+            } catch (e) {}
+        };
+        props.id && fetchSong();
+    }, [props.id]);
 
     return (
         <Fragment>

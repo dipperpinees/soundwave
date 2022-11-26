@@ -17,9 +17,6 @@ const FeaturedTracks = ({ currentUserId }) => {
         fetchSong();
     }, [currentUserId]);
 
-    console.log('re-render');
-    console.log(data);
-
     const sortSongs = (typeSort) => {
         let sortFn;
         switch (typeSort) {
