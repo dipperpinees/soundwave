@@ -4,8 +4,9 @@ import { LikeIcon } from '../Icon';
 import { Link } from 'react-router-dom';
 
 const Song = ({ ...props }) => {
+    const { data } = props;
     const { borderBottom, number } = props;
-    const { id, title, url } = props;
+    const { id, title, url } = data[props.index];
     const [songName, singerName] = title.split(' - ');
 
     return (

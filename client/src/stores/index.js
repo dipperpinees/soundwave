@@ -1,4 +1,4 @@
-import { EditProfileStore } from './editProfileStore';
+import { ListSongStore } from './listSongStore';
 import { GenreStore } from './genreStore';
 import { LoadingStore } from './loadingStore';
 import { PlayerStore } from './playerStore';
@@ -7,15 +7,17 @@ import { UserStore } from './userStore';
 
 export function Store({ children }) {
     return (
-        <PlayerStore>
-            <GenreStore>
-                <LoadingStore>
-                    <UserStore>
-                        <PlaylistStore>{children}</PlaylistStore>
-                    </UserStore>
-                </LoadingStore>
-            </GenreStore>
-        </PlayerStore>
+        <ListSongStore>
+            <PlayerStore>
+                <GenreStore>
+                    <LoadingStore>
+                        <UserStore>
+                            <PlaylistStore>{children}</PlaylistStore>
+                        </UserStore>
+                    </LoadingStore>
+                </GenreStore>
+            </PlayerStore>
+        </ListSongStore>
     );
 }
 
@@ -23,3 +25,4 @@ export { GenreContext } from './genreStore';
 export { PlayerContext } from './playerStore';
 export { UserContext } from './userStore';
 export { PlaylistContext } from './playlistStore';
+export { ListSongContext } from './listSongStore';

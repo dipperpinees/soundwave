@@ -16,6 +16,8 @@ const ProfilePage = () => {
     const [data, setData] = useState(null);
     const [isEditProfile, setIsEditProfile] = useState(false);
 
+    console.log('re-render profile page');
+
     useEffect(() => {
         (async () => {
             try {

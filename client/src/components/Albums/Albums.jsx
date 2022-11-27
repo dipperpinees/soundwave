@@ -52,8 +52,9 @@ const Albums = ({ currentUserId }) => {
                                 return (
                                     <Song
                                         key={song.id}
-                                        number={index}
-                                        {...song}
+                                        index={index}
+                                        data={data}
+                                        setData={setData}
                                         userName={'user name'}
                                         borderBottom="1px solid rgba(255, 255, 255, 0.2)"
                                     />

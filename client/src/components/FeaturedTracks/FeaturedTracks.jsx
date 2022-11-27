@@ -29,7 +29,7 @@ const FeaturedTracks = ({ currentUserId }) => {
             // case 'download'
             //     sortFunction = (a, b) => a.download > b.download;
             default:
-                sortFn = (a, b) => b.playCount - a.playCount;
+                sortFn = (a, b) => 0;
                 break;
         }
         if (data) {
@@ -85,7 +85,9 @@ const FeaturedTracks = ({ currentUserId }) => {
                         return (
                             <Song
                                 key={song.id}
-                                {...song}
+                                index={index}
+                                data={data}
+                                setData={setData}
                                 userName={'user name'}
                                 isLikeIcon={true}
                                 isViewIcon={true}

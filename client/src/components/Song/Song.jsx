@@ -2,13 +2,15 @@ import { Flex, Image, Box, Text, Center, Icon, background } from '@chakra-ui/rea
 import { LikeIcon } from '../Icon';
 import { FaRegEye } from 'react-icons/fa';
 import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
-import { Link, useLocation, useParams } from 'react-router-dom';
-import { useEffect, useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { useContext } from 'react';
 import { PlayerContext } from '../../stores/playerStore';
 import './styles.scss';
 
 const Song = ({ ...props }) => {
-    const { id, title, thumbnail, author, playCount, genre } = props;
+    const { data } = props;
+
+    const { id, title, thumbnail, author, playCount, genre } = data[props.index];
 
     const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
 
@@ -78,7 +80,7 @@ const Song = ({ ...props }) => {
                 {isViewIcon && (
                     <Flex alignItems="center" margin="0 12px">
                         <FaRegEye fontSize={'20px'} />
-                        <Text minW={'30px'} ml={'8px'}>
+                        <Text minW={'36px'} ml={'8px'}>
                             {playCount}
                         </Text>
                     </Flex>

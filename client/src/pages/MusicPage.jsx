@@ -14,12 +14,13 @@ const MusicPage = () => {
     const [data, setData] = useState(null);
 
     useLayoutEffect(() => {
-        (async () => {
+        const fetchSong = async () => {
             try {
                 const data = await fetchAPI(`/song/${id}`);
                 setData(data);
             } catch (e) {}
-        })();
+        };
+        if (id !== undefined) fetchSong();
     }, [id]);
 
     // chuyển hướng nếu chưa đăng nhập

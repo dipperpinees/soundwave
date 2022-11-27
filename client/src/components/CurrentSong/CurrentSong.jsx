@@ -8,7 +8,7 @@ import { useState, useContext, Fragment } from 'react';
 import { PlayerContext } from '../../stores/playerStore';
 
 const CurrentSong = (props) => {
-    // const [showPlay, setShowPlay] = useState(false);
+    const [data, setData] = useState([props]);
     const { id, title, url, thumbnail, author, likeNumber, playCount, genre } = props;
 
     const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
@@ -78,7 +78,7 @@ const CurrentSong = (props) => {
                             align="center"
                             justify="center"
                         >
-                            <LikeIcon />
+                            <LikeIcon index={0} data={data} setData={setData} showLikeNumber={false} />
                         </Flex>
                     </Flex>
                     <Flex gap={'16px'}>
