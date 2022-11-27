@@ -9,8 +9,6 @@ const LikeIcon = ({ showLikeNumber = true, ...props }) => {
     const [isLiked, setLiked] = useState(song?.isLiked);
     const [likeNumber, setLikeNumber] = useState(song?.likeNumber);
 
-    console.log('re-render', song?.likeNumber, likeNumber);
-
     const toggleLike = async () => {
         try {
             setLiked(!isLiked);

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Song = ({ ...props }) => {
     const { data } = props;
-    const { borderBottom, number } = props;
+    const { borderBottom, index } = props;
     const { id, title, url } = data[props.index];
     const [songName, singerName] = title.split(' - ');
 
@@ -14,7 +14,7 @@ const Song = ({ ...props }) => {
             <Flex h="36px" overflow="hidden" justify={'space-between'} align={'center'}>
                 <Flex overflow={'hidden'} width={'80%'} align={'end'}>
                     <Text fontSize="sm" mr={'16px'}>
-                        {number + 1}
+                        {index + 1}
                     </Text>
                     <Text textOverflow={'ellipsis'} overflow="hidden" whiteSpace={'nowrap'} fontSize="sm">
                         <Link to={`/music/${id}`} width={'90%'}>

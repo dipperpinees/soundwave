@@ -1,7 +1,24 @@
 import { Box, Button, Flex, Heading, Image, Link, Select, HStack } from '@chakra-ui/react';
 import WriteComment from './WriteComment';
 import Comment from './Comment/Comment';
-const Comments = () => {
+import { useEffect } from 'react';
+import fetchAPI from '../../utils/fetchAPI';
+import { useState } from 'react';
+
+const Comments = ({ songId }) => {
+    const [comments, setComments] = useState(null);
+
+    const getComments = async () => {
+        try {
+            const response = await fetchAPI(`/song/${songId}/comment`);
+            setComments(response);
+        } catch (e) {}
+    };
+
+    useEffect(() => {
+        songId !== undefined && getComments();
+    }, [songId]);
+
     const setValue = (value) => {
         console.log(value);
     };
@@ -19,12 +36,9 @@ const Comments = () => {
                     </Select>
                 </Flex>
                 <Box mb={'16px'}>
-                    <WriteComment />
+                    <WriteComment songId={songId} getComments={getComments} />
                 </Box>
-                <Comment isSubComment={true} />
-                <Comment />
-                <Comment />
-                <Comment />
+                {comments && comments.map((comment, index) => <Comment index={index} comments={comments} />)}
             </Box>
         </Box>
     );
