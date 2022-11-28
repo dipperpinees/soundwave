@@ -9,7 +9,7 @@ import (
 var userController = controllers.UserController{}
 
 func userRouter(router *gin.RouterGroup) {
-	router.POST("/uploadAvatar", guard.Auth(), userController.UploadAvatar)
+	router.PUT("/", guard.Auth(), userController.UpdateUser)
 	router.GET("/:id", userController.GetUser)
 	router.GET("/", userController.SearchUser)
 	router.GET("/favorite", guard.Auth(), userController.GetFavoriteSong)

@@ -40,6 +40,7 @@ func (SongController) CreateSong(c *gin.Context) {
 		Thumbnail: formData.Thumbnail,
 		AuthorID:  user.ID,
 		GenreID:   formData.GenreID,
+		Duration:  formData.Duration,
 	}
 	if err := songService.CreateOne(&newSong); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -71,7 +72,6 @@ func (SongController) GetByID(c *gin.Context) {
 
 func (SongController) FindMany(c *gin.Context) {
 	userID := helper.GetUserID(c)
-
 	query := dtos.SongFilterInput{}
 	c.BindQuery(&query)
 
@@ -156,7 +156,7 @@ func (SongController) UpdateSong(c *gin.Context) {
 		return
 	}
 
-	updateData, err := songService.UpdateOne(params.ID, formData.Title, formData.File, formData.Thumbnail, formData.GenreID)
+	updateData, err := songService.UpdateOne(params.ID, formData.Title, formData.File, formData.Thumbnail, formData.GenreID, formData.Duration)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -168,7 +168,7 @@ func (SongController) UpdateSong(c *gin.Context) {
 func (SongController) CreateComment(c *gin.Context) {
 	params := dtos.IdParams{}
 	body := dtos.CommentCreateInput{}
-	if err := c.ShouldBind(&body); err != nil {
+	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -233,7 +233,7 @@ func (SongController) UpdateComment(c *gin.Context) {
 	}
 
 	body := CommentBody{}
-	if err := c.ShouldBind(&body); err != nil {
+	if err := c.BindJSON(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -259,4 +259,27 @@ func (SongController) IncrementPlayCount(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Increment play count successfully"})
+}
+
+func (SongController) ReportSong(c *gin.Context) {
+	params := dtos.IdParams{}
+	userID := helper.GetUserID(c)
+	if err := c.ShouldBindUri(&params); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Invalid song ID"})
+		return
+	}
+
+	body := dtos.SongReportCreateInput{}
+	if err := c.BindJSON(&body); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	newReport := models.SongReport{SongID: params.ID, UserID: userID, Reason: body.Reason}
+	if err := songService.CreateReport(&newReport); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, &newReport)
 }

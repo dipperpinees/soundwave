@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/helper"
@@ -36,12 +37,6 @@ func (UserService) FindOne(profileID uint, userID uint) (userModel, error) {
 	return user, err
 }
 
-func (UserService) UpdateOne(userId uint, data interface{}) error {
-	err := common.GetDB().Model(&userModel{}).Where("id = ?", userId).Updates(data).Error
-
-	return err
-}
-
 func (UserService) FindMany(page int, search string, orderBy string, limit int, userID uint) (*[]userModel, int64, error) {
 	var userList []userModel
 	offSet := (page - 1) * limit
@@ -61,7 +56,7 @@ func (UserService) FindMany(page int, search string, orderBy string, limit int, 
 		queueErr <- db.Find(&userModel{}).Count(&i).Error
 		count <- i
 	}()
-
+	fmt.Println(userID)
 	go func() {
 		db := common.GetDB()
 		order := "id desc"
@@ -77,7 +72,7 @@ func (UserService) FindMany(page int, search string, orderBy string, limit int, 
 		if userID != 0 {
 			db = db.Where("id <> ?", userID)
 		}
-		queueErr <- db.
+		queueErr <- db.Debug().
 			Select("*",
 				"(Select count(*) from songs where author_id = users.id) as track_number",
 				"(Select count(*) from follows where following_id = users.id) as follower_number",
@@ -190,4 +185,21 @@ func (u UserService) GetPlaylistOfUser(userID uint) ([]models.Playlist, error) {
 		}).
 		Find(&playlists).Error
 	return playlists, err
+}
+
+func (UserService) UpdateOne(userID uint, avatar string, description string, name string) (interface{}, error) {
+	updateData := make(map[string]interface{})
+
+	if avatar != "" {
+		updateData["avatar"] = avatar
+	}
+	if description != "" {
+		updateData["description"] = description
+	}
+	if name != "" {
+		updateData["name"] = name
+	}
+
+	err := common.GetDB().Model(&userModel{}).Where("id = ?", userID).Updates(updateData).Error
+	return updateData, err
 }

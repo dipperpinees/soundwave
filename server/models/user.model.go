@@ -10,6 +10,7 @@ type User struct {
 	Name            string    `gorm:"not null" json:"name"`
 	Password        string    `gorm:"not null" json:"-"`
 	Avatar          string    `json:"avatar"`
+	Description     string    `json:"description"`
 	CreatedAt       time.Time `gorm:"autoCreateTime;column:created_at" json:"createdAt"`
 	UpdatedAt       time.Time `gorm:"autoUpdateTime;column:updated_at" json:"updatedAt"`
 	Songs           []Song    `gorm:"foreignKey:AuthorID" json:"-"`

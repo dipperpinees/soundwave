@@ -5,6 +5,7 @@ type SongCreateInput struct {
 	File      string `upload:"file,required,audio"`
 	Thumbnail string `upload:"thumbnail,_,image"`
 	GenreID   uint   `form:"genreID" binding:"required"`
+	Duration  int    `form:"duration"`
 }
 
 type SongFilterInput struct {
@@ -20,4 +21,9 @@ type SongUpdateInput struct {
 	File      string `upload:"file,_,audio"`
 	Thumbnail string `upload:"thumbnail,_,image"`
 	GenreID   uint   `form:"genreID"`
+	Duration  int    `form:"duration"`
+}
+
+type SongReportCreateInput struct {
+	Reason string `json:"reason"`
 }

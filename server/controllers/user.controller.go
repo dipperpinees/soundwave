@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"math"
 	"net/http"
 
@@ -15,21 +16,25 @@ var followService = services.FollowService{}
 
 type UserController struct{}
 
-func (UserController) UploadAvatar(c *gin.Context) {
+func (UserController) UpdateUser(c *gin.Context) {
 	userID := helper.GetUserID(c)
 
-	userAvatar := dtos.UserUploadAvatarInput{}
-	if err := upload.Upload(c, &userAvatar); err != nil {
+	userUpdate := dtos.UserUpdateInput{}
+	c.ShouldBind(&userUpdate)
+	fmt.Println(userUpdate)
+
+	if err := upload.Upload(c, &userUpdate); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	if err := userService.UpdateOne(userID, &userModel{Avatar: userAvatar.Avatar}); err != nil {
+	user, err := userService.UpdateOne(userID, userUpdate.Avatar, userUpdate.Description, userUpdate.Name)
+	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"url": userAvatar.Avatar})
+	c.JSON(http.StatusOK, &user)
 }
 
 func (UserController) GetUser(c *gin.Context) {

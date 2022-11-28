@@ -412,9 +412,6 @@ var spec =
                             "properties": {
                                 "content": {
                                     "type": "string"
-                                },
-                                "replyID": {
-                                    type: "string"
                                 }
                             }
                         }, 
@@ -502,6 +499,40 @@ var spec =
                 }
             }
         },
+        "/song/{songID}/report": {
+            post: {
+                tags: ["song"],
+                summary: "Báo cáo bài hát",
+                operationId: "ReportSong",
+                produces: ["application/json"],
+                consumes: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "songID",
+                        type: "int",
+                    },
+                    {
+                        "in": "body",      
+                        "name": "Thông tin report",  
+                        "required": "true",   
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "reason": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
         "/user/": {
             get: {
                 tags: ["user"],
@@ -530,13 +561,11 @@ var spec =
                         description: "OK",   
                     },
                 }
-            }
-        },
-        "/user/uploadAvatar": {
-            post: {
+            },
+            put: {
                 tags: ["user"],
-                summary: "Đăng ảnh đại diện",
-                operationId: "CreateAvatar",
+                summary: "Cập nhật thông tin user",
+                operationId: "UpdateUser",
                 consumes: ["multipart/form-data"],
                 produces: ["application/json"],
                 parameters: [
@@ -545,7 +574,16 @@ var spec =
                         name: "avatar",
                         type: "file",
                         description: "Image file to upload.",
-                        required: true
+                    },
+                    {
+                        in: "formData",
+                        name: "name",
+                        type: "string",
+                    },
+                    {
+                        in: "formData",
+                        name: "description",
+                        type: "string",
                     }
                 ],
                 responses: {
