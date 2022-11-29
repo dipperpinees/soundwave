@@ -47,6 +47,7 @@ export default function Upload() {
     const [audioFile, setAudioFile] = useState(null);
     const toast = useToast();
     const navigate = useNavigate();
+    const [duration, setDuration] = useState(0);
 
     const onDrop = (acceptedFiles) => {
         if (!acceptedFiles || !acceptedFiles[0]) return;
@@ -80,7 +81,7 @@ export default function Upload() {
             setPlayAudio(true);
         }
     };
-    
+    console.log(duration);
     const getMetaTagsFromAudio = (file) => {
         musicMetadata.parseBlob(file, { native: true }).then((metadata) => {
             if (metadata.common.picture) {
@@ -95,6 +96,9 @@ export default function Upload() {
                 });
             } else {
                 setThumbnail({ src: '', file: null });
+            }
+            if (metadata.format.duration) {
+                setDuration(parseInt(metadata.format.duration));
             }
 
             if (metadata.common.genre) {
@@ -128,6 +132,7 @@ export default function Upload() {
         formData.append('title', title);
         formData.append('thumbnail', thumbnail.file);
         formData.append('genreID', genre);
+        formData.append('duration', duration);
 
         setLoading(true);
         try {

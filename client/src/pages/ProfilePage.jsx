@@ -6,20 +6,11 @@ import Albums from '../components/Albums';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import fetchAPI from '../utils/fetchAPI';
+import useProfile from '../hooks/useProfile';
 
 const ProfilePage = () => {
     const { id } = useParams();
-
-    const [data, setData] = useState(null);
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const data = await fetchAPI(`/user/${id}`);
-                setData(data);
-            } catch (e) {}
-        })();
-    }, [id]);
+    const {data, isLoading} = useProfile(id);
 
     return (
         <Box className="profile-wrapper" ml="360px" minHeight="100vh">

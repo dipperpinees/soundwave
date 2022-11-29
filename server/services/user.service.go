@@ -72,7 +72,7 @@ func (UserService) FindMany(page int, search string, orderBy string, limit int, 
 		if userID != 0 {
 			db = db.Where("id <> ?", userID)
 		}
-		queueErr <- db.Debug().
+		queueErr <- db.
 			Select("*",
 				"(Select count(*) from songs where author_id = users.id) as track_number",
 				"(Select count(*) from follows where following_id = users.id) as follower_number",

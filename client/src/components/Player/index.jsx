@@ -1,17 +1,18 @@
-import { Avatar, Flex, Heading, Icon, Progress, Text } from '@chakra-ui/react';
+import { Avatar, Flex, Heading, Icon, Progress, Text, useMediaQuery } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
 import { CgHeart } from 'react-icons/cg';
 import { GiNextButton, GiPreviousButton } from 'react-icons/gi';
 import { IoIosRepeat } from 'react-icons/io';
-import { MdPlaylistPlay } from 'react-icons/md';
+import { MdPause, MdPlayArrow, MdPlaylistPlay } from 'react-icons/md';
 import { TiArrowShuffle } from 'react-icons/ti';
 import { useLocation } from 'react-router-dom';
-import defaultPreview from '../../assets/song_preview.jpg';
 import { PlayerContext } from '../../stores';
 import fetchAPI from '../../utils/fetchAPI';
 import { formatTime } from '../../utils/formatTime';
+import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
+import MobilePlayer from './MobilePlayer';
 import { NextUp } from './NextUp';
 import SoundVolume from './SoundVolume';
 import './styles.scss';
@@ -23,7 +24,8 @@ export default function Player() {
     const [isLiked, setIsLiked] = useState(false);
     const progressRef = useRef();
     const handleTogglePlay = () => dispatch({ type: 'Toggle' });
-    
+    const [isMobile] = useMediaQuery('(max-width: 48em)');
+
     const handleChangeProgress = (e) => {
         const progress = ((e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth) * 100;
         dispatch({ type: 'ChangeTime', payload: progress });
@@ -31,7 +33,7 @@ export default function Player() {
 
     useEffect(() => {
         setIsLiked(songList?.[indexSongPlayed]?.isLiked || false);
-    }, [songList, indexSongPlayed])
+    }, [songList, indexSongPlayed]);
 
     //dont show on signin signup page
     const location = useLocation();
@@ -49,23 +51,23 @@ export default function Player() {
         } else {
             dispatch({ type: 'ChangeAutoPlay', payload: type });
         }
-    }
+    };
 
     const likeSong = async () => {
         try {
-            const {isLiked, id} = songList[indexSongPlayed];
+            const { isLiked, id } = songList[indexSongPlayed];
             setIsLiked(!isLiked);
             await fetchAPI(`/song/like/${id}`, {
-                method: isLiked ? "DELETE" : "POST"
-            })
+                method: isLiked ? 'DELETE' : 'POST',
+            });
         } catch (e) {}
-    }
+    };
 
     return (
         <Flex
             className="player"
             color="white"
-            gap={8}
+            gap={6}
             alignItems="center"
             justifyContent="space-between"
             as={motion.div}
@@ -89,7 +91,7 @@ export default function Player() {
             />
 
             <Flex alignItems="center" gap={2}>
-                <Avatar name="thumbnail" src={songList[indexSongPlayed]?.thumbnail || defaultPreview} />
+                <Avatar name="thumbnail" src={songList[indexSongPlayed]?.thumbnail || DEFAULT_SONG_THUMBNAIL} />
                 <div>
                     <Heading color="white" fontSize={12} as="h4">
                         {songList[indexSongPlayed]?.title}
@@ -99,10 +101,20 @@ export default function Player() {
                     </Text>
                 </div>
             </Flex>
-            <Flex className="player-play" display={{ base: 'none', md: 'flex' }}>
-                <Icon as={GiPreviousButton} onClick={() => dispatch({ type: 'PrevSong' })} />
-                <button onClick={handleTogglePlay}>{isPlayed ? <BsPauseFill /> : <BsFillPlayFill />}</button>
-                <GiNextButton onClick={() => dispatch({ type: 'NextSong' })} />
+            <Flex className="player-play" display={{ base: 'none', md: 'flex' }} gap={4}>
+                <Icon fontSize={20} as={GiPreviousButton} onClick={() => dispatch({ type: 'PrevSong' })} />
+                <Icon
+                    width={8}
+                    height={8}
+                    padding={1}
+                    borderRadius="50%"
+                    bgColor="white"
+                    color="blackAlpha.900"
+                    border="1px solid white"
+                    onClick={handleTogglePlay}
+                    as={isPlayed ? MdPause : MdPlayArrow}
+                ></Icon>
+                <Icon fontSize={20} as={GiNextButton} onClick={() => dispatch({ type: 'NextSong' })}></Icon>
             </Flex>
             <Flex flex={1} alignItems="center" gap={1} display={{ base: 'none', md: 'flex' }}>
                 <Text fontSize={10} color="white">
@@ -122,24 +134,33 @@ export default function Player() {
             </Flex>
 
             <Flex gap={4} display={{ base: 'none', md: 'flex' }}>
-                <IoIosRepeat
+                <Icon
+                    fontSize={20}
                     onClick={() => changeAutoPlay('repeat')}
+                    as={IoIosRepeat}
                     className={autoPlay === 'repeat' && 'player-choose'}
                 />
-                <TiArrowShuffle
+                <Icon
+                    fontSize={20}
+                    as={TiArrowShuffle}
                     onClick={() => changeAutoPlay('shuffle')}
                     className={autoPlay === 'shuffle' && 'player-choose'}
                 />
-                <Icon as={CgHeart} color={isLiked ? "tomato" : "white"} onClick={likeSong}/>
-                <MdPlaylistPlay onClick={() => setShowPlaylist(true)} />
-                <SoundVolume />
+                <Icon fontSize={20} as={CgHeart} color={isLiked ? 'tomato' : 'white'} onClick={likeSong} />
+                <Icon fontSize={20} as={MdPlaylistPlay} onClick={() => setShowPlaylist(true)} />
+                <Icon fontSize={20} as={SoundVolume} />
             </Flex>
 
-            {/* mobile */}
-            <Flex gap={4} display={{ base: 'flex', md: 'none' }}>
-                <Icon as={CgHeart} color={isLiked ? "tomato" : "white"} onClick={likeSong}/>
-                <button onClick={handleTogglePlay}>{isPlayed ? <BsPauseFill /> : <BsFillPlayFill />}</button>
-            </Flex>
+            {isMobile && (
+                <>
+                    <MobilePlayer {...{handleTogglePlay, isPlayed, songPlayed: songList?.[indexSongPlayed]}}/>
+                    <Flex gap={4}>
+                        <Icon as={CgHeart} color={isLiked ? 'tomato' : 'white'} onClick={likeSong} />
+                        <button onClick={handleTogglePlay}>{isPlayed ? <BsPauseFill /> : <BsFillPlayFill />}</button>
+                    </Flex>
+                </>
+            )}
+
             <NextUp isOpen={showPlaylist} toggleOpen={() => setShowPlaylist(!showPlaylist)} />
         </Flex>
     );

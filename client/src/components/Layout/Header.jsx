@@ -3,37 +3,23 @@ import {
     Box,
     Button,
     Flex,
-    Icon,
-    Input,
-    InputGroup,
-    InputLeftElement,
-    Menu,
+    Icon, Menu,
     MenuButton,
     MenuItem,
-    MenuList,
-    VStack,
+    MenuList
 } from '@chakra-ui/react';
-import queryString from 'query-string';
-import { useContext, useEffect, useState } from 'react';
-import { BiSearchAlt } from 'react-icons/bi';
+import { useContext } from 'react';
 import { MdOutlineNotifications } from 'react-icons/md';
 import { VscTriangleDown } from 'react-icons/vsc';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../stores';
 import fetchAPI from '../../utils/fetchAPI';
+import SearchInput from '../SearchInput';
 
 export default function Header() {
     const [user, userDispatch] = useContext(UserContext);
-    const [showSearchDropdown, setShowSearchDropdown] = useState(false);
-    const [searchInput, setSearchInput] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        document.addEventListener('click', () => {
-            setShowSearchDropdown(false);
-        });
-    }, []);
 
     if (location.pathname === '/signin' || location.pathname === '/signup') return null;
 
@@ -43,52 +29,11 @@ export default function Header() {
         navigate('/signin');
     }
 
-    const handleSearch = () => {
-        if (location.pathname.startsWith('/search')) {
-            const queryParams = queryString.parse(location.search);
-            queryParams.q = searchInput;
-            navigate({
-                path: location.pathname,
-                search: queryString.stringify(queryParams),
-            });
-        } else {
-            navigate(`/search/?q=${searchInput}`);
-        }
-        setShowSearchDropdown(false);
-    };
 
     return (
         <Flex alignItems="center" className="header" color="white" zIndex={10}>
-            <Box position={'relative'} width="50%" display={{base: "none", sm: "block"}} ml={{base: 0, sm: 16, md: 0}}>
-                <InputGroup width="100%" marginLeft="8px" size="sm">
-                    <InputLeftElement pointerEvents="none" children={<BiSearchAlt color="gray.300" />} />
-                    <Input
-                        type="tel"
-                        placeholder="Search for artists, song,..."
-                        borderRadius="40px"
-                        size="sm"
-                        onChange={(e) => {
-                            setSearchInput(e.target.value);
-                            setShowSearchDropdown(!!e.target.value);
-                        }}
-                        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                    />
-                </InputGroup>
-                {showSearchDropdown && (
-                    <VStack
-                        align="stretch"
-                        position={'absolute'}
-                        right={-3}
-                        left={1}
-                        top={38}
-                        bgColor="blackAlpha.800"
-                        borderRadius={8}
-                    >
-                        <Flex h="40px" align={'center'} paddingLeft={4} onClick={handleSearch}>
-                            Search for "{searchInput}"
-                        </Flex>
-                    </VStack>
-                )}
+            <Box width="50%">
+                <SearchInput />
             </Box>
             {!!user.id && <Icon as={MdOutlineNotifications} fontSize={20} ml="auto" />}
             {!!user.id ? (

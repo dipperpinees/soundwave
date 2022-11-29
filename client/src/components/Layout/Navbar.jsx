@@ -99,7 +99,11 @@ function Navbar() {
                 </NavLink>
 
                 <Icon as={HiMusicalNote} fontSize={28} onClick={closeMobileBar} />
-                <Icon as={HiHeart} fontSize={28} onClick={closeMobileBar} />
+                {!!user.id && (
+                    <NavLink to="/favorite" style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>
+                        <Icon as={HiHeart} fontSize={28} onClick={closeMobileBar} />
+                    </NavLink>
+                )}
                 {!!user.id && (
                     <NavLink
                         to="/upload"
