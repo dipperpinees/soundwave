@@ -12,22 +12,10 @@ import useProfile from '../hooks/useProfile';
 
 const ProfilePage = () => {
     const { id } = useParams();
-    const {data, isLoading} = useProfile(id);
+    const { data, isLoading } = useProfile(id);
     const [user] = useContext(UserContext);
     const navigate = useNavigate();
-    //const [data, setData] = useState(null);
-    //const [isEditProfile, setIsEditProfile] = useState(false);
-
-    console.log('re-render profile page');
-
-    //useEffect(() => {
-    //    (async () => {
-    //        try {
-    //            const data = await fetchAPI(`/user/${id}`);
-    //            setData(data);
-    //        } catch (e) {}
-   //     })();
-    //}, [id]);
+    const [isEditProfile, setIsEditProfile] = useState(false);
 
     // chuyển hướng đăng nhập nếu chưa đăng nhập
     useLayoutEffect(() => {
