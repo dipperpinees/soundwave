@@ -1,4 +1,10 @@
 import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
     Box,
     Button,
     Center,
@@ -16,66 +22,41 @@ import {
     Stack,
     Text,
     useToast,
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogContent,
-    AlertDialogOverlay,
 } from '@chakra-ui/react';
 import { useContext, useEffect, useState } from 'react';
 import { AiFillCamera } from 'react-icons/ai';
+import useDeleteSong from '../../hooks/useDeleteSong';
+import useUpdateSong from '../../hooks/useUpdateSong';
+import useUsersSongs from '../../hooks/useUsersSongs';
 import { GenreContext, UserContext } from '../../stores';
 import { LoadingContext } from '../../stores/loadingStore';
 import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
-import fetchAPI from '../../utils/fetchAPI';
 import SongPreview from '../SongPreview';
 import SongSkeleton from '../SquareSkeleton';
 
 export default function SongsLibrary() {
     const user = useContext(UserContext)[0];
-    const [tracks, setTracks] = useState(null);
     const [editedTrack, setEditedTrack] = useState(null);
     const [deleteTrack, setDeleteTrack] = useState(null);
-
-    useEffect(() => {
-        if (!user.id) return;
-        (async () => {
-            try {
-                const data = await fetchAPI(`/user/${user.id}/songs`);
-                setTracks(data);
-            } catch (e) {}
-        })();
-    }, [user]);
-
-    const updateTrack = (updateID, data = {}) => {
-        setTracks(
-            tracks.map((track) => {
-                if (updateID === track.id) {
-                    return { ...track, ...data };
-                }
-                return track;
-            })
-        );
-    };
-
-    const handleDelete = async (deleteID) => {
-        try {
-            setTracks(tracks.filter(({ id }) => id !== deleteID));
-            await fetchAPI(`/song/${deleteID}`, { method: 'DELETE' });
-        } catch (e) {
-            console.log(e);
-        }
-    };
+    const { data: tracks } = useUsersSongs(user.id);
+    const { mutate: deleteSong } = useDeleteSong();
 
     return (
         <>
             <Text as="h3" fontSize={20} fontWeight={600}>
                 Songs Library
             </Text>
-            <Grid templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)', lg: 'repeat(6, 1fr)' }} gap={6}>
-                {tracks
-                    ? tracks.map((song) => (
+            <Grid
+                templateColumns={{
+                    base: 'repeat(2, minmax(0, 1fr))',
+                    sm: 'repeat(4, minmax(0, 1fr))',
+                    lg: 'repeat(6, minmax(0, 1fr))',
+                }}
+                gap={6}
+            >
+                {!tracks
+                    ? [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)
+                    : tracks.map((song) => (
                           <SongPreview
                               key={song.id}
                               song={song}
@@ -83,15 +64,12 @@ export default function SongsLibrary() {
                               onDelete={() => setDeleteTrack(song.id)}
                               onEdit={() => setEditedTrack(song)}
                           />
-                      ))
-                    : [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)}
+                      ))}
             </Grid>
             {tracks?.length === 0 && <Text>You haven't uploaded any songs yet</Text>}
-            {editedTrack && (
-                <EditTrack editedTrack={editedTrack} onClose={() => setEditedTrack(null)} onUpdate={updateTrack} />
-            )}
+            {editedTrack && <EditTrack editedTrack={editedTrack} onClose={() => setEditedTrack(null)} />}
             {deleteTrack && (
-                <DeleteTrackAlert onClose={() => setDeleteTrack(null)} onDelete={() => handleDelete(deleteTrack)} />
+                <DeleteTrackAlert onClose={() => setDeleteTrack(null)} onDelete={() => deleteSong(deleteTrack)} />
             )}
         </>
     );
@@ -137,6 +115,7 @@ const EditTrack = ({ editedTrack, onClose, onUpdate }) => {
     const toast = useToast();
     const setLoading = useContext(LoadingContext)[1];
     const [genres] = useContext(GenreContext);
+    const mutation = useUpdateSong();
 
     const handleChangeThumbnail = () => {
         const input = document.createElement('input');
@@ -167,18 +146,12 @@ const EditTrack = ({ editedTrack, onClose, onUpdate }) => {
 
         setLoading(true);
         try {
-            await fetchAPI(`/song/${editedTrack.id}`, {
-                method: 'PUT',
-                body: formData,
-            });
-            toast({
-                title: 'Update song successfully.',
-                status: 'success',
-                duration: 5000,
-                isClosable: true,
-            });
-            onUpdate(editedTrack.id, { title, genre: { id: genre }, thumbnail: thumbnail.src });
-            onClose();
+            await mutation.mutate(
+                { id: editedTrack.id, formData },
+                {
+                    onSettled: onClose,
+                }
+            );
         } catch (e) {
             toast({
                 title: e.message,

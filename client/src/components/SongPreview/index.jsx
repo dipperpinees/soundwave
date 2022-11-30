@@ -1,17 +1,6 @@
-import {
-    AspectRatio,
-    Box,
-    Flex,
-    Icon,
-    Image,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
-    Text
-} from '@chakra-ui/react';
+import { AspectRatio, Box, Flex, Icon, Image, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
-import { AiFillHeart, AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
+import { AiFillHeart } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import {
     MdDeleteOutline,
@@ -20,16 +9,19 @@ import {
     MdOutlineContentCopy,
     MdOutlineLibraryAdd,
     MdOutlineMoreHoriz,
+    MdPause,
+    MdPlayArrow,
     MdPlaylistAdd
 } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import waveGif from "../../assets/animated.gif";
 import defaultPreview from '../../assets/song_preview.jpg';
 import { UserContext } from '../../stores';
 import { PlayerContext } from '../../stores/playerStore';
 import { PlaylistContext } from '../../stores/playlistStore';
 import fetchAPI from '../../utils/fetchAPI';
 
-export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
+export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike }) {
     const [isLiked, setIsLiked] = useState(song.isLiked);
     const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
     const user = useContext(UserContext)[0];
@@ -40,8 +32,10 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
     const isPlayThisSong = song.id === songList[indexSongPlayed]?.id;
     const showPauseIcon = song.id === songList[indexSongPlayed]?.id && isPlayed;
     const download = () => window.open(song.url.replace('/upload/', '/upload/fl_attachment/'), '_blank');
+
     const likeSong = async () => {
         try {
+            if (isLiked && onUnlike) onUnlike() 
             setIsLiked(!isLiked);
             await fetchAPI(`/song/like/${song.id}`, {
                 method: isLiked ? 'DELETE' : 'POST',
@@ -51,10 +45,7 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
 
     return (
         <Box width="100%">
-            <Box
-                position="relative"
-                className="song-preview-thumbnail"
-            >
+            <Box position="relative" className="song-preview-thumbnail">
                 <AspectRatio width="100%" ratio={1}>
                     <Image
                         objectFit="cover"
@@ -65,8 +56,12 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
                 </AspectRatio>
                 <div className="song-preview-control">
                     <Icon
-                        color="var(--primary-color)"
-                        as={showPauseIcon ? AiFillPauseCircle : AiFillPlayCircle}
+                        bgColor="var(--primary-color)"
+                        width={12}
+                        height={12}
+                        padding={2}
+                        color="white"
+                        as={showPauseIcon ? MdPause : MdPlayArrow}
                         fontSize={60}
                         position="absolute"
                         top="50%"
@@ -122,6 +117,7 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit }) {
             <Flex direction="column" mt={1}>
                 {!isOwner && (
                     <Text fontSize={14} fontWeight={600} className="one-line-title">
+                        {isPlayThisSong && <Image width={3} mr={1} src={waveGif} display="inline"/>}
                         {song.title}
                     </Text>
                 )}

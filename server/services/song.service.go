@@ -111,7 +111,7 @@ func (SongService) GetLikeNumber(songID uint) (int64, error) {
 
 func (SongService) DeleteByID(songID uint) error {
 	var waitGroup sync.WaitGroup
-	waitGroup.Add(3)
+	waitGroup.Add(4)
 
 	go func() {
 		common.GetDB().Where("song_id = ?", songID).Delete(&models.UserLikeSong{})
@@ -128,11 +128,16 @@ func (SongService) DeleteByID(songID uint) error {
 		waitGroup.Done()
 	}()
 
+	go func() {
+		common.GetDB().Where("song_id = ?", songID).Delete(&models.SongReport{})
+		waitGroup.Done()
+	}()
+
 	waitGroup.Wait()
 	return common.GetDB().Delete(&songModel{}, songID).Error
 }
 
-func (SongService) UpdateOne(songID uint, title string, url string, thumbnail string, genreID uint) (map[string]interface{}, error) {
+func (SongService) UpdateOne(songID uint, title string, url string, thumbnail string, genreID uint, duration int) (map[string]interface{}, error) {
 	updateData := make(map[string]interface{})
 
 	if title != "" {
@@ -147,10 +152,18 @@ func (SongService) UpdateOne(songID uint, title string, url string, thumbnail st
 	if genreID != 0 {
 		updateData["genre_id"] = genreID
 	}
+	if duration != 0 {
+		updateData["duration"] = duration
+	}
 	err := common.GetDB().Model(&songModel{}).Where("id = ?", songID).Updates(updateData).Error
 	return updateData, err
 }
 
 func (SongService) IncrementPlayCount(songID uint) error {
 	return common.GetDB().Model(&songModel{}).Where("id = ?", songID).Update("play_count", gorm.Expr("play_count + ?", 1)).Error
+}
+
+func (SongService) CreateReport(report *models.SongReport) error {
+	err := common.GetDB().Create(&report).Error
+	return err
 }

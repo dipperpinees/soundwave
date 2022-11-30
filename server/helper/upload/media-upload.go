@@ -16,7 +16,7 @@ func NewMediaUpload() *mediaUpload {
 }
 
 func (*mediaUpload) Single(input interface{}) (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
 	defer cancel()
 
 	//create cloudinary instance

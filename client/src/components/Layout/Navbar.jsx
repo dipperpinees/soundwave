@@ -5,11 +5,10 @@ import { FiMenu } from 'react-icons/fi';
 import { HiHeart, HiHome, HiMusicalNote } from 'react-icons/hi2';
 import { MdClose, MdLibraryMusic } from 'react-icons/md';
 import { RiUploadCloud2Fill } from 'react-icons/ri';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { UserContext } from '../../stores';
 
 function Navbar() {
-    const location = useLocation();
     const user = useContext(UserContext)[0];
     const [showMobileBar, setShowMobileBar] = useState(false);
     const [isMobile] = useMediaQuery('(max-width: 48em)');
@@ -17,8 +16,6 @@ function Navbar() {
     useEffect(() => {
         setShowMobileBar(!isMobile);
     }, [isMobile]);
-
-    if (location.pathname === '/signin' || location.pathname === '/signup') return null;
 
     const closeMobileBar = () => {
         setShowMobileBar(false);
@@ -99,7 +96,11 @@ function Navbar() {
                 </NavLink>
 
                 <Icon as={HiMusicalNote} fontSize={28} onClick={closeMobileBar} />
-                <Icon as={HiHeart} fontSize={28} onClick={closeMobileBar} />
+                {!!user.id && (
+                    <NavLink to="/favorite" style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>
+                        <Icon as={HiHeart} fontSize={28} onClick={closeMobileBar} />
+                    </NavLink>
+                )}
                 {!!user.id && (
                     <NavLink
                         to="/upload"

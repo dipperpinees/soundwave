@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.13c9b9e0.css",
-    "main.js": "/static/js/main.a5a87ce4.js",
+    "main.css": "/static/css/main.86602d29.css",
+    "main.js": "/static/js/main.d296391e.js",
     "static/js/27.95291165.chunk.js": "/static/js/27.95291165.chunk.js",
     "static/media/song_preview.jpg": "/static/media/song_preview.3d85946552f015ea99d0.jpg",
     "static/media/playlist_preview.jpg": "/static/media/playlist_preview.b240e98b4012f3895494.jpg",
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.13c9b9e0.css",
-    "static/js/main.a5a87ce4.js"
+    "static/css/main.86602d29.css",
+    "static/js/main.d296391e.js"
   ]
 }

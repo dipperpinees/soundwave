@@ -36,12 +36,6 @@ func (UserService) FindOne(profileID uint, userID uint) (userModel, error) {
 	return user, err
 }
 
-func (UserService) UpdateOne(userId uint, data interface{}) error {
-	err := common.GetDB().Model(&userModel{}).Where("id = ?", userId).Updates(data).Error
-
-	return err
-}
-
 func (UserService) FindMany(page int, search string, orderBy string, limit int, userID uint) (*[]userModel, int64, error) {
 	var userList []userModel
 	offSet := (page - 1) * limit
@@ -51,7 +45,7 @@ func (UserService) FindMany(page int, search string, orderBy string, limit int, 
 	go func() {
 		var i int64
 		defer close(count)
-		db := common.GetDB()
+		db := common.GetDB().Where("role <> ?", "admin")
 		if search != "" {
 			db = db.Where("name LIKE ?", "%"+search+"%")
 		}
@@ -63,7 +57,7 @@ func (UserService) FindMany(page int, search string, orderBy string, limit int, 
 	}()
 
 	go func() {
-		db := common.GetDB()
+		db := common.GetDB().Where("role <> ?", "admin")
 		order := "id desc"
 		if search != "" {
 			db = db.Where("name LIKE ?", "%"+search+"%")
@@ -190,4 +184,21 @@ func (u UserService) GetPlaylistOfUser(userID uint) ([]models.Playlist, error) {
 		}).
 		Find(&playlists).Error
 	return playlists, err
+}
+
+func (UserService) UpdateOne(userID uint, avatar string, description string, name string) (interface{}, error) {
+	updateData := make(map[string]interface{})
+
+	if avatar != "" {
+		updateData["avatar"] = avatar
+	}
+	if description != "" {
+		updateData["description"] = description
+	}
+	if name != "" {
+		updateData["name"] = name
+	}
+
+	err := common.GetDB().Model(&userModel{}).Where("id = ?", userID).Updates(updateData).Error
+	return updateData, err
 }

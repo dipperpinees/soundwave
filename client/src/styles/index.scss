@@ -99,8 +99,10 @@ select {
 }
 
 .one-line-title {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     overflow: hidden;
+    word-break: break-word;
+    max-width: 100%;
+
 }

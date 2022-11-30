@@ -3,66 +3,18 @@ import queryString from 'query-string';
 import { useContext, useEffect, useState } from 'react';
 import { BsFillPeopleFill, BsSoundwave } from 'react-icons/bs';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import LgArtist from '../components/Artist/LgArtist';
+import Artist from '../components/Artist/index.';
 import SongPreview from '../components/SongPreview';
 import SongSkeleton from '../components/SquareSkeleton';
-import { API_ENDPOINT } from '../config';
+import useSongs from '../hooks/useSongs';
+import useUsers from '../hooks/useUsers';
 import { GenreContext } from '../stores';
 
 export default function Search({ type }) {
-    const [searchParams] = useSearchParams();
-    const [searchTracksData, setSearchTracksData] = useState(null);
-    const [searchPeopleData, setSearchPeopleData] = useState(null);
-    const [pagination, setPagination] = useState(null);
     const location = useLocation();
     const navigate = useNavigate();
     const genre = useContext(GenreContext)[0];
-
-    const searchSongs = async (search, orderBy, genreID) => {
-        setSearchTracksData(null);
-        const response = await fetch(
-            API_ENDPOINT +
-                '/song/?' +
-                queryString.stringify({
-                    limit: 12,
-                    ...(search && { search }),
-                    ...(orderBy && { orderBy }),
-                    ...(genreID && { genreID }),
-                })
-        );
-        if (response.ok) {
-            const { data, pagination } = await response.json();
-            setPagination(pagination);
-            setSearchTracksData(data);
-        }
-    };
-
-    const searchUsers = async (search, orderBy) => {
-        const response = await fetch(
-            API_ENDPOINT +
-                '/user/?' +
-                queryString.stringify({
-                    limit: 12,
-                    ...(search && { search }),
-                    ...(orderBy && { orderBy }),
-                })
-        );
-        if (response.ok) {
-            const { data, pagination } = await response.json();
-            setPagination(pagination);
-            setSearchPeopleData(data);
-        }
-    };
-
-    useEffect(() => {
-        setPagination(null);
-        const search = searchParams.get('q');
-        const orderBy = searchParams.get('order');
-        const genreID = searchParams.get('genre');
-
-        if (type === 'tracks') searchSongs(search, orderBy, genreID);
-        if (type === 'people') searchUsers(search, orderBy);
-    }, [type, searchParams]);
+    const [searchParams] = useSearchParams();
 
     const handleChangeSearch = (newSearchParams) => {
         const queryParams = {
@@ -87,7 +39,7 @@ export default function Search({ type }) {
             minHeight={'calc(100vh - var(--header-height))'}
         >
             <Flex flexWrap={{ base: 'wrap', md: 'inherit' }} gap={{ base: 2, md: 0 }}>
-                <Link to="/search">
+                <Link to={`/search?q=${searchParams.get('q')}`}>
                     <Button
                         variant="ghost"
                         color="white"
@@ -99,7 +51,7 @@ export default function Search({ type }) {
                         Tracks
                     </Button>
                 </Link>
-                <Link to="/search/people">
+                <Link to={`/search/people?q=${searchParams.get('q')}`}>
                     <Button
                         variant="ghost"
                         color="white"
@@ -123,7 +75,9 @@ export default function Search({ type }) {
                         >
                             <option value="lastest">All</option>
                             {genre.map(({ id, name }) => (
-                                <option value={id}>{name}</option>
+                                <option key={id} value={id}>
+                                    {name}
+                                </option>
                             ))}
                         </Select>
                         <Select
@@ -152,27 +106,77 @@ export default function Search({ type }) {
                     </Select>
                 )}
             </Flex>
-            <Text marginTop={4} marginBottom={4}>
-                {pagination &&
-                    `Found ${pagination.totalDocs} results ${
-                        searchParams.get('q') ? `for "${searchParams.get('q')}"` : ''
-                    }`}
-            </Text>
-            {type === 'tracks' && (
-                <Grid
-                    templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)', lg: 'repeat(6, 1fr)' }}
-                    gap={{ base: 4, md: 5 }}
-                >
-                    {searchTracksData
-                        ? searchTracksData.map((song) => <SongPreview key={song.id} song={song} />)
-                        : [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)}
-                </Grid>
-            )}
-            {type === 'people' && (
-                <Flex direction="column" width="100%">
-                    {searchPeopleData && searchPeopleData.map((user) => <LgArtist key={user.id} {...user} />)}
-                </Flex>
-            )}
+            {type === 'tracks' && <SearchUser />}
+            {type === 'people' && <SearchPeople />}
         </Flex>
     );
 }
+
+const SearchUser = () => {
+    const [searchParams] = useSearchParams();
+
+    const [userSearchParams, setUserSearchParams] = useState();
+    const { data: searchTracksData } = useSongs(queryString.stringify(userSearchParams), {
+        enabled: !!userSearchParams,
+    });
+
+    useEffect(() => {
+        setUserSearchParams({
+            search: searchParams.get('q'),
+            orderBy: searchParams.get('order'),
+            genreID: searchParams.get('genre'),
+        });
+    }, [searchParams]);
+
+    return (
+        <>
+            <Text marginTop={4} marginBottom={4}>
+                {searchTracksData &&
+                    `Found ${searchTracksData.pagination.totalDocs} results ${
+                        searchParams.get('q') ? `for "${searchParams.get('q')}"` : ''
+                    }`}
+            </Text>
+            <Grid
+                templateColumns={{
+                    base: 'repeat(2, minmax(0, 1fr))',
+                    sm: 'repeat(4, minmax(0, 1fr))',
+                    lg: 'repeat(6, minmax(0, 1fr))',
+                }}
+                gap={{ base: 4, md: 5 }}
+            >
+                {!!searchTracksData
+                    ? searchTracksData.data.map((song) => <SongPreview key={song.id} song={song} />)
+                    : [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)}
+            </Grid>
+        </>
+    );
+};
+
+const SearchPeople = () => {
+    const [searchParams] = useSearchParams();
+    const [peopleSearchParams, setPeopleSearchParams] = useState();
+    const { data: searchPeopleData } = useUsers(queryString.stringify(peopleSearchParams), {
+        enabled: !!peopleSearchParams,
+    });
+
+    useEffect(() => {
+        setPeopleSearchParams({
+            search: searchParams.get('q'),
+            orderBy: searchParams.get('order'),
+        });
+    }, [searchParams]);
+
+    return (
+        <>
+            <Text marginTop={4} marginBottom={4}>
+                {searchPeopleData &&
+                    `Found ${searchPeopleData.pagination.totalDocs} results ${
+                        searchParams.get('q') ? `for "${searchParams.get('q')}"` : ''
+                    }`}
+            </Text>
+            <Flex direction="column" width="100%">
+                {searchPeopleData && searchPeopleData.data.map((user) => <Artist key={user.id} {...user} size="lg" />)}
+            </Flex>
+        </>
+    );
+};

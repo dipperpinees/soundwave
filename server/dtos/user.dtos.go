@@ -36,6 +36,8 @@ type UserFilterInput struct {
 	OrderBy string `form:"orderBy"` //follower, track
 }
 
-type UserUploadAvatarInput struct {
-	Avatar string `upload:"avatar,required,image"`
+type UserUpdateInput struct {
+	Avatar      string `upload:"avatar,_,image"`
+	Description string `form:"description"`
+	Name        string `form:"name"`
 }
