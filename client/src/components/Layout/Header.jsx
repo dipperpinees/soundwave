@@ -11,17 +11,14 @@ import {
 import { useContext } from 'react';
 import { MdOutlineNotifications } from 'react-icons/md';
 import { VscTriangleDown } from 'react-icons/vsc';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../stores';
 import fetchAPI from '../../utils/fetchAPI';
 import SearchInput from '../SearchInput';
 
 export default function Header() {
     const [user, userDispatch] = useContext(UserContext);
-    const location = useLocation();
     const navigate = useNavigate();
-
-    if (location.pathname === '/signin' || location.pathname === '/signup') return null;
 
     async function logOut() {
         fetchAPI('/logout', { method: 'POST' });
@@ -31,7 +28,7 @@ export default function Header() {
 
 
     return (
-        <Flex alignItems="center" className="header" color="white" zIndex={10}>
+        <Flex align="center" className="header" color="white" zIndex={10}>
             <Box width="50%">
                 <SearchInput />
             </Box>

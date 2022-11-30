@@ -2,7 +2,6 @@ package services
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/helper"
@@ -46,7 +45,7 @@ func (UserService) FindMany(page int, search string, orderBy string, limit int, 
 	go func() {
 		var i int64
 		defer close(count)
-		db := common.GetDB()
+		db := common.GetDB().Where("role <> ?", "admin")
 		if search != "" {
 			db = db.Where("name LIKE ?", "%"+search+"%")
 		}
@@ -56,9 +55,9 @@ func (UserService) FindMany(page int, search string, orderBy string, limit int, 
 		queueErr <- db.Find(&userModel{}).Count(&i).Error
 		count <- i
 	}()
-	fmt.Println(userID)
+
 	go func() {
-		db := common.GetDB()
+		db := common.GetDB().Where("role <> ?", "admin")
 		order := "id desc"
 		if search != "" {
 			db = db.Where("name LIKE ?", "%"+search+"%")

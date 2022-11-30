@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/hiepnguyen223/int3306-project/common"
+	"github.com/hiepnguyen223/int3306-project/configs"
 )
 
 func Migrate() {
@@ -10,6 +11,9 @@ func Migrate() {
 	db.SetupJoinTable(&Playlist{}, "Songs", &PlaylistsSongs{})
 	db.AutoMigrate(&User{}, &Song{}, &Comment{}, &Follow{}, &Genre{}, &Playlist{}, &Forget{}, &SongReport{})
 
-	//bulk insert data
-	// BulkInsertGenre()
+	//create admin account
+	adminEmail, adminPassword := configs.EnvAdmin()
+	hashPassword, _ := common.HashPassword(adminPassword)
+	adminUser := User{Email: adminEmail, Name: "admin", Password: hashPassword, Role: "admin"}
+	common.GetDB().Create(&adminUser)
 }

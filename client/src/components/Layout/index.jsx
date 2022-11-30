@@ -1,13 +1,20 @@
-import Header from "./Header";
-import Navbar from "./Navbar";
-import "./styles.scss";
+import { useLocation } from 'react-router-dom';
+import Header from './Header';
+import Navbar from './Navbar';
+import './styles.scss';
 
-export default function Layout({children}) {
+export default function Layout({ children }) {
+    const location = useLocation();
+
     return (
         <>
-            <Header />
-            <Navbar />
+            {!['/signin', '/signup', '/admin'].includes(location.pathname) && (
+                <>
+                    <Header />
+                    <Navbar />
+                </>
+            )}
             {children}
         </>
-    )
+    );
 }

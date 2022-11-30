@@ -9,9 +9,9 @@ import {
     Input,
     Link,
     Text,
-    useToast,
+    useToast
 } from '@chakra-ui/react';
-import { useGoogleLogin } from '@react-oauth/google';
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
@@ -19,7 +19,6 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../stores';
 import '../styles/SignIn.scss';
 import fetchAPI from '../utils/fetchAPI';
-import { googleLogout } from '@react-oauth/google';
 
 export default function SignIn() {
     const {
@@ -27,15 +26,13 @@ export default function SignIn() {
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const [user, userDispatch] = useContext(UserContext);
+    const userDispatch = useContext(UserContext)[1];
     const navigate = useNavigate();
     const toast = useToast();
 
-    if (user.id) navigate('/');
-
     const onSubmit = async ({ email, password }) => {
         try {
-            const { avatar, name, id } = await fetchAPI('/signin', {
+            const { avatar, name, id, role } = await fetchAPI('/signin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +40,9 @@ export default function SignIn() {
                 body: JSON.stringify({ email, password }),
             });
             googleLogout();
-            userDispatch({ type: 'Update', payload: { avatar, name, id } });
+            userDispatch({ type: 'Update', payload: { avatar, name, id, role, isAuth: true } });
+            if (role === "admin") navigate("/admin")
+            else navigate("/")
         } catch (e) {
             toast({
                 title: e.message,
