@@ -5,23 +5,23 @@ import { LineRightIcon, LikeIcon } from '../Icon';
 import { useEffect, useState } from 'react';
 import fetchAPI from '../../utils/fetchAPI';
 
-const Albums = ({ userId }) => {
+const Albums = ({ currentUserId }) => {
     const [data, setData] = useState(null);
 
     useEffect(() => {
         (async () => {
             try {
-                const data = await fetchAPI(`/user/${userId}/songs`);
+                const data = await fetchAPI(`/user/${currentUserId}/songs`);
                 setData(data);
             } catch (e) {}
         })();
-    }, [userId]);
+    }, [currentUserId]);
 
     return (
         <Box>
             <Heading fontSize="xl">Albums</Heading>
-            <Flex justifyContent={'space-between'} mt={'16px'}>
-                <Box flexBasis={'16%'}>
+            <Flex flexWrap={['wrap', 'initial', 'initial']} justifyContent={'space-between'} mt={'16px'}>
+                <Box flex={['100%', '16%']}>
                     <Box boxSize="150px" bg="white" borderRadius="10px" overflow={'hidden'}>
                         {/* ảnh albums */}
                         <Image
@@ -34,11 +34,11 @@ const Albums = ({ userId }) => {
                         />
                     </Box>
                     <Flex justify={'space-between'} align={'center'} mt="8px">
-                        <LikeIcon />
+                        <LikeIcon showLikeNumber={false} />
                         <BsThreeDots />
                     </Flex>
                 </Box>
-                <Box width={['79%']} flexBasis={'79%'} ml={'16px'}>
+                <Box mt={['16px', '0']} flex={['100%', '79%']} ml={['0', '16px']}>
                     <Heading as={'h2'} size={'sm'}>
                         Sense
                     </Heading>
@@ -52,8 +52,9 @@ const Albums = ({ userId }) => {
                                 return (
                                     <Song
                                         key={song.id}
-                                        number={index}
-                                        {...song}
+                                        index={index}
+                                        data={data}
+                                        setData={setData}
                                         userName={'user name'}
                                         borderBottom="1px solid rgba(255, 255, 255, 0.2)"
                                     />

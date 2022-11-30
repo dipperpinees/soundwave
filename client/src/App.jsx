@@ -10,6 +10,7 @@ import FavoriteSongs from './pages/FavoriteSong';
 import HomePage from './pages/HomePage';
 import Library from './pages/Library';
 import MusicPage from './pages/MusicPage';
+import PlaylistPage from './pages/PlaylistPage';
 import ProfilePage from './pages/ProfilePage';
 import Search from './pages/Search';
 import SignIn from './pages/SignIn';
@@ -35,6 +36,7 @@ function App() {
                                             <Route path="/" element={<HomePage />} />
                                             <Route path="/profile/:id" element={<ProfilePage />} />
                                             <Route path="/music/:id" element={<MusicPage />} />
+                                            <Route path="/playlist" element={<PlaylistPage />} />
                                             <Route path="/signin" element={<SignIn />} />
                                             <Route path="/signup" element={<SignUp />} />
                                             <Route path="/upload" element={<Upload />} />

@@ -1,5 +1,6 @@
 import { AiOutlineRight, AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
-import { BsDownload, BsThreeDots } from 'react-icons/bs';
+import { BsDownload } from 'react-icons/bs';
+import { FaRegEye } from 'react-icons/fa';
 
 const lineIconStyle = { fontSize: '12px', display: 'inline', marginLeft: '4px' };
 
@@ -9,6 +10,6 @@ const LineDownIcon = () => <AiOutlineDown style={lineIconStyle} />;
 
 const LineUpIcon = () => <AiOutlineUp style={lineIconStyle} />;
 
-const DownloadIcon = () => <BsDownload style={lineIconStyle} />;
+const DownLoadIcon = () => <BsDownload style={lineIconStyle} />;
 
-export { LineRightIcon, LineDownIcon, LineUpIcon };
+export { LineRightIcon, LineDownIcon, LineUpIcon, DownLoadIcon };

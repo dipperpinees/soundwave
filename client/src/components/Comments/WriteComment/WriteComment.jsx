@@ -1,19 +1,33 @@
 import { Box, Avatar, Textarea, Flex, InputGroup, Input, InputRightElement } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { MdSend } from 'react-icons/md';
+import fetchAPI from '../../../utils/fetchAPI';
 
-const WriteComment = () => {
+const WriteComment = ({ songId, getComments }) => {
     const input = useRef();
 
-    const handleSendComment = () => {
-        const comment = input.current.value;
+    const handlePostComment = () => {
+        const content = input.current.value;
         input.current.value = '';
         input.current.focus();
+        const PostComment = async () => {
+            const formData = new FormData();
+            formData.append('content', content);
+            try {
+                await fetchAPI(`/song/${songId}/comment`, {
+                    method: 'POST',
+                    body: JSON.stringify({ content, replyID: '' }),
+                });
+                getComments();
+            } catch (error) {}
+        };
+        PostComment();
     };
 
     return (
         <Flex width={'100%'} align={'center'} m={'8px 0'}>
             <Avatar size={'md'} src="" mr={'16px'} />
+            {/* text area comment */}
             {/* <Flex width={'100%'} position={'relative'} size={'sm'} alignItems={'center'}>
                 <Textarea
                     scrollBehavior={'none'}
@@ -34,10 +48,11 @@ const WriteComment = () => {
                     />
                 </Box>
             </Flex> */}
+            {/* input comment */}
             <InputGroup size={'md'}>
                 <Input
                     onKeyDown={(e) => {
-                        if (e.key === 'Enter') handleSendComment();
+                        if (e.key === 'Enter') handlePostComment();
                     }}
                     ref={input}
                     placeholder="Write a comment"
@@ -48,7 +63,7 @@ const WriteComment = () => {
                     <MdSend
                         cursor={'pointer'}
                         onClick={() => {
-                            handleSendComment();
+                            handlePostComment();
                         }}
                         fontSize={'24px'}
                     />

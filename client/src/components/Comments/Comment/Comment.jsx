@@ -1,56 +1,42 @@
 import { Box, Avatar, Text, Button, Flex, Heading, Image, Link, HStack, color } from '@chakra-ui/react';
-import { AiFillLike, AiFillDislike } from 'react-icons/ai';
 import { TiArrowBack } from 'react-icons/ti';
+import { AiFillLike } from 'react-icons/ai';
 import { TbMessageReport } from 'react-icons/tb';
 import { MdAccessTime } from 'react-icons/md';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import WriteComment from '../WriteComment';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import { useEffect, useRef, useState } from 'react';
 // import { Comment } from './index';
 
-const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false }) => {
-    const reply = useRef();
+const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...props }) => {
     const [isWriteComment, hasWriteComment] = useState(false);
     const [isLiked, hasLike] = useState(liked);
     const [likeNumber, setLikeNumber] = useState(++initLikeNumber);
-    let fontSize = '1.3rem';
-    let avatarSize = 'md';
-
-    if (isSubComment) {
-        fontSize = '1.1rem';
-        avatarSize = 'sm';
-    }
-
-    useEffect(() => {});
+    const { comments, index } = props;
+    const comment = comments[index];
+    let date = comment?.updated_at?.split('T').at(0);
+    date = date && date.split('-').reverse().join('/');
 
     useEffect(() => {
         console.log('use effect');
         isLiked ? setLikeNumber(likeNumber + 1) : setLikeNumber(likeNumber - 1);
     }, [isLiked]);
 
-    // const handleLike = () => {
-    //     hasLike((isLiked) => !isLiked);
-    //     !isLiked ? setLikeNumber(likeNumber + 1) : setLikeNumber(likeNumber - 1);
-    // };
-
     return (
         <Flex mt={'8px'} pt="8px" pr={'16px'} borderTop="1px solid" borderTopColor={'primaryBorderColor'}>
-            <Avatar size={avatarSize} src="" mr={'16px'} />
-            <Box>
-                <Text m={'0 0 8px'} lineHeight={'100%'} fontSize={fontSize}>
-                    use name
+            <Avatar size={'md'} src="comment?.author?.avatar" mr={'16px'} />
+            <Box flex={'1'}>
+                <Text m={'0 0 8px'} lineHeight={'100%'} fontSize={'1.3rem'}>
+                    {comment && comment.author.name}
                 </Text>
                 <Flex gap="4px" align={'center'} color={'text'}>
                     <MdAccessTime fontSize={'12px'} />
-                    <Text fontSize={'0.7rem'}>3 tháng trước</Text>
+                    <Text fontSize={'0.7rem'}>{date}</Text>
                 </Flex>
                 <Text fontSize={'sm'} mt={'8px'} color={'rgba(255, 255, 255, 0.9)'}>
-                    hiện tại txt rất xấu, có thể k đúng 100% nên các đạo hữu đọc thấy sai sai ở đâu thì báo t sửa nhé
-                    :lau hiện tại txt rất xấu, có thể k đúng 100% nên các đạo hữu đọc thấy sai sai ở đâu thì báo t sửa
-                    nhé :lau hiện tại txt rất xấu, có thể k đúng 100% nên các đạo hữu đọc thấy sai sai ở đâu thì báo t
-                    sửa nhé :lau
+                    {comment && comment.content}
                 </Text>
-                <Flex justifyContent={'space-between'} flexDirection={'row-reverse'} color={'text'} mt={'16px'}>
-                    <Flex justifySelf={'flex-end'} justify={'end'} gap="16px" mr={'16px'} fontSize={'sm'}>
+                <Flex justifyContent={'flex-end'} color={'text'} mt={'16px'} flex={'1'}>
+                    <Flex justify={'end'} gap="16px" mr={'16px'} fontSize={'sm'}>
                         {/* like */}
                         <Flex gap="4px" align={'center'}>
                             <Box onClick={() => hasLike(!isLiked)} cursor={'pointer'} mb={'4px'}>
@@ -69,30 +55,42 @@ const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false }) =
                             )}
                         </Flex>
                         {/* reply */}
-                        <Flex
+                        {/* <Flex
                             ref={reply}
-                            onClick={() => hasWriteComment(true)}
+                            // onClick={() => hasWriteComment(true)}
                             cursor={'pointer'}
                             align={'center'}
                             gap={'2px'}
                         >
                             <TiArrowBack fontSize={'20px'} />
                             <span>Reply</span>
-                        </Flex>
+                        </Flex> */}
                         {/* report */}
                         <Flex cursor={'pointer'} gap="2px" align={'center'}>
                             <TbMessageReport fontSize={'20px'} />
                             <span>Report</span>
                         </Flex>
+                        <Flex
+                            cursor={'pointer'}
+                            gap="2px"
+                            align={'center'}
+                            boxSize={'34px'}
+                            borderRadius={'full'}
+                            justify="center"
+                            _hover={{ background: 'hoverColor' }}
+                        >
+                            <BsThreeDotsVertical fontSize={'20px'} />
+                        </Flex>
+                        {/* more menu */}
                     </Flex>
-                    {!isWriteComment && (
+                    {/* {!isWriteComment && (
                         <Flex fontSize={'sm'} cursor={'pointer'} _hover={{ color: 'white' }}>
                             See <Box m={'0 4px'}> 3 </Box> replies
                         </Flex>
-                    )}
+                    )} */}
                 </Flex>
-                {isSubComment && <Comment />}
-                {isWriteComment && <WriteComment />}
+                {/* {isSubComment && <Comment />}
+                {isWriteComment && <WriteComment />} */}
             </Box>
         </Flex>
     );

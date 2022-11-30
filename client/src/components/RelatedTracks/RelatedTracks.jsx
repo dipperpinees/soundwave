@@ -8,12 +8,13 @@ const RelatedTracks = ({ id }) => {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        (async () => {
+        const fetchListSong = async () => {
             try {
                 const data = await fetchAPI(`/user/${id}/songs`);
                 setData(data);
             } catch (e) {}
-        })();
+        };
+        if (id !== undefined) fetchListSong();
     }, [id]);
     return (
         <Box>
@@ -41,7 +42,9 @@ const RelatedTracks = ({ id }) => {
                         return (
                             <Song
                                 key={song.id}
-                                {...song}
+                                index={index}
+                                setData={setData}
+                                data={data}
                                 userName={'user name'}
                                 borderBottom="1px solid rgba(255, 255, 255, 0.2)"
                             />

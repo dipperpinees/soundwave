@@ -7,7 +7,7 @@ import { useState, useLayoutEffect, useContext } from 'react';
 import fetchAPI from '../utils/fetchAPI';
 import { UserContext } from '../stores/userStore';
 
-const MusicPage = () => {
+const PlaylistPage = () => {
     const { id } = useParams();
     const [user, userDispatch] = useContext(UserContext);
     const navigate = useNavigate();
@@ -42,11 +42,11 @@ const MusicPage = () => {
                     <RelatedTracks id={data?.author?.id} />
                 </Box>
                 <Box flex={1}>
-                    <Comments songId={id} />
+                    <Comments />
                 </Box>
             </Flex>
         </Box>
     );
 };
 
-export default MusicPage;
+export default PlaylistPage;

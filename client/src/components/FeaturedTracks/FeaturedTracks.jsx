@@ -1,24 +1,42 @@
 import Song from '../Song';
 import { Box, Heading, List, Flex, Text, Link, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { LineRightIcon, LineDownIcon } from '../Icon';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import fetchAPI from '../../utils/fetchAPI';
 
-const FeaturedTracks = ({ userId }) => {
+const FeaturedTracks = ({ currentUserId }) => {
     const [data, setData] = useState(null);
 
-    useEffect(() => {
-        (async () => {
+    useLayoutEffect(() => {
+        const fetchSong = async () => {
             try {
-                const data = await fetchAPI(`/user/${userId}/songs`);
+                const data = await fetchAPI(`/user/${currentUserId}/songs`);
                 setData(data);
             } catch (e) {}
-        })();
-    }, [userId]);
+        };
+        fetchSong();
+    }, [currentUserId]);
 
-    // xử lý sắp xếp
-    const handleSortSongList = (e) => {
-        console.log(e);
+    const sortSongs = (typeSort) => {
+        let sortFn;
+        switch (typeSort) {
+            case 'view':
+                sortFn = (a, b) => b.playCount - a.playCount;
+                break;
+            case 'like':
+                sortFn = (a, b) => b.likeNumber - a.likeNumber;
+                break;
+            // case 'download'
+            //     sortFunction = (a, b) => a.download > b.download;
+            default:
+                sortFn = (a, b) => 0;
+                break;
+        }
+        if (data) {
+            let newData = [...data];
+            newData.sort(sortFn);
+            setData(newData);
+        }
     };
 
     return (
@@ -27,7 +45,7 @@ const FeaturedTracks = ({ userId }) => {
                 <Heading fontSize="xl">Featured Tracks</Heading>
                 <Flex align={'center'}>
                     <Menu autoSelect="false">
-                        <MenuButton as={Text} fontSize="xs">
+                        <MenuButton as={Text} fontSize="md" cursor={'pointer'}>
                             <Flex align={'center'}>
                                 Sort <LineDownIcon />
                             </Flex>
@@ -35,25 +53,25 @@ const FeaturedTracks = ({ userId }) => {
                         <MenuList minW="20px">
                             <MenuItem
                                 onClick={() => {
-                                    handleSortSongList('View');
+                                    sortSongs('view');
                                 }}
                             >
                                 View
                             </MenuItem>
                             <MenuItem
                                 onClick={() => {
-                                    handleSortSongList('Like');
+                                    sortSongs('like');
                                 }}
                             >
                                 Like
                             </MenuItem>
-                            <MenuItem
+                            {/* <MenuItem
                                 onClick={() => {
-                                    handleSortSongList('Download');
+                                    setTypeSort('download');
                                 }}
                             >
                                 Download
-                            </MenuItem>
+                            </MenuItem> */}
                         </MenuList>
                     </Menu>
                 </Flex>
@@ -67,9 +85,12 @@ const FeaturedTracks = ({ userId }) => {
                         return (
                             <Song
                                 key={song.id}
-                                {...song}
+                                index={index}
+                                data={data}
+                                setData={setData}
                                 userName={'user name'}
                                 isLikeIcon={true}
+                                isViewIcon={true}
                                 borderBottom="1px solid rgba(255, 255, 255, 0.2)"
                             />
                         );
