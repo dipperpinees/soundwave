@@ -27,7 +27,7 @@ const Comments = ({ songId }) => {
             <Box>
                 <Flex mb={'16px'} justify={'space-between'}>
                     <Box fontSize={'lg'}>
-                        <span>150</span> Comments
+                        <span>{comments?.length}</span> Comments
                     </Box>
                     <Select borderRadius={'5px'} size={'sm'} maxW={'80px'} onChange={(e) => setValue(e.target.value)}>
                         <option value="new">New</option>

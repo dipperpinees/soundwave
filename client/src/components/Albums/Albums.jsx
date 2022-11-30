@@ -20,8 +20,8 @@ const Albums = ({ currentUserId }) => {
     return (
         <Box>
             <Heading fontSize="xl">Albums</Heading>
-            <Flex justifyContent={'space-between'} mt={'16px'}>
-                <Box flexBasis={'16%'}>
+            <Flex flexWrap={['wrap', 'initial', 'initial']} justifyContent={'space-between'} mt={'16px'}>
+                <Box flex={['100%', '16%']}>
                     <Box boxSize="150px" bg="white" borderRadius="10px" overflow={'hidden'}>
                         {/* ảnh albums */}
                         <Image
@@ -38,7 +38,7 @@ const Albums = ({ currentUserId }) => {
                         <BsThreeDots />
                     </Flex>
                 </Box>
-                <Box width={['79%']} flexBasis={'79%'} ml={'16px'}>
+                <Box mt={['16px', '0']} flex={['100%', '79%']} ml={['0', '16px']}>
                     <Heading as={'h2'} size={'sm'}>
                         Sense
                     </Heading>

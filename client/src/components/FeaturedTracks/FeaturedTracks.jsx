@@ -45,7 +45,7 @@ const FeaturedTracks = ({ currentUserId }) => {
                 <Heading fontSize="xl">Featured Tracks</Heading>
                 <Flex align={'center'}>
                     <Menu autoSelect="false">
-                        <MenuButton as={Text} fontSize="md">
+                        <MenuButton as={Text} fontSize="md" cursor={'pointer'}>
                             <Flex align={'center'}>
                                 Sort <LineDownIcon />
                             </Flex>

@@ -1,6 +1,4 @@
 import { Avatar, Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
-import { useState, useContext } from 'react';
-import { EditProfileContext } from '../../stores';
 import Describe from './Describe';
 
 const Profile = (props) => {
@@ -8,7 +6,7 @@ const Profile = (props) => {
     const { setIsEditProfile } = props;
     const { userId } = props;
     return (
-        <Box m={'0 24px'} maxW={['100%', '100%', '150px', '180px']}>
+        <Box maxW={['100%', '100%', '150px', '180px']}>
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
                 <Avatar mb="16px" size="xl" name={name} src={avatar} />
                 <Heading class="user-name" fontSize="xl" mb="16px">
