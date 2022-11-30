@@ -1,4 +1,5 @@
 import { createContext, useReducer, useRef } from 'react';
+import Player from '../components/Player';
 import fetchAPI from "../utils/fetchAPI";
 
 const initialState = {
@@ -162,6 +163,7 @@ export function PlayerStore({ children }) {
                     }}
                 ></audio>
             )}
+            <Player {...{...state, dispatch}}/>
             {children}
         </PlayerContext.Provider>
     );

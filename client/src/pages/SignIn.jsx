@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../stores';
+import { LoadingContext } from '../stores/loadingStore';
 import '../styles/SignIn.scss';
 import fetchAPI from '../utils/fetchAPI';
 
@@ -29,8 +30,10 @@ export default function SignIn() {
     const userDispatch = useContext(UserContext)[1];
     const navigate = useNavigate();
     const toast = useToast();
+    const setLoading = useContext(LoadingContext)[1];
 
     const onSubmit = async ({ email, password }) => {
+        setLoading(true);
         try {
             const { avatar, name, id, role } = await fetchAPI('/signin', {
                 method: 'POST',
@@ -51,6 +54,7 @@ export default function SignIn() {
                 isClosable: true,
             });
         }
+        setLoading(false);
     };
 
     const loginGoogle = useGoogleLogin({

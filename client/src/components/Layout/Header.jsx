@@ -26,7 +26,6 @@ export default function Header() {
         navigate('/signin');
     }
 
-
     return (
         <Flex align="center" className="header" color="white" zIndex={10}>
             <Box width="50%">
@@ -62,12 +61,12 @@ export default function Header() {
             ) : (
                 <Box ml="auto">
                     <Link to="/signin" _hover={{}}>
-                        <Button variant="outline" _hover={{ color: 'var(--primary-color)' }} colorScheme="white">
+                        <Button variant="outline" _hover={{ color: 'var(--primary-color)' }} colorScheme="white" size={{base: "xs", sm: "sm"}}>
                             Sign in
                         </Button>
                     </Link>
                     <Link to="/signup">
-                        <Button variant="ghost" _hover={{ color: 'var(--primary-color)' }} colorScheme="white">
+                        <Button variant="ghost" _hover={{ color: 'var(--primary-color)' }} colorScheme="white" size={{base: "xs", sm: "sm"}}>
                             Sign up
                         </Button>
                     </Link>

@@ -44,7 +44,6 @@ function App() {
                                             <Route path="/favorite" element={<FavoriteSongs />} />
                                             <Route path="admin" element={<Admin />} />
                                         </Routes>
-                                        <Player />
                                     </Layout>
                                 </Store>
                             </div>
