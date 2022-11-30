@@ -6,42 +6,6 @@ import useSongs from '../hooks/useSongs';
 import useUsers from '../hooks/useUsers';
 
 export default function HomePage() {
-    // const [lastestSongs, setLastestSongs] = useState(null);
-    // const [mostStreamedSong, setMostStreamedSong] = useState(null);
-
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             const { data } = await fetchAPI('/song/?limit=4');
-    //             setLastestSongs(data);
-    //         } catch (e) {
-    //             console.error(e.message);
-    //         }
-    //     })();
-    // }, []);
-
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             const { data } = await fetchAPI('/user/?limit=4');
-    //             setUserList(data);
-    //         } catch (e) {
-    //             console.error(e.message);
-    //         }
-    //     })();
-    // }, []);
-
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             const { data } = await fetchAPI('/song/?limit=4&orderBy=listen');
-    //             setMostStreamedSong(data);
-    //         } catch (e) {
-    //             console.error(e.message);
-    //         }
-    //     })();
-    // }, []);
-
     return (
         <Flex
             className="home-page"
@@ -66,7 +30,13 @@ const LastestSongs = () => {
 
 const MostStreamedSong = () => {
     const { data: mostStreamedSong, isLoading } = useSongs('limit=4&orderBy=listen');
-    return <ListSongPreview songs={isLoading ? null : mostStreamedSong.data} title="Lastest songs" moreUrl="/search" />;
+    return (
+        <ListSongPreview
+            songs={isLoading ? null : mostStreamedSong.data}
+            title="Most-streamed songs"
+            moreUrl="/search?orderBy=listen"
+        />
+    );
 };
 
 const RecommendArtist = () => {
@@ -77,9 +47,7 @@ const RecommendArtist = () => {
                 <Icon as={IoMdPeople} fontSize={24} /> <Text>Artists you should follow</Text>
             </Flex>
             <Divider my={2} borderColor="gray" />
-            {!isLoading && userList.data?.map((user) => (
-                <Artist {...user} key={user.id} size="md" />
-            ))}
+            {!isLoading && userList.data?.map((user) => <Artist {...user} key={user.id} size="md" />)}
         </Flex>
     );
 };

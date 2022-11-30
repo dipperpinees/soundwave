@@ -1,13 +1,12 @@
-import { AspectRatio, Avatar, Button, Flex, Icon, Progress, Text } from '@chakra-ui/react';
-import { BsPauseFill } from 'react-icons/bs';
+import { AspectRatio, Avatar, Flex, Icon, Progress, Text } from '@chakra-ui/react';
 import { CgHeart } from 'react-icons/cg';
 import { GiNextButton, GiPreviousButton } from 'react-icons/gi';
 import { IoIosRepeat } from 'react-icons/io';
-import { MdPause } from 'react-icons/md';
+import { MdPause, MdPlayArrow } from 'react-icons/md';
 import { TiArrowShuffle } from 'react-icons/ti';
 import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
 
-export default function MobilePlayer({handleTogglePlay, isPlayed, songPlayed}) {
+export default function MobilePlayer({isLiked, likeSong, handleTogglePlay, isPlayed, songPlayed}) {
     return (
         <Flex
             position="fixed"
@@ -35,7 +34,7 @@ export default function MobilePlayer({handleTogglePlay, isPlayed, songPlayed}) {
                         </Text>
                         <Text>{songPlayed?.author.name}</Text>
                     </Flex>
-                    <Icon as={CgHeart} fontSize={36}/>
+                    <Icon as={CgHeart} fontSize={36} color={isLiked ? 'tomato' : 'white'} onClick={likeSong}/>
                 </Flex>
                 <Progress
                     // value={songDuration === 0 ? 0 : (currentTime / songDuration) * 100}
@@ -51,7 +50,7 @@ export default function MobilePlayer({handleTogglePlay, isPlayed, songPlayed}) {
                     <Icon as={IoIosRepeat} fontSize={28} />
                     <Icon as={GiPreviousButton} fontSize={32} />
                     <Icon
-                        as={MdPause}
+                        as={isPlayed ? MdPause : MdPlayArrow}
                         width={16}
                         height={16}
                         padding={2}
@@ -60,6 +59,7 @@ export default function MobilePlayer({handleTogglePlay, isPlayed, songPlayed}) {
                         color="blackAlpha.900"
                         border="1px solid white"
                         fontSize={32}
+                        onClick={handleTogglePlay}
                     />
                     <Icon fontSize={32} as={GiNextButton} />
                     <Icon fontSize={28} as={TiArrowShuffle} />

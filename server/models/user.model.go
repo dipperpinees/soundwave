@@ -16,8 +16,8 @@ type User struct {
 	Songs           []Song    `gorm:"foreignKey:AuthorID" json:"-"`
 	FavoriteSongs   []Song    `gorm:"many2many:user_like_songs;" json:"-"`
 	Role            string    `gorm:"default:'user'" json:"role"`
-	TrackNumber     int       `gorm:"-:migration <-:false" json:"trackNumber"`
-	FollowerNumber  int       `gorm:"-:migration <-:false" json:"followerNumber"`
-	FollowingNumber int       `gorm:"-:migration <-:false" json:"followingNumber"`
-	IsFollowed      bool      `gorm:"-:migration <-:false" json:"isFollowed"`
+	TrackNumber     int       `gorm:"->;-:migration" json:"trackNumber"`
+	FollowerNumber  int       `gorm:"->;-:migration" json:"followerNumber"`
+	FollowingNumber int       `gorm:"->;-:migration" json:"followingNumber"`
+	IsFollowed      bool      `gorm:"->;-:migration" json:"isFollowed"`
 }

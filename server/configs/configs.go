@@ -57,3 +57,7 @@ func Environment() string {
 func EnvPort() string {
 	return os.Getenv("PORT")
 }
+
+func EnvAdmin() (string, string) {
+	return os.Getenv("ADMIN_EMAIL"), os.Getenv("ADMIN_PASSWORD")
+}

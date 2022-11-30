@@ -153,7 +153,7 @@ export default function Player() {
 
             {isMobile && (
                 <>
-                    <MobilePlayer {...{handleTogglePlay, isPlayed, songPlayed: songList?.[indexSongPlayed]}}/>
+                    <MobilePlayer {...{handleTogglePlay, isLiked, likeSong, isPlayed, songPlayed: songList?.[indexSongPlayed]}}/>
                     <Flex gap={4}>
                         <Icon as={CgHeart} color={isLiked ? 'tomato' : 'white'} onClick={likeSong} />
                         <button onClick={handleTogglePlay}>{isPlayed ? <BsPauseFill /> : <BsFillPlayFill />}</button>
