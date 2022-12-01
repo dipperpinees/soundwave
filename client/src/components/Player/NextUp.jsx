@@ -12,10 +12,9 @@ export function NextUp({isOpen, toggleOpen}) {
                 <DrawerOverlay />
                 <DrawerContent bgColor="blackAlpha.800" color="white">
                     <DrawerCloseButton />
-                    <DrawerHeader>Playlist</DrawerHeader>
+                    <DrawerHeader>Next up playlist</DrawerHeader>
 
                     <DrawerBody>
-                        <Input placeholder="Type here..." />
                     </DrawerBody>
 
                     

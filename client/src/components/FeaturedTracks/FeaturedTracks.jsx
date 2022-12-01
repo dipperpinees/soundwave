@@ -43,38 +43,40 @@ const FeaturedTracks = ({ currentUserId }) => {
         <Box>
             <Flex justifyContent="space-between">
                 <Heading fontSize="xl">Featured Tracks</Heading>
-                <Flex align={'center'}>
-                    <Menu autoSelect="false">
-                        <MenuButton as={Text} fontSize="md" cursor={'pointer'}>
-                            <Flex align={'center'}>
-                                Sort <LineDownIcon />
-                            </Flex>
-                        </MenuButton>
-                        <MenuList minW="20px">
-                            <MenuItem
-                                onClick={() => {
-                                    sortSongs('view');
-                                }}
-                            >
-                                View
-                            </MenuItem>
-                            <MenuItem
-                                onClick={() => {
-                                    sortSongs('like');
-                                }}
-                            >
-                                Like
-                            </MenuItem>
-                            {/* <MenuItem
+                {data.length !== 0 && (
+                    <Flex align={'center'}>
+                        <Menu autoSelect="false">
+                            <MenuButton as={Text} fontSize="md" cursor={'pointer'}>
+                                <Flex align={'center'}>
+                                    Sort <LineDownIcon />
+                                </Flex>
+                            </MenuButton>
+                            <MenuList minW="20px">
+                                <MenuItem
+                                    onClick={() => {
+                                        sortSongs('view');
+                                    }}
+                                >
+                                    View
+                                </MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        sortSongs('like');
+                                    }}
+                                >
+                                    Like
+                                </MenuItem>
+                                {/* <MenuItem
                                 onClick={() => {
                                     setTypeSort('download');
                                 }}
                             >
                                 Download
                             </MenuItem> */}
-                        </MenuList>
-                    </Menu>
-                </Flex>
+                            </MenuList>
+                        </Menu>
+                    </Flex>
+                )}
             </Flex>
             <List>
                 {data &&

@@ -40,7 +40,7 @@ const PlaylistLibrary = () => {
 
     return (
         <>
-            <Text as="h3" fontSize={20} fontWeight={600}>
+            <Text as="h3" fontSize="1.25rem" fontWeight={600}>
                 Playlist Library
             </Text>
             <Grid templateColumns={{ base: 'repeat(2, minmax(0, 1fr))', sm: 'repeat(4, minmax(0, 1fr))', lg: 'repeat(6, minmax(0, 1fr))' }} gap={6}>

@@ -35,7 +35,7 @@ function Navbar() {
                     as={FiMenu}
                     position="fixed"
                     top="calc(var(--header-height) / 2 - 12px)"
-                    fontSize={24}
+                    fontSize="1.5rem"
                     left={6}
                     zIndex={10}
                     color="white"
@@ -80,7 +80,7 @@ function Navbar() {
                         as={MdClose}
                         position="absolute"
                         top={8}
-                        fontSize={28}
+                        fontSize="1.75rem"
                         color="white"
                         _hover={{ cursor: 'pointer', color: 'var(--primary-color)' }}
                         onClick={closeMobileBar}
@@ -92,13 +92,13 @@ function Navbar() {
                     style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}
                     onClick={closeMobileBar}
                 >
-                    <Icon as={HiHome} fontSize={28} />
+                    <Icon as={HiHome} fontSize="1.75rem" />
                 </NavLink>
 
-                <Icon as={HiMusicalNote} fontSize={28} onClick={closeMobileBar} />
+                <Icon as={HiMusicalNote} fontSize="1.75rem" onClick={closeMobileBar} />
                 {!!user.id && (
                     <NavLink to="/favorite" style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>
-                        <Icon as={HiHeart} fontSize={28} onClick={closeMobileBar} />
+                        <Icon as={HiHeart} fontSize="1.75rem" onClick={closeMobileBar} />
                     </NavLink>
                 )}
                 {!!user.id && (
@@ -107,7 +107,7 @@ function Navbar() {
                         style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}
                         onClick={closeMobileBar}
                     >
-                        <Icon as={RiUploadCloud2Fill} fontSize={28} />
+                        <Icon as={RiUploadCloud2Fill} fontSize="1.75rem" />
                     </NavLink>
                 )}
                 {!!user.id && (
@@ -116,7 +116,7 @@ function Navbar() {
                         style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}
                         onClick={closeMobileBar}
                     >
-                        <Icon as={MdLibraryMusic} fontSize={28} />
+                        <Icon as={MdLibraryMusic} fontSize="1.75rem" />
                     </NavLink>
                 )}
             </Flex>

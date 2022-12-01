@@ -7,15 +7,14 @@ import {
     FormLabel,
     Icon,
     Input,
-    Link,
     Text,
-    useToast
+    useToast,
 } from '@chakra-ui/react';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../stores';
 import { LoadingContext } from '../stores/loadingStore';
 import '../styles/SignIn.scss';
@@ -44,8 +43,8 @@ export default function SignIn() {
             });
             googleLogout();
             userDispatch({ type: 'Update', payload: { avatar, name, id, role, isAuth: true } });
-            if (role === "admin") navigate("/admin")
-            else navigate("/")
+            if (role === 'admin') navigate('/admin');
+            else navigate('/');
         } catch (e) {
             toast({
                 title: e.message,
@@ -82,25 +81,28 @@ export default function SignIn() {
     return (
         <Flex width="100%" justify="center" align="center" direction="column" height="100vh" color="white">
             <Box fontSize="4xl" mb={8}>
-                <h1>Log in</h1>
+                <h1>Sign in</h1>
             </Box>
             <Text mb={4}>
-                Not register yet?{' '}
-                <Link
-                    href="/signup"
-                    fontWeight={600}
-                    color="var(--primary-color)"
-                    outline="none"
-                    style={{ textDecoration: 'none' }}
-                >
-                    SIGN UP
+                Not register yet?
+                <Link to="/signup">
+                    <Text
+                        display="inline"
+                        ml={1}
+                        fontWeight={600}
+                        color="var(--primary-color)"
+                        outline="none"
+                        textDecoration="none"
+                    >
+                        SIGN UP
+                    </Text>
                 </Link>
             </Text>
-            <Box width={{ base: '92%', lg: 480 }}>
+            <Box width={{ base: '92%', md: 480 }}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Box width="100%">
                         <FormControl isInvalid={errors.email}>
-                            <FormLabel fontSize={14} mb={1}>
+                            <FormLabel fontSize="0.875rem" mb={1}>
                                 Email address
                             </FormLabel>
                             <Input
@@ -122,17 +124,17 @@ export default function SignIn() {
                                     }
                                 )}
                                 color="black"
-                                fontSize={14}
+                                fontSize="0.875rem"
                                 bgColor="white"
                                 py={6}
                             />
                             <FormErrorMessage mt={1}>{errors.email && errors.email.message}</FormErrorMessage>
                         </FormControl>
                         <FormControl isInvalid={errors.password} mt={4}>
-                            <FormLabel fontSize={14} mb={1} mr={0}>
+                            <FormLabel fontSize="0.875rem" mb={1} mr={0}>
                                 <Flex align="center" justify="space-between">
                                     <Text>Password</Text>
-                                    <Text fontSize={14} color="var(--primary-color)">
+                                    <Text fontSize="0.875rem" color="var(--primary-color)">
                                         Forgot Password
                                     </Text>
                                 </Flex>
@@ -151,7 +153,7 @@ export default function SignIn() {
                                     },
                                 })}
                                 color="black"
-                                fontSize={14}
+                                fontSize="0.875rem"
                                 bgColor="white"
                                 py={6}
                             />
@@ -160,7 +162,7 @@ export default function SignIn() {
                     </Box>
                     <Button
                         type="submit"
-                        fontSize={14}
+                        fontSize="0.875rem"
                         fontWeight={700}
                         colorScheme="primary"
                         variant="solid"
@@ -172,7 +174,7 @@ export default function SignIn() {
                         <Text>Log in</Text>
                     </Button>
                 </form>
-                <Text textAlign="center" fontSize={14} fontWeight={600} margin={4}>
+                <Text textAlign="center" fontSize="0.875rem" fontWeight={600} margin={4}>
                     OR
                 </Text>
                 <Button

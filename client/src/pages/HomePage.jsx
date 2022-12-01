@@ -44,7 +44,7 @@ const RecommendArtist = () => {
     return (
         <Flex flex={1} py={4} pr={{ base: 0, md: 6 }} direction="column">
             <Flex align="center" gap={2}>
-                <Icon as={IoMdPeople} fontSize={24} /> <Text>Artists you should follow</Text>
+                <Icon as={IoMdPeople} fontSize="1.5rem" /> <Text>Artists you should follow</Text>
             </Flex>
             <Divider my={2} borderColor="gray" />
             {!isLoading && userList.data?.map((user) => <Artist {...user} key={user.id} size="md" />)}

@@ -1,29 +1,27 @@
 import { Box, calc, Flex } from '@chakra-ui/react';
-import FeaturedTracks from '../components/FeaturedTracks';
-import RecentlyLikes from '../components/RecentlyLikes';
-import Profile from '../components/Profile';
-import Albums from '../components/Albums';
+import { useContext, useState, useLayoutEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useContext, useEffect, useLayoutEffect, useState } from 'react';
-import fetchAPI from '../utils/fetchAPI';
-import { UserContext } from '../stores/userStore';
+import Albums from '../components/Albums';
+import FeaturedTracks from '../components/FeaturedTracks';
+import Profile from '../components/Profile';
 import EditProfile from '../components/Profile/EditProfile/EditProfile';
 import useProfile from '../hooks/useProfile';
+import { UserContext } from '../stores/userStore';
 
 const ProfilePage = () => {
     const { id } = useParams();
     const { data, isLoading } = useProfile(id);
     const [user] = useContext(UserContext);
-    const navigate = useNavigate();
     const [isEditProfile, setIsEditProfile] = useState(false);
+    // const navigate = useNavigate();
 
     // chuyển hướng đăng nhập nếu chưa đăng nhập
-    useLayoutEffect(() => {
-        if (!user.id) {
-            navigate('/signin');
-            return;
-        }
-    }, []);
+    // useLayoutEffect(() => {
+    //     if (!user.id) {
+    //         navigate('/signin');
+    //         return;
+    //     }
+    // }, []);
 
     if (!data) {
         return;

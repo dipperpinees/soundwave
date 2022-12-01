@@ -1,7 +1,7 @@
 import {
     Box, Flex, Input,
     InputGroup,
-    InputLeftElement, VStack
+    InputLeftElement, useMediaQuery, VStack
 } from '@chakra-ui/react';
 import queryString from 'query-string';
 import { useCallback, useEffect, useState } from 'react';
@@ -15,6 +15,7 @@ export default function SearchInput() {
     const navigate = useNavigate();
     const [desearchData, setDeSearchData] = useState(JSON.parse(localStorage.getItem("search_temp") || "[]"));
     const [searchData, setSearchData] = useState(JSON.parse(localStorage.getItem("search_temp") || "[]").slice(0, 5));
+    const [isMobile] = useMediaQuery('(max-width: 48em)');
 
     const handleSearchRecommend  = (search) => {
         if (!search) return desearchData.slice(0, 5);
@@ -61,8 +62,8 @@ export default function SearchInput() {
     }
 
     return (
-        <Box position={'relative'} width="100%" display={{base: "none", sm: "block"}} ml={{base: 0, sm: 16, md: 0}} id="search">
-                <InputGroup width="100%" marginLeft="8px" size="sm">
+        <Box position={'relative'} width="100%" ml={{base: 0, sm: 16, md: 0}} id="search">
+                <InputGroup width="100%" size="sm">
                     <InputLeftElement pointerEvents="none" children={<BiSearchAlt color="gray.300" />} />
                     <Input
                         type="tel"
@@ -74,14 +75,14 @@ export default function SearchInput() {
                         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                     />
                 </InputGroup>
-                {showSearchDropdown && (
+                {!isMobile && showSearchDropdown && (
                     <VStack
                         align="stretch"
                         position={'absolute'}
-                        right={-3}
+                        right={0}
                         left={1}
                         top={38}
-                        bgColor="blackAlpha.800"
+                        bgColor="blackAlpha.900"
                         borderRadius={8}
                     >
                         {searchData.map((data, index) => (

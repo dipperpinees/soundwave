@@ -225,14 +225,14 @@ export default function Upload() {
                                 />
                             </AspectRatio>
                             <Center position="absolute" top={0} bottom={0} left={0} right={0}>
-                                <AiFillCamera fontSize={24} />
+                                <AiFillCamera fontSize="1.5rem" />
                             </Center>
                         </Box>
                         <Stack flex={1}>
                             <Flex alignItems="center" marginLeft="-8px">
                                 <Icon
                                     onClick={toggleAudio}
-                                    fontSize={32}
+                                    fontSize="2rem"
                                     as={playAudio ? BsPauseFill : BsFillPlayFill}
                                     _hover={{ cursor: 'pointer' }}
                                 />

@@ -24,7 +24,7 @@ export default function Library() {
             paddingLeft={{ base: 4, md: 0 }}
             minHeight={'calc(100vh - var(--header-height))'}
         >
-            <Flex gap={2} mb={4}>
+            <Flex gap={2} mb={4} mt={4}>
                 <Link to="/library?q=songs">
                     <Button
                         variant="ghost"

@@ -43,7 +43,7 @@ export default function SongsLibrary() {
 
     return (
         <>
-            <Text as="h3" fontSize={20} fontWeight={600}>
+            <Text as="h3" fontSize="1.25rem" fontWeight={600}>
                 Songs Library
             </Text>
             <Grid
@@ -191,7 +191,7 @@ const EditTrack = ({ editedTrack, onClose, onUpdate }) => {
                                 alt="Dan Abramov"
                             />
                             <Center position="absolute" top={0} bottom={0} left={0} right={0}>
-                                <AiFillCamera fontSize={24} />
+                                <AiFillCamera fontSize="1.5rem" />
                             </Center>
                         </Box>
                         <Stack flex={1} width={{ base: '100%', sm: 'auto' }}>

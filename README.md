@@ -1,7 +1,7 @@
 # App nghe nhạc
 ## Công nghệ dự kiến sử dụng:
   + Front-end: [ReactJS](https://reactjs.org/), [SCSS](https://sass-lang.com/), [Chakra UI](https://chakra-ui.com/), [React Hook Form](https://react-hook-form.com/), [React Icons](https://react-icons.github.io/react-icons/), [React Query](https://react-query-v3.tanstack.com/)
-  + Back-end: [Go Lang](https://go.dev/)([Gin Gonic](https://gin-gonic.com/)), [GORM](https://gorm.io/)
+  + Back-end: [Golang](https://go.dev/)([Gin Gonic](https://gin-gonic.com/)), [GORM](https://gorm.io/)
   + Database: MySQL
   + RESTful API ([DEMO API](https://music-a8of.onrender.com/swagger/))
 ## Database Design
@@ -19,7 +19,5 @@
   git pull origin master
  ```
 ## [UI Design](https://drive.google.com/drive/folders/12iPdt_N6ndeQkfoksEqpM0qUDYDLWrfg?usp=sharing)
- 
-## ENV test
- + REACT_APP_API=https://music-a8of.onrender.com/api
- + GENERATE_SOURCEMAP=false
+
+## [Tài liệu chức năng](https://docs.google.com/spreadsheets/d/1AfBjBW-0iT-vGn4dQdejipoWCmCoYLEZFEyTKjaOttE/edit#gid=0)
