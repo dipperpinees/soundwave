@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { BsFillPeopleFill, BsSoundwave } from 'react-icons/bs';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Artist from '../components/Artist/index.';
+import Pagination from '../components/Pagination';
 import SearchInput from '../components/SearchInput';
 import SongPreview from '../components/SongPreview';
 import SongSkeleton from '../components/SquareSkeleton';
@@ -112,6 +113,7 @@ export default function Search({ type }) {
             </Flex>
             {type === 'tracks' && <SearchSongs />}
             {type === 'people' && <SearchPeople />}
+            <Pagination paginator={{totalPages: 3, page: 1}}/>
         </Flex>
     );
 }

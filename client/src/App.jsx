@@ -3,7 +3,6 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
-import Player from './components/Player';
 import { GOOGLE_CLIENT_ID } from './config';
 import Admin from './pages/Admin';
 import FavoriteSongs from './pages/FavoriteSong';

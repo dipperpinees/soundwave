@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, Heading, Icon, Progress, Text, useMediaQuery } from '@chakra-ui/react';
+import { Avatar, Flex, Heading, Icon, Progress, Text, useMediaQuery } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
@@ -38,7 +38,7 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
             const progress = ((e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth) * 100;
             changeTimePlay(progress);
         },
-        [dispatch]
+        [changeTimePlay]
     );
 
     const changeAutoPlay = useCallback(

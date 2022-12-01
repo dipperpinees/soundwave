@@ -31,7 +31,7 @@ export default function MobilePlayer({
             const progress = ((e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth) * 100;
             changeTimePlay(progress);
         },
-        []
+        [changeTimePlay]
     );
 
     return (
