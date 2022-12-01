@@ -88,7 +88,7 @@ export default function SignUp() {
                                     { minLength: { value: 4, message: 'Name must have at least 4 characters' } }
                                 )}
                                 className="inputUser"
-                                style={{ height: '58px', fontSize: '14px', backgroundColor: '#FFFFFF' }}
+                                style={{ height: '58px', fontSize: '0.875rem', backgroundColor: '#FFFFFF' }}
                             />
                             <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
                         </FormControl>
@@ -108,7 +108,7 @@ export default function SignUp() {
                                     }
                                 )}
                                 className="inputUser"
-                                style={{ height: '58px', fontSize: '14px', backgroundColor: '#FFFFFF' }}
+                                style={{ height: '58px', fontSize: '0.875rem', backgroundColor: '#FFFFFF' }}
                             />
                             <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
                         </FormControl>

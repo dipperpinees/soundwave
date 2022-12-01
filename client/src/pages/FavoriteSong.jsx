@@ -30,7 +30,7 @@ export default function FavoriteSongs() {
             paddingLeft={{ base: 4, md: 0 }}
             minHeight={'calc(100vh - var(--header-height))'}
         >
-            <Text as="h4" fontWeight={600} mb={2} fontSize={20}>Favorite Songs</Text>
+            <Text as="h4" fontWeight={600} mb={2} fontSize="1.25rem" mt={4}>Favorite Songs</Text>
             <Grid templateColumns={{ base: 'repeat(2, minmax(0, 1fr))', sm: 'repeat(4, minmax(0, 1fr))', lg: 'repeat(6, minmax(0, 1fr))' }} gap={6}>
                 {songs
                     ? songs.map((song) => <SongPreview key={song.id} song={{...song, isLiked: true}} onUnlike={removeSong(song.id)}/>)

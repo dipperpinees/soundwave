@@ -1,5 +1,6 @@
 import { AspectRatio, Avatar, Flex, Icon, Progress, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import { useCallback, useRef } from 'react';
 import { CgHeart } from 'react-icons/cg';
 import { GiNextButton, GiPreviousButton } from 'react-icons/gi';
 import { IoIosRepeat, IoMdClose } from 'react-icons/io';
@@ -21,7 +22,18 @@ export default function MobilePlayer({
     currentTime,
     isShow,
     onClose,
+    changeTimePlay
 }) {
+    const progressRef = useRef();
+
+    const handleChangeProgress = useCallback(
+        (e) => {
+            const progress = ((e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth) * 100;
+            changeTimePlay(progress);
+        },
+        []
+    );
+
     return (
         <Flex
             position="fixed"
@@ -48,7 +60,8 @@ export default function MobilePlayer({
                 position="absolute"
                 left={5}
                 top="calc(var(--header-height) + 20px)"
-                fontSize={32}
+                fontSize="2rem"
+                zIndex={2}
             />
             <AspectRatio maxW="560px" ratio={1} width="100%">
                 <Avatar
@@ -60,32 +73,36 @@ export default function MobilePlayer({
             </AspectRatio>
             <Flex width="100%" align="center" justify="center" flexDirection="column" gap={4}>
                 <Flex width="100%" justify="space-between" align="center">
-                    <Flex justify="center" flexDirection="column">
-                        <Text as="h4" fontSize={24} fontWeight={600}>
+                    <Flex justify="center" flexDirection="column" maxWidth="80%">
+                        <Text as="h4" fontSize="1.5rem" fontWeight={600} className="one-line-title" maxWidth="100%">
                             {songPlayed?.title}
                         </Text>
-                        <Text>{songPlayed?.author.name}</Text>
+                        <Text className="one-line-title" maxWidth="100%">
+                            {songPlayed?.author.name}
+                        </Text>
                     </Flex>
-                    <Icon as={CgHeart} fontSize={36} color={isLiked ? 'tomato' : 'white'} onClick={likeSong} />
+                    <Icon as={CgHeart} fontSize="2.25rem" color={isLiked ? 'tomato' : 'white'} onClick={likeSong} />
                 </Flex>
-                <Progress
-                    value={songDuration === 0 ? 0 : (currentTime / songDuration) * 100}
-                    colorScheme="primary"
-                    _hover={{ cursor: 'pointer' }}
-                    display={{ base: 'inherit', md: 'none' }}
-                    width="100%"
-                    background="none"
-                    height={1.5}
-                    bgColor="whiteAlpha.600"
-                />
+                <div style={{ flex: 1, width: "100%" }} onClick={handleChangeProgress} ref={progressRef}>
+                    <Progress
+                        value={songDuration === 0 ? 0 : (currentTime / songDuration) * 100}
+                        colorScheme="primary"
+                        _hover={{ cursor: 'pointer' }}
+                        display={{ base: 'inherit', md: 'none' }}
+                        width="100%"
+                        background="none"
+                        height={1.5}
+                        bgColor="whiteAlpha.600"
+                    />
+                </div>
                 <Flex align="center" justify="space-between" width="100%">
                     <Icon
                         as={IoIosRepeat}
-                        fontSize={28}
+                        fontSize="1.75rem"
                         onClick={() => changeAutoPlay('repeat')}
                         className={autoPlay === 'repeat' && 'player-choose'}
                     />
-                    <Icon as={GiPreviousButton} fontSize={32} onClick={prevSong} />
+                    <Icon as={GiPreviousButton} fontSize="2rem" onClick={prevSong} />
                     <Icon
                         as={isPlayed ? MdPause : MdPlayArrow}
                         width={16}
@@ -95,12 +112,12 @@ export default function MobilePlayer({
                         bgColor="white"
                         color="blackAlpha.900"
                         border="1px solid white"
-                        fontSize={32}
+                        fontSize="2rem"
                         onClick={handleTogglePlay}
                     />
-                    <Icon fontSize={32} as={GiNextButton} onClick={nextSong} />
+                    <Icon fontSize="2rem" as={GiNextButton} onClick={nextSong} />
                     <Icon
-                        fontSize={28}
+                        fontSize="1.75rem"
                         as={TiArrowShuffle}
                         onClick={() => changeAutoPlay('shuffle')}
                         className={autoPlay === 'shuffle' && 'player-choose'}

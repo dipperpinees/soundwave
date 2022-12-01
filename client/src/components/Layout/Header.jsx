@@ -6,7 +6,8 @@ import {
     Icon, Menu,
     MenuButton,
     MenuItem,
-    MenuList
+    MenuList,
+    useMediaQuery
 } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { MdOutlineNotifications } from 'react-icons/md';
@@ -19,6 +20,7 @@ import SearchInput from '../SearchInput';
 export default function Header() {
     const [user, userDispatch] = useContext(UserContext);
     const navigate = useNavigate();
+    const [isMobile] = useMediaQuery('(max-width: 48em)');
 
     async function logOut() {
         fetchAPI('/logout', { method: 'POST' });
@@ -28,9 +30,9 @@ export default function Header() {
 
     return (
         <Flex align="center" className="header" color="white" zIndex={10}>
-            <Box width="50%">
+            {!isMobile && <Box width="50%">
                 <SearchInput />
-            </Box>
+            </Box>}
             {!!user.id && <Icon as={MdOutlineNotifications} fontSize={20} ml="auto" />}
             {!!user.id ? (
                 <Menu>

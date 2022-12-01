@@ -1,9 +1,10 @@
-import { Button, Flex, Grid, Icon, Select, Text } from '@chakra-ui/react';
+import { Button, Flex, Grid, Icon, Select, Text, useMediaQuery } from '@chakra-ui/react';
 import queryString from 'query-string';
 import { useContext, useEffect, useState } from 'react';
 import { BsFillPeopleFill, BsSoundwave } from 'react-icons/bs';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Artist from '../components/Artist/index.';
+import SearchInput from '../components/SearchInput';
 import SongPreview from '../components/SongPreview';
 import SongSkeleton from '../components/SquareSkeleton';
 import useSongs from '../hooks/useSongs';
@@ -15,6 +16,7 @@ export default function Search({ type }) {
     const navigate = useNavigate();
     const genre = useContext(GenreContext)[0];
     const [searchParams] = useSearchParams();
+    const [isMobile] = useMediaQuery('(max-width: 48em)');
 
     const handleChangeSearch = (newSearchParams) => {
         const queryParams = {
@@ -37,7 +39,9 @@ export default function Search({ type }) {
             paddingRight={{ base: 4, md: 12 }}
             paddingLeft={{ base: 4, md: 0 }}
             minHeight={'calc(100vh - var(--header-height))'}
+            gap={4}
         >
+            {isMobile && <SearchInput />}
             <Flex flexWrap={{ base: 'wrap', md: 'inherit' }} gap={{ base: 2, md: 0 }}>
                 <Link to={`/search?q=${searchParams.get('q')}`}>
                     <Button
@@ -106,13 +110,13 @@ export default function Search({ type }) {
                     </Select>
                 )}
             </Flex>
-            {type === 'tracks' && <SearchUser />}
+            {type === 'tracks' && <SearchSongs />}
             {type === 'people' && <SearchPeople />}
         </Flex>
     );
 }
 
-const SearchUser = () => {
+const SearchSongs = () => {
     const [searchParams] = useSearchParams();
 
     const [userSearchParams, setUserSearchParams] = useState();
@@ -130,7 +134,7 @@ const SearchUser = () => {
 
     return (
         <>
-            <Text marginTop={4} marginBottom={4}>
+            <Text>
                 {searchTracksData &&
                     `Found ${searchTracksData.pagination.totalDocs} results ${
                         searchParams.get('q') ? `for "${searchParams.get('q')}"` : ''
@@ -168,7 +172,7 @@ const SearchPeople = () => {
 
     return (
         <>
-            <Text marginTop={4} marginBottom={4}>
+            <Text>
                 {searchPeopleData &&
                     `Found ${searchPeopleData.pagination.totalDocs} results ${
                         searchParams.get('q') ? `for "${searchParams.get('q')}"` : ''

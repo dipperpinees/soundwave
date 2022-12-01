@@ -19,7 +19,7 @@
     --primary-color: #f48004;
     --header-height: 60px;
     --navbar-width: 120px;
-    --player-height: 80px
+    --player-height: 80px;
 }
 
 @media screen and (max-width: 48em) {
@@ -104,5 +104,4 @@ select {
     overflow: hidden;
     word-break: break-word;
     max-width: 100%;
-
 }

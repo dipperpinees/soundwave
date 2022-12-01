@@ -100,7 +100,7 @@ export default function SignIn() {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Box width="100%">
                         <FormControl isInvalid={errors.email}>
-                            <FormLabel fontSize={14} mb={1}>
+                            <FormLabel fontSize="0.875rem" mb={1}>
                                 Email address
                             </FormLabel>
                             <Input
@@ -122,17 +122,17 @@ export default function SignIn() {
                                     }
                                 )}
                                 color="black"
-                                fontSize={14}
+                                fontSize="0.875rem"
                                 bgColor="white"
                                 py={6}
                             />
                             <FormErrorMessage mt={1}>{errors.email && errors.email.message}</FormErrorMessage>
                         </FormControl>
                         <FormControl isInvalid={errors.password} mt={4}>
-                            <FormLabel fontSize={14} mb={1} mr={0}>
+                            <FormLabel fontSize="0.875rem" mb={1} mr={0}>
                                 <Flex align="center" justify="space-between">
                                     <Text>Password</Text>
-                                    <Text fontSize={14} color="var(--primary-color)">
+                                    <Text fontSize="0.875rem" color="var(--primary-color)">
                                         Forgot Password
                                     </Text>
                                 </Flex>
@@ -151,7 +151,7 @@ export default function SignIn() {
                                     },
                                 })}
                                 color="black"
-                                fontSize={14}
+                                fontSize="0.875rem"
                                 bgColor="white"
                                 py={6}
                             />
@@ -160,7 +160,7 @@ export default function SignIn() {
                     </Box>
                     <Button
                         type="submit"
-                        fontSize={14}
+                        fontSize="0.875rem"
                         fontWeight={700}
                         colorScheme="primary"
                         variant="solid"
@@ -172,7 +172,7 @@ export default function SignIn() {
                         <Text>Log in</Text>
                     </Button>
                 </form>
-                <Text textAlign="center" fontSize={14} fontWeight={600} margin={4}>
+                <Text textAlign="center" fontSize="0.875rem" fontWeight={600} margin={4}>
                     OR
                 </Text>
                 <Button

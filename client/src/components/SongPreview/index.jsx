@@ -62,7 +62,7 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                         padding={2}
                         color="white"
                         as={showPauseIcon ? MdPause : MdPlayArrow}
-                        fontSize={60}
+                        fontSize="3.75rem"
                         position="absolute"
                         top="50%"
                         left="50%"
@@ -71,13 +71,13 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                         onClick={isPlayThisSong ? togglePlay : addAndPlay}
                     />
                     <Flex position="absolute" bottom={1} right={1} gap={1} align="center">
-                        <Icon as={AiFillHeart} color={isLiked ? 'tomato' : 'white'} fontSize={12} onClick={likeSong} />
+                        <Icon as={AiFillHeart} color={isLiked ? 'tomato' : 'white'} fontSize="0.75rem" onClick={likeSong} />
                         <Icon as={MdPlaylistAdd} />
                         <Menu strategy="fixed">
                             <MenuButton>
                                 <Icon as={MdOutlineMoreHoriz} display="flex" />
                             </MenuButton>
-                            <MenuList bgColor="blackAlpha.900" border="none" fontSize={12} marginTop={-3} minWidth={36}>
+                            <MenuList bgColor="blackAlpha.900" border="none" fontSize="0.75rem" marginTop={-3} minWidth={36}>
                                 <MenuItem
                                     _focus={{ color: 'var(--primary-color)' }}
                                     _active={{}}
@@ -116,21 +116,21 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
             </Box>
             <Flex direction="column" mt={1}>
                 {!isOwner && (
-                    <Text fontSize={14} fontWeight={600} className="one-line-title">
+                    <Text fontSize="0.875rem" fontWeight={600} className="one-line-title">
                         {isPlayThisSong && <Image width={3} mr={1} src={waveGif} display="inline"/>}
                         {song.title}
                     </Text>
                 )}
                 {isOwner && (
                     <Flex justify="space-between">
-                        <Text fontSize={14} fontWeight={600} className="one-line-title">
+                        <Text fontSize="0.875rem" fontWeight={600} className="one-line-title">
                             {song.title}
                         </Text>
                         <Menu>
                             <MenuButton>
-                                <Icon as={FiEdit} display="flex" fontSize={20} />
+                                <Icon as={FiEdit} display="flex" fontSize="1.5rem" />
                             </MenuButton>
-                            <MenuList minWidth={24} maxWidth={30} bgColor="blackAlpha.900" border="none" fontSize={12}>
+                            <MenuList minWidth={24} maxWidth={30} bgColor="blackAlpha.900" border="none" fontSize="0.75rem">
                                 <MenuItem
                                     _focus={{ color: 'var(--primary-color)' }}
                                     _active={{}}
@@ -156,7 +156,7 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                     </Flex>
                 )}
                 {!isOwner && (
-                    <Text as="span" fontSize={11} color="gray" fontWeight={600}>
+                    <Text as="span" fontSize="0.75rem" color="gray" fontWeight={600}>
                         <Link to={`/profile/${song.author.id}`}>{song.author.name}</Link>
                     </Text>
                 )}

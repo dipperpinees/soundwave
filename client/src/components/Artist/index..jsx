@@ -34,7 +34,7 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                     <Stack>
                         <Link to={`/profile/${id}`}>
                             <Text
-                                fontSize={14}
+                                fontSize="0.875rem"
                                 width={{ base: 160, md: 36 }}
                                 whiteSpace="nowrap"
                                 overflow="hidden"
@@ -43,9 +43,9 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                                 {name}
                             </Text>
                         </Link>
-                        <Flex fontSize={12}>
-                            <Icon as={IoMdPeople} fontSize={16} mr={1} /> {followerNumber}
-                            <Icon as={BsSoundwave} fontSize={16} ml={2} mr={1} /> {trackNumber}
+                        <Flex fontSize="0.75rem">
+                            <Icon as={IoMdPeople} fontSize="1rem" mr={1} /> {followerNumber}
+                            <Icon as={BsSoundwave} fontSize="1rem" ml={2} mr={1} /> {trackNumber}
                         </Flex>
                     </Stack>
                 </Flex>
@@ -73,11 +73,11 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                     </Link>
                     <Stack>
                         <Link to={`/profile/${id}`}>
-                            <Text fontSize={{ base: 16, md: 20 }}>{name}</Text>
+                            <Text fontSize={{ base: "1rem", md: "1.25rem" }}>{name}</Text>
                         </Link>
-                        <Flex fontSize={12}>
-                            <Icon as={IoMdPeople} fontSize={16} mr={1} /> {followerNumber}
-                            <Icon as={BsSoundwave} fontSize={16} ml={2} mr={1} /> {trackNumber}
+                        <Flex fontSize="0.75rem">
+                            <Icon as={IoMdPeople} fontSize="1rem" mr={1} /> {followerNumber}
+                            <Icon as={BsSoundwave} fontSize="1rem" ml={2} mr={1} /> {trackNumber}
                         </Flex>
                         <Button
                             size="sm"

@@ -1,4 +1,4 @@
-import { Avatar, Flex, Heading, Icon, Progress, Text, useMediaQuery } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Heading, Icon, Progress, Text, useMediaQuery } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
@@ -29,10 +29,14 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
         setIsLiked(songList?.[indexSongPlayed]?.isLiked || false);
     }, [songList, indexSongPlayed]);
 
+    const changeTimePlay = useCallback((progress) => {
+        dispatch({ type: 'ChangeTime', payload: progress });
+    }, [dispatch])
+
     const handleChangeProgress = useCallback(
         (e) => {
             const progress = ((e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth) * 100;
-            dispatch({ type: 'ChangeTime', payload: progress });
+            changeTimePlay(progress);
         },
         [dispatch]
     );
@@ -66,9 +70,12 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
         dispatch({ type: 'PrevSong' });
     }, [dispatch]);
 
-    const handleShowMobilePlayer = useCallback((e) => {
-        if (isMobile && !e.target.closest('#mobile-settings')) setShowMobilePlayer(true);
-    }, [isMobile]);
+    const handleShowMobilePlayer = useCallback(
+        (e) => {
+            if (isMobile && !e.target.closest('#mobile-settings')) setShowMobilePlayer(true);
+        },
+        [isMobile]
+    );
 
     //dont show on signin signup page
     if (location.pathname === '/signin' || location.pathname === '/signup' || !songList.length) return null;
@@ -88,33 +95,34 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
                 zIndex={1}
                 onClick={handleShowMobilePlayer}
             >
-                <Progress
-                    value={songDuration === 0 ? 0 : (currentTime / songDuration) * 100}
-                    colorScheme="primary"
-                    _hover={{ cursor: 'pointer' }}
-                    display={{ base: 'inherit', md: 'none' }}
-                    position="absolute"
-                    top="-1px"
-                    left="0px"
-                    right="0px"
-                    width="100%"
-                    background="none"
-                    height={0.5}
-                />
+                {isMobile && (
+                    <Progress
+                        value={songDuration === 0 ? 0 : (currentTime / songDuration) * 100}
+                        colorScheme="primary"
+                        _hover={{ cursor: 'pointer' }}
+                        position="absolute"
+                        top="-1px"
+                        left="0px"
+                        right="0px"
+                        width="100%"
+                        background="none"
+                        height={0.5}
+                    />
+                )}
 
-                <Flex alignItems="center" gap={2}>
+                <Flex alignItems="center" gap={2} width={{ base: '80%', md: '16%' }}>
                     <Avatar name="thumbnail" src={songList[indexSongPlayed]?.thumbnail || DEFAULT_SONG_THUMBNAIL} />
-                    <div>
-                        <Heading color="white" fontSize={12} as="h4">
+                    <Flex direction="column" flex={1} overflow="hidden">
+                        <Heading color="white" fontSize="0.75rem" as="h4" whiteSpace="nowrap" className="one-line-title">
                             {songList[indexSongPlayed]?.title}
                         </Heading>
-                        <Text color="white" fontSize={10}>
+                        <Text color="white" fontSize="0.675rem">
                             {songList[indexSongPlayed]?.author?.name}
                         </Text>
-                    </div>
+                    </Flex>
                 </Flex>
                 <Flex className="player-play" display={{ base: 'none', md: 'flex' }} gap={4}>
-                    <Icon fontSize={20} as={GiPreviousButton} onClick={prevSong} />
+                    <Icon fontSize="1.25rem" as={GiPreviousButton} onClick={prevSong} />
                     <Icon
                         width={8}
                         height={8}
@@ -126,10 +134,10 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
                         onClick={handleTogglePlay}
                         as={isPlayed ? MdPause : MdPlayArrow}
                     ></Icon>
-                    <Icon fontSize={20} as={GiNextButton} onClick={nextSong}></Icon>
+                    <Icon fontSize="1.25rem" as={GiNextButton} onClick={nextSong}></Icon>
                 </Flex>
                 <Flex flex={1} alignItems="center" gap={1} display={{ base: 'none', md: 'flex' }}>
-                    <Text fontSize={10} color="white">
+                    <Text fontSize="0.625rem" color="white">
                         {formatTime(currentTime)}
                     </Text>
                     <div style={{ flex: 1 }} onClick={handleChangeProgress} ref={progressRef}>
@@ -140,27 +148,27 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
                             _hover={{ cursor: 'pointer' }}
                         />
                     </div>
-                    <Text fontSize={10} color="white">
+                    <Text fontSize="0.625rem" color="white">
                         {formatTime(songDuration)}
                     </Text>
                 </Flex>
 
                 <Flex gap={4} display={{ base: 'none', md: 'flex' }}>
                     <Icon
-                        fontSize={20}
+                        fontSize="1.25rem"
                         onClick={() => changeAutoPlay('repeat')}
                         as={IoIosRepeat}
                         className={autoPlay === 'repeat' && 'player-choose'}
                     />
                     <Icon
-                        fontSize={20}
+                        fontSize="1.25rem"
                         as={TiArrowShuffle}
                         onClick={() => changeAutoPlay('shuffle')}
                         className={autoPlay === 'shuffle' && 'player-choose'}
                     />
-                    <Icon fontSize={20} as={CgHeart} color={isLiked ? 'tomato' : 'white'} onClick={likeSong} />
-                    <Icon fontSize={20} as={MdPlaylistPlay} onClick={() => setShowPlaylist(true)} />
-                    <Icon fontSize={20} as={SoundVolume} />
+                    <Icon fontSize="1.25rem" as={CgHeart} color={isLiked ? 'tomato' : 'white'} onClick={likeSong} />
+                    <Icon fontSize="1.25rem" as={MdPlaylistPlay} onClick={() => setShowPlaylist(true)} />
+                    <Icon fontSize="1.25rem" as={SoundVolume} />
                 </Flex>
 
                 <NextUp isOpen={showPlaylist} toggleOpen={() => setShowPlaylist(!showPlaylist)} />
@@ -188,6 +196,7 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
                             songDuration,
                             isShow: showMobilePlayer,
                             onClose: () => setShowMobilePlayer(false),
+                            changeTimePlay
                         }}
                     />
                 </>

@@ -7,11 +7,11 @@ export default function ListSongPreview({ title, songs, moreUrl }) {
     return (
         <Box width="100%" margin="16px 0px">
             <Flex justify="space-between" align="end" marginBottom={1}>
-                <Text as="b" fontSize={20} >
+                <Text as="b" fontSize="1.25rem" >
                     {title}
                 </Text>
                 <Link to={moreUrl}>
-                    <Text as="span" fontSize={12} color="whiteAlpha.700">
+                    <Text as="span" fontSize="0.75rem" color="whiteAlpha.700">
                         More
                     </Text>
                 </Link>

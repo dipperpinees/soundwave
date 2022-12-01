@@ -1,4 +1,4 @@
-import { Flex, Image, Box, Text, Center, Icon, background } from '@chakra-ui/react';
+import { Flex, Image, Box, Text, Center, Icon, background, AspectRatio } from '@chakra-ui/react';
 import { LikeIcon } from '../Icon';
 import { FaRegEye } from 'react-icons/fa';
 import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
@@ -9,12 +9,11 @@ import './styles.scss';
 
 const Song = ({ ...props }) => {
     const { data } = props;
-
     const { id, title, thumbnail, author, playCount, genre } = data[props.index];
 
     const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
 
-    const addAndPlay = () => setPlayer({ type: 'Add', payload: props });
+    const addAndPlay = () => setPlayer({ type: 'Add', payload: data[props.index] });
 
     const togglePlay = () => setPlayer({ type: 'Toggle' });
 
@@ -27,7 +26,7 @@ const Song = ({ ...props }) => {
 
     return (
         <Box id={id} borderBottom={borderBottom} padding="12px 0">
-            <Flex h="42px" overflow="hidden">
+            <Flex h="42px" overflow="hidden" justify="space-between">
                 <Box
                     className="image-song"
                     pos={'relative'}
@@ -37,7 +36,9 @@ const Song = ({ ...props }) => {
                     borderRadius={'2px'}
                     cursor={'pointer'}
                 >
-                    <Image src={thumbnail} alt="song image" boxSize="100%" />
+                    <AspectRatio  ratio={1}>
+                        <Image src={thumbnail} alt="song image" boxSize="100%" objectFit="cover"/>
+                    </AspectRatio>
                     <Center
                         className="play-btn"
                         // pos={'absolute'}

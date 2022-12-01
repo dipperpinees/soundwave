@@ -6,11 +6,13 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import { MdAdminPanelSettings } from 'react-icons/md';
 import fetchAPI from '../utils/fetchAPI';
 import { SongAdmin, UserAdmin } from '../components/Admin';
+import useUsers from '../hooks/useUsers';
 
 export default function Admin() {
     const [{ isAuth, role }, userDispatch] = useContext(UserContext);
     const navigate = useNavigate();
-
+    const {data} = useUsers()
+    console.log(data);  
     useEffect(() => {
         //not admin, navigate to home page
         if (isAuth && role !== 'admin') navigate('/');
@@ -34,11 +36,11 @@ export default function Admin() {
                 px={8}
                 bgColor="gray.100"
             >
-                <Text as="b" fontSize={20}>
+                <Text as="b" fontSize="1.25rem">
                     LOGO
                 </Text>
                 <Divider orientation="vertical" height="50%" m={4} />
-                <Icon fontSize={20} as={MdAdminPanelSettings} />
+                <Icon fontSize="1.25rem" as={MdAdminPanelSettings} />
                 <Text>Admin Dashboard</Text>
                 <Button variant="ghost" ml="auto" onClick={logOut}>
                     Log out

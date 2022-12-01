@@ -22,7 +22,7 @@ export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail }
                     <Icon
                         color="var(--primary-color)"
                         as={AiFillPlayCircle}
-                        fontSize={60}
+                        fontSize="3.75rem"
                         position="absolute"
                         top="50%"
                         left="50%"
@@ -34,14 +34,14 @@ export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail }
             </Box>
             <Flex direction="column" mt={1}>
                 <Flex justify="space-between">
-                    <Text fontSize={14} fontWeight={600} className="one-line-title">
+                    <Text fontSize="0.875rem" fontWeight={600} className="one-line-title">
                         {name}
                     </Text>
                     <Menu>
                         <MenuButton>
-                            <Icon as={FiEdit} display="flex" fontSize={20} />
+                            <Icon as={FiEdit} display="flex" fontSize="1.5rem" />
                         </MenuButton>
-                        <MenuList minWidth={24} bgColor="blackAlpha.900" border="none" fontSize={12}>
+                        <MenuList minWidth={24} bgColor="blackAlpha.900" border="none" fontSize="0.75rem">
                             <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} padding="2px 8px">
                                 <Icon as={MdModeEditOutline} marginRight={1} />
                                 Edit
@@ -53,7 +53,7 @@ export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail }
                         </MenuList>
                     </Menu>
                 </Flex>
-                <Text fontSize={12} fontWeight={600} color="whiteAlpha.700" as="span">
+                <Text fontSize="0.75rem" fontWeight={600} color="whiteAlpha.700" as="span">
                     Playlist • {songs.length} songs
                 </Text>
             </Flex>

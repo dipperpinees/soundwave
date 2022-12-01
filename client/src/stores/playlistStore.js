@@ -143,7 +143,7 @@ const CreatePlaylist = ({ onClose, showAddSong, isBack }) => {
                             />
                         </AspectRatio>
                         <Center position="absolute" top={0} bottom={0} left={0} right={0}>
-                            <AiFillCamera fontSize={24} />
+                            <AiFillCamera fontSize="1.5rem"/>
                         </Center>
                     </Box>
                     <Input type="file" display="none" accept="image/*" onChange={handleChangeThumbnail} ref={thumbnailRef}/>
