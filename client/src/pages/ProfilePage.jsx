@@ -1,29 +1,26 @@
-import { Box, Flex } from '@chakra-ui/react';
-import FeaturedTracks from '../components/FeaturedTracks';
-import RecentlyLikes from '../components/RecentlyLikes';
-import Profile from '../components/Profile';
+import { Box } from '@chakra-ui/react';
+import { useContext, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Albums from '../components/Albums';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useContext, useEffect, useLayoutEffect, useState } from 'react';
-import fetchAPI from '../utils/fetchAPI';
-import { UserContext } from '../stores/userStore';
+import FeaturedTracks from '../components/FeaturedTracks';
+import Profile from '../components/Profile';
 import EditProfile from '../components/Profile/EditProfile/EditProfile';
 import useProfile from '../hooks/useProfile';
+import { UserContext } from '../stores/userStore';
 
 const ProfilePage = () => {
     const { id } = useParams();
     const { data, isLoading } = useProfile(id);
     const [user] = useContext(UserContext);
-    const navigate = useNavigate();
     const [isEditProfile, setIsEditProfile] = useState(false);
 
-    // chuyển hướng đăng nhập nếu chưa đăng nhập
-    useLayoutEffect(() => {
-        if (!user.id) {
-            navigate('/signin');
-            return;
-        }
-    }, []);
+    // // chuyển hướng đăng nhập nếu chưa đăng nhập
+    // useLayoutEffect(() => {
+    //     if (!user.id) {
+    //         navigate('/signin');
+    //         return;
+    //     }
+    // }, []);
 
     return (
         <Box ml={['0', '0', '360px']} minHeight="100vh" pt={['84px']} color={'#fff'}>

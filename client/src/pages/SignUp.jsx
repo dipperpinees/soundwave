@@ -35,6 +35,7 @@ export default function SignUp() {
             });
             userDispatch({ type: 'Update', payload: { avatar, name, id } });
         } catch (e) {
+            if (e.message.includes('Error 1062')) e.message = 'This account already exists';
             toast({
                 title: e.message,
                 status: 'error',
@@ -43,7 +44,6 @@ export default function SignUp() {
             });
         }
         setLoading(false);
-
     };
 
     return (
@@ -54,7 +54,14 @@ export default function SignUp() {
             <Text my={3}>
                 Already have an account?
                 <Link to="/signin">
-                    <Text display="inline" ml={1} fontWeight={600} color="var(--primary-color)" outline="none" textDecoration="none">
+                    <Text
+                        display="inline"
+                        ml={1}
+                        fontWeight={600}
+                        color="var(--primary-color)"
+                        outline="none"
+                        textDecoration="none"
+                    >
                         SIGN IN
                     </Text>
                 </Link>
@@ -136,11 +143,10 @@ export default function SignUp() {
                             <Input
                                 type="text"
                                 id="name"
-                                {...register(
-                                    'name',
-                                    { required: 'Name is required' },
-                                    { minLength: { value: 4, message: 'Name must have at least 4 characters' } }
-                                )}
+                                {...register('name', {
+                                    required: 'Name is required',
+                                    minLength: { value: 6, message: 'Name must have at least 6 characters' },
+                                })}
                                 color="black"
                                 fontSize="0.875rem"
                                 bgColor="white"
