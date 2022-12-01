@@ -34,7 +34,6 @@ export default function SignUp() {
                 body: JSON.stringify({ email, password, name }),
             });
             userDispatch({ type: 'Update', payload: { avatar, name, id } });
-            setLoading(false);
         } catch (e) {
             toast({
                 title: e.message,
@@ -43,6 +42,8 @@ export default function SignUp() {
                 isClosable: true,
             });
         }
+        setLoading(false);
+
     };
 
     return (

@@ -1,6 +1,16 @@
-import { MdDelete } from 'react-icons/md';
-import { Avatar, Box, Checkbox, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import {
+    Avatar,
+    Box, Button, Checkbox,
+    Flex, Icon, Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr
+} from '@chakra-ui/react';
 import { useState } from 'react';
+import { MdDelete } from 'react-icons/md';
 import useUsers from '../../hooks/useUsers';
 import formatDate from '../../utils/formatDate';
 
@@ -15,8 +25,8 @@ export default function UserAdmin() {
 
     return (
         <>
-            <Button marginLeft={"auto"}>
-                <Icon as = {MdDelete} />
+            <Button marginLeft={'auto'}>
+                <Icon as={MdDelete} />
                 Delete
             </Button>
             <Box borderWidth={1} borderRadius={12}>
