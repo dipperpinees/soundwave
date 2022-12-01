@@ -1,18 +1,15 @@
-import { Box, Button, Container, Divider, Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 import { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../stores';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import { MdAdminPanelSettings } from 'react-icons/md';
-import fetchAPI from '../utils/fetchAPI';
+import { useNavigate } from 'react-router-dom';
 import { SongAdmin, UserAdmin } from '../components/Admin';
-import useUsers from '../hooks/useUsers';
+import { UserContext } from '../stores';
+import fetchAPI from '../utils/fetchAPI';
 
 export default function Admin() {
     const [{ isAuth, role }, userDispatch] = useContext(UserContext);
     const navigate = useNavigate();
-    const {data} = useUsers()
-    console.log(data);  
+    
     useEffect(() => {
         //not admin, navigate to home page
         if (isAuth && role !== 'admin') navigate('/');
@@ -35,6 +32,7 @@ export default function Admin() {
                 height="var(--header-height)"
                 px={8}
                 bgColor="gray.100"
+                zIndex={1}
             >
                 <Text as="b" fontSize="1.25rem">
                     LOGO

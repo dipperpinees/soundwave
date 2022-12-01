@@ -1,0 +1,32 @@
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px;
+
+    & ul {
+        list-style-type: none;
+        display: flex;
+        align-items: center;
+    }
+
+    & li {
+        margin: 8px;
+        & a {
+            font-size: 12px;
+            border: 1px solid #9b9999;
+            border-radius: 4px;
+            display: block;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    & .selected a{
+        background-color: var(--primary-color);
+        border-color: var(--primary-color)
+    }
+}

@@ -1,23 +1,18 @@
-import {
-    Table,
-    Thead,
-    Tbody,
-    Tfoot,
-    Tr,
-    Th,
-    Td,
-    TableCaption,
-    TableContainer,
-    Box,
-    Checkbox,
-    Avatar,
-    Flex,
-    Button,
-    Icon,
-} from '@chakra-ui/react';
 import { MdDelete } from 'react-icons/md';
+import { Avatar, Box, Checkbox, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { useState } from 'react';
+import useUsers from '../../hooks/useUsers';
+import formatDate from '../../utils/formatDate';
 
 export default function UserAdmin() {
+    const { data: users, isLoading } = useUsers();
+    const [selected, setSelected] = useState({});
+
+    const handleCheck = (isChecked, id) => {
+        selected[id] = isChecked;
+        setSelected({ ...selected });
+    };
+
     return (
         <>
             <Button marginLeft={"auto"}>
@@ -30,10 +25,16 @@ export default function UserAdmin() {
                         <Thead>
                             <Tr>
                                 <Th>
-                                    <Checkbox></Checkbox>
+                                    <Checkbox
+                                        onChange={(e) => {
+                                            users?.data.forEach(({ id }) => {
+                                                selected[id] = e.target.checked;
+                                            });
+                                            setSelected({ ...selected });
+                                        }}
+                                    ></Checkbox>
                                 </Th>
                                 <Th>User</Th>
-                                <Th>Description</Th>
                                 <Th>Number of songs</Th>
                                 <Th>Followers</Th>
                                 <Th>Followings</Th>
@@ -41,51 +42,27 @@ export default function UserAdmin() {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Tr>
-                                <Td>
-                                    <Checkbox></Checkbox>
-                                </Td>
-                                <Td>
-                                    <Flex align="center" gap={2}>
-                                        <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" /> Nguyen van a
-                                    </Flex>
-                                </Td>
-                                <Td>description</Td>
-                                <Td>1</Td>
-                                <Td>1</Td>
-                                <Td>1</Td>
-                                <Td>8/10/2020</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>
-                                    <Checkbox></Checkbox>
-                                </Td>
-                                <Td>
-                                    <Flex align="center" gap={2}>
-                                        <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" /> Nguyen van a
-                                    </Flex>
-                                </Td>
-                                <Td>description</Td>
-                                <Td>1</Td>
-                                <Td>1</Td>
-                                <Td>1</Td>
-                                <Td>8/10/2020</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>
-                                    <Checkbox></Checkbox>
-                                </Td>
-                                <Td>
-                                    <Flex align="center" gap={2}>
-                                        <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" /> Nguyen van a
-                                    </Flex>
-                                </Td>
-                                <Td>description</Td>
-                                <Td>1</Td>
-                                <Td>1</Td>
-                                <Td>1</Td>
-                                <Td>8/10/2020</Td>
-                            </Tr>
+                            {users?.data.map(
+                                ({ id, name, avatar, followerNumber, followingNumber, trackNumber, createdAt }) => (
+                                    <Tr key={id}>
+                                        <Td>
+                                            <Checkbox
+                                                onChange={(e) => handleCheck(e.target.checked, id)}
+                                                isChecked={!!selected[id]}
+                                            ></Checkbox>
+                                        </Td>
+                                        <Td>
+                                            <Flex align="center" gap={2}>
+                                                <Avatar colorScheme={name} name="Uchiha kakashi" src={avatar} /> {name}
+                                            </Flex>
+                                        </Td>
+                                        <Td>{trackNumber}</Td>
+                                        <Td>{followerNumber}</Td>
+                                        <Td>{followingNumber}</Td>
+                                        <Td>{formatDate(createdAt)}</Td>
+                                    </Tr>
+                                )
+                            )}
                         </Tbody>
                     </Table>
                 </TableContainer>

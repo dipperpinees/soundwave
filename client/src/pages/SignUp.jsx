@@ -1,26 +1,15 @@
-import {
-    Box,
-    Button,
-    Container,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    Input,
-    Link,
-    Text,
-    useToast,
-    VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, Text, useToast } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../stores';
+import { LoadingContext } from '../stores/loadingStore';
 import '../styles/SignUp.scss';
 import fetchAPI from '../utils/fetchAPI';
 
 export default function SignUp() {
     const [user, userDispatch] = useContext(UserContext);
-
+    const setLoading = useContext(LoadingContext)[1];
     const toast = useToast();
     const navigate = useNavigate();
     const {
@@ -35,6 +24,7 @@ export default function SignUp() {
     }
 
     const onSubmit = async ({ email, password, name }) => {
+        setLoading(true);
         try {
             const { avatar, id } = await fetchAPI('/signup', {
                 method: 'POST',
@@ -44,6 +34,7 @@ export default function SignUp() {
                 body: JSON.stringify({ email, password, name }),
             });
             userDispatch({ type: 'Update', payload: { avatar, name, id } });
+            setLoading(false);
         } catch (e) {
             toast({
                 title: e.message,
@@ -55,45 +46,25 @@ export default function SignUp() {
     };
 
     return (
-        <Container>
-            <VStack display="flex" justifyContent="center" alignItems="center" height="100%">
-                <Box className="logo">
-                    <Text fontSize="2xl" fontWeight="bold" textAlign="center" mt="2">
-                        <Link href="/" color="#f48004" style={{ textDecoration: 'none' }}>
-                            SOUNDGROUND
-                        </Link>
+        <Flex width="100%" justify="center" align="center" direction="column" minHeight="100vh" color="white">
+            <Box fontSize="4xl">
+                <h1>Sign up</h1>
+            </Box>
+            <Text my={3}>
+                Already have an account?
+                <Link to="/signin">
+                    <Text display="inline" ml={1} fontWeight={600} color="var(--primary-color)" outline="none" textDecoration="none">
+                        SIGN IN
                     </Text>
-                </Box>
-                <Box fontSize="4xl" color="#FFF" fontFamily="Deezer, san-serif" style={{ marginBottom: '30px' }}>
-                    <h1>Sign up</h1>
-                </Box>
-                <Box fontSize="2md" color="#FFF">
-                    <Text>
-                        Already have an account?{' '}
-                        <Link href="/signin" color="#f48004" outline="none" style={{ textDecoration: 'none' }}>
-                            SIGN IN
-                        </Link>
-                    </Text>
-                </Box>
+                </Link>
+            </Text>
+            <Box width={{ base: '92%', md: 480 }}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Box id="inputInfo">
-                        <FormControl isInvalid={errors.name}>
-                            <FormLabel className="inputLabel">Name</FormLabel>
-                            <Input
-                                type="text"
-                                id="name"
-                                {...register(
-                                    'name',
-                                    { required: 'Name is required' },
-                                    { minLength: { value: 4, message: 'Name must have at least 4 characters' } }
-                                )}
-                                className="inputUser"
-                                style={{ height: '58px', fontSize: '0.875rem', backgroundColor: '#FFFFFF' }}
-                            />
-                            <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
-                        </FormControl>
+                    <Box width="100%">
                         <FormControl isInvalid={errors.email}>
-                            <FormLabel className="inputLabel">Email address</FormLabel>
+                            <FormLabel fontSize="0.875rem" mb={1}>
+                                Email address
+                            </FormLabel>
                             <Input
                                 type="email"
                                 id="email"
@@ -107,32 +78,40 @@ export default function SignUp() {
                                         },
                                     }
                                 )}
-                                className="inputUser"
-                                style={{ height: '58px', fontSize: '0.875rem', backgroundColor: '#FFFFFF' }}
+                                color="black"
+                                fontSize="0.875rem"
+                                bgColor="white"
+                                py={6}
                             />
-                            <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+                            <FormErrorMessage mt={1}>{errors.email && errors.email.message}</FormErrorMessage>
                         </FormControl>
-                        <FormControl isInvalid={errors.password}>
-                            <FormLabel className="inputLabel">Password</FormLabel>
+                        <FormControl mt={3} isInvalid={errors.password}>
+                            <FormLabel fontSize="0.875rem" mb={1}>
+                                Password
+                            </FormLabel>
                             <Input
                                 type="password"
                                 {...register('password', {
                                     required: {
                                         value: true,
-                                        message: 'This field cannot be empty',
+                                        message: 'Password is required',
                                     },
                                     minLength: {
                                         value: 6,
                                         message: 'This field has a minimum length of 6',
                                     },
                                 })}
-                                className="inputUser"
-                                style={{ height: '58px', fontSize: '14px', backgroundColor: '#FFFFFF' }}
+                                color="black"
+                                fontSize="0.875rem"
+                                bgColor="white"
+                                py={6}
                             />
-                            <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
+                            <FormErrorMessage mt={1}>{errors.password && errors.password.message}</FormErrorMessage>
                         </FormControl>
-                        <FormControl isInvalid={errors.confirmPassword}>
-                            <FormLabel className="inputLabel">Confirm password</FormLabel>
+                        <FormControl mt={3} isInvalid={errors.confirmPassword}>
+                            <FormLabel fontSize="0.875rem" mb={1}>
+                                Confirm password
+                            </FormLabel>
                             <Input
                                 type="password"
                                 {...register('confirmPassword', {
@@ -140,28 +119,50 @@ export default function SignUp() {
                                         if (value !== watch('password')) return 'Your passwords does not match';
                                     },
                                 })}
-                                className="inputUser"
-                                style={{ height: '58px', fontSize: '14px', backgroundColor: '#FFFFFF' }}
+                                color="black"
+                                fontSize="0.875rem"
+                                bgColor="white"
+                                py={6}
                             />
-                            <FormErrorMessage>
+                            <FormErrorMessage mt={1}>
                                 {errors.confirmPassword && errors.confirmPassword.message}
                             </FormErrorMessage>
+                        </FormControl>
+                        <FormControl mt={3} isInvalid={errors.name}>
+                            <FormLabel fontSize="0.875rem" mb={1}>
+                                Name
+                            </FormLabel>
+                            <Input
+                                type="text"
+                                id="name"
+                                {...register(
+                                    'name',
+                                    { required: 'Name is required' },
+                                    { minLength: { value: 4, message: 'Name must have at least 4 characters' } }
+                                )}
+                                color="black"
+                                fontSize="0.875rem"
+                                bgColor="white"
+                                py={6}
+                            />
+                            <FormErrorMessage mt={1}>{errors.name && errors.name.message}</FormErrorMessage>
                         </FormControl>
                     </Box>
                     <Button
                         type="submit"
-                        id="but-login"
-                        style={{ marginLeft: '10px', marginTop: '30px', marginBottom: '60px' }}
-                        borderRadius="0.375rem"
-                        fontSize="14px"
-                        fontWeight="700"
-                        backgroundColor="#f48004"
-                        color="#FFF"
+                        fontSize="0.875rem"
+                        fontWeight={700}
+                        colorScheme="primary"
+                        variant="solid"
+                        width="100%"
+                        mt={6}
+                        size="lg"
+                        _hover={{ opacity: 0.8 }}
                     >
                         <Text>Sign Up</Text>
                     </Button>
                 </form>
-            </VStack>
-        </Container>
+            </Box>
+        </Flex>
     );
 }
