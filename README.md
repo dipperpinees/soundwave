@@ -19,7 +19,5 @@
   git pull origin master
  ```
 ## [UI Design](https://drive.google.com/drive/folders/12iPdt_N6ndeQkfoksEqpM0qUDYDLWrfg?usp=sharing)
- 
-## ENV test
- + REACT_APP_API=https://music-a8of.onrender.com/api
- + GENERATE_SOURCEMAP=false
+
+## [Tài liệu chức năng](https://docs.google.com/spreadsheets/d/1AfBjBW-0iT-vGn4dQdejipoWCmCoYLEZFEyTKjaOttE/edit#gid=0)
