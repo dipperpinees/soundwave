@@ -12,11 +12,18 @@ import {
     Checkbox,
     Avatar,
     Flex,
+    Button,
+    Icon,
 } from '@chakra-ui/react';
+import { MdDelete } from 'react-icons/md';
 
 export default function UserAdmin() {
     return (
         <>
+            <Button marginLeft={"auto"}>
+                <Icon as = {MdDelete} />
+                Delete
+            </Button>
             <Box borderWidth={1} borderRadius={12}>
                 <TableContainer>
                     <Table variant="simple">
