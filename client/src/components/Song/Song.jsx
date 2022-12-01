@@ -1,6 +1,6 @@
-import { Flex, Image, Box, Text, Center, Icon, background } from '@chakra-ui/react';
+import { Flex, Image, Box, Text, Center, Icon, AspectRatio } from '@chakra-ui/react';
 import { LikeIcon } from '../Icon';
-import { FaRegEye } from 'react-icons/fa';
+import { BsPlay } from 'react-icons/bs';
 import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
@@ -34,35 +34,40 @@ const Song = ({ ...props }) => {
                     boxSize="42px"
                     bg="white"
                     overflow={'hidden'}
-                    borderRadius={'2px'}
+                    borderRadius={2}
                     cursor={'pointer'}
                 >
-                    <Image src={thumbnail} alt="song image" boxSize="100%" />
+                    <AspectRatio maxW={'100%'} ratio={1}>
+                        <Image src={thumbnail} alt="song image" boxSize="100%" objectFit={'cover'} borderRadius={2} />
+                    </AspectRatio>
                     <Center
                         className="play-btn"
-                        // pos={'absolute'}
-                        // visibility={'hidden'}
-                        // _hover={{ background: 'rgba(0, 0, 0, 0.1)', visibility: 'visible' }}
                         top={'0'}
                         left={'0'}
                         boxSize={'100%'}
                         onClick={isPlayed ? togglePlay : addAndPlay}
                     >
-                        <Icon as={showPauseIcon ? AiFillPauseCircle : AiFillPlayCircle} fontSize="24px" />
+                        <Icon
+                            as={showPauseIcon ? AiFillPauseCircle : AiFillPlayCircle}
+                            fontSize="24px"
+                            _focus={{ color: 'var(--primary-color)' }}
+                            _active={{}}
+                            _hover={{}}
+                        />
                     </Center>
                 </Box>
-                <Box ml={2} flex="1" width={'70%'}>
+                <Box ml={2} flex="1" maxW={'80%'}>
                     {/* Song name */}
                     <Text
                         textOverflow={'ellipsis'}
                         overflow="hidden"
                         whiteSpace={'nowrap'}
-                        width={['90%', '50%']}
+                        maxW={['90%', '90%']}
                         fontSize="md"
                     >
                         <Link to={`/music/${id}`}>{songName}</Link>
                     </Text>
-                    <Flex fontSize="xs" overflow={'hidden'} whiteSpace={'nowrap'} width={['80%', '50%']}>
+                    <Flex fontSize="xs" overflow={'hidden'} whiteSpace={'nowrap'} maxW={['90%', '90%']}>
                         <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
                         <Text m="0 4px">-</Text>
                         <Text textOverflow={'ellipsis'} overflow="hidden">
@@ -78,8 +83,8 @@ const Song = ({ ...props }) => {
                 )}
 
                 {isViewIcon && (
-                    <Flex alignItems="center" margin="0 12px">
-                        <FaRegEye fontSize={'20px'} />
+                    <Flex display={['none', 'flex', 'none', 'flex']} alignItems="center" margin="0 12px">
+                        <BsPlay fontSize={'24px'} />
                         <Text minW={'36px'} ml={'8px'}>
                             {playCount}
                         </Text>

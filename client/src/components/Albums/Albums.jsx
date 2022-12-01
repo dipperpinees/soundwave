@@ -1,5 +1,6 @@
 import Song from './Song';
-import { Box, Heading, List, Text, Flex, Image, Link } from '@chakra-ui/react';
+import { Box, Heading, List, Text, Flex, Image, AspectRatio } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 import { BsThreeDots } from 'react-icons/bs';
 import { LineRightIcon, LikeIcon } from '../Icon';
 import { useEffect, useState } from 'react';
@@ -22,23 +23,24 @@ const Albums = ({ currentUserId }) => {
             <Heading fontSize="xl">Albums</Heading>
             <Flex flexWrap={['wrap', 'initial', 'initial']} justifyContent={'space-between'} mt={'16px'}>
                 <Box flex={['100%', '16%']}>
-                    <Box boxSize="150px" bg="white" borderRadius="10px" overflow={'hidden'}>
-                        {/* ảnh albums */}
+                    {/* ảnh albums */}
+                    <AspectRatio maxW={'150px'} ratio={'1'} borderRadius={10}>
                         <Image
                             src={
                                 'https://images.macrumors.com/t/hi1_a2IdFGRGMsJ0x31SdD_IcRk=/1600x/article-new/2018/05/apple-music-note.jpg'
                             }
+                            borderRadius={10}
                             alt="song image"
                             boxSize="100%"
                             objectFit="cover"
                         />
-                    </Box>
+                    </AspectRatio>
                     <Flex justify={'space-between'} align={'center'} mt="8px">
                         <LikeIcon showLikeNumber={false} />
                         <BsThreeDots />
                     </Flex>
                 </Box>
-                <Box mt={['16px', '0']} flex={['100%', '79%']} ml={['0', '16px']}>
+                <Box mt={['16px', '0']} flex={['100%', '79%']} maxW={['100%', '79%']} ml={['0', '16px']}>
                     <Heading as={'h2'} size={'sm'}>
                         Sense
                     </Heading>
@@ -64,7 +66,7 @@ const Albums = ({ currentUserId }) => {
                     {/* nhiều hơn 5 bài hát sẽ hiện nút xem thêm */}
                     {data && data.length > 5 && (
                         <Flex justifyContent="end" mt="4px">
-                            <Link href="#">
+                            <Link to={''}>
                                 <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer">
                                     See more
                                     <LineRightIcon />

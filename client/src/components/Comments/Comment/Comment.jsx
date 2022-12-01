@@ -1,5 +1,5 @@
-import { Box, Avatar, Text, Button, Flex, Heading, Image, Link, HStack, color } from '@chakra-ui/react';
-import { TiArrowBack } from 'react-icons/ti';
+import { Box, Avatar, Text, Flex } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 import { AiFillLike } from 'react-icons/ai';
 import { TbMessageReport } from 'react-icons/tb';
 import { MdAccessTime } from 'react-icons/md';
@@ -8,7 +8,6 @@ import { useEffect, useRef, useState } from 'react';
 // import { Comment } from './index';
 
 const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...props }) => {
-    const [isWriteComment, hasWriteComment] = useState(false);
     const [isLiked, hasLike] = useState(liked);
     const [likeNumber, setLikeNumber] = useState(++initLikeNumber);
     const { comments, index } = props;
@@ -25,9 +24,9 @@ const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...
         <Flex mt={'8px'} pt="8px" pr={'16px'} borderTop="1px solid" borderTopColor={'primaryBorderColor'}>
             <Avatar size={'md'} src="comment?.author?.avatar" mr={'16px'} />
             <Box flex={'1'}>
-                <Text m={'0 0 8px'} lineHeight={'100%'} fontSize={'1.3rem'}>
-                    {comment && comment.author.name}
-                </Text>
+                <Box m={'0 0 8px'} lineHeight={'100%'} fontSize={'1.3rem'}>
+                    {comment && <Link to={`/profile/${comment.author.id}`}>{comment.author.name}</Link>}
+                </Box>
                 <Flex gap="4px" align={'center'} color={'text'}>
                     <MdAccessTime fontSize={'12px'} />
                     <Text fontSize={'0.7rem'}>{date}</Text>
@@ -54,18 +53,6 @@ const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...
                                 <Box minW={'16px'}>{likeNumber}</Box>
                             )}
                         </Flex>
-                        {/* reply */}
-                        {/* <Flex
-                            ref={reply}
-                            // onClick={() => hasWriteComment(true)}
-                            cursor={'pointer'}
-                            align={'center'}
-                            gap={'2px'}
-                        >
-                            <TiArrowBack fontSize={'20px'} />
-                            <span>Reply</span>
-                        </Flex> */}
-                        {/* report */}
                         <Flex cursor={'pointer'} gap="2px" align={'center'}>
                             <TbMessageReport fontSize={'20px'} />
                             <span>Report</span>
@@ -83,14 +70,7 @@ const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...
                         </Flex>
                         {/* more menu */}
                     </Flex>
-                    {/* {!isWriteComment && (
-                        <Flex fontSize={'sm'} cursor={'pointer'} _hover={{ color: 'white' }}>
-                            See <Box m={'0 4px'}> 3 </Box> replies
-                        </Flex>
-                    )} */}
                 </Flex>
-                {/* {isSubComment && <Comment />}
-                {isWriteComment && <WriteComment />} */}
             </Box>
         </Flex>
     );

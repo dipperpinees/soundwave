@@ -1,20 +1,18 @@
 import { Box, Flex, Text, List, ListItem, HStack } from '@chakra-ui/react';
 import ItemDescribe from './ItemDescribe';
 
-const Describe = (props) => {
-    const { trackNumber, followerNumber, followingNumber } = props;
-
+const Describe = ({ data }) => {
     return (
-        <Box borderTop={'1px solid #fff'}>
-            <Box margin="12px 0">
-                <Text>
-                    The Stack component and the Flex component have their children spaced out evenly but the key
-                </Text>
-            </Box>
-            <List borderTop={'1px solid #fff'} width={'100%'}>
-                <ItemDescribe name={'Songs'} amount={trackNumber} />
-                <ItemDescribe name={'Followers'} amount={followerNumber} />
-                <ItemDescribe name={'Following'} amount={followingNumber} />
+        <Box>
+            {data.description !== '' && (
+                <Box borderTop={'1px solid #fff'} borderBottom={'1px solid #fff'} margin="12px 0">
+                    <Text>{data.description}</Text>
+                </Box>
+            )}
+            <List width={'100%'}>
+                <ItemDescribe name={'Songs'} amount={data.trackNumber} />
+                <ItemDescribe name={'Followers'} amount={data.followerNumber} />
+                <ItemDescribe name={'Following'} amount={data.followingNumber} />
             </List>
         </Box>
     );

@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, calc, Flex } from '@chakra-ui/react';
 import FeaturedTracks from '../components/FeaturedTracks';
 import RecentlyLikes from '../components/RecentlyLikes';
 import Profile from '../components/Profile';
@@ -25,20 +25,24 @@ const ProfilePage = () => {
         }
     }, []);
 
+    if (!data) {
+        return;
+    }
+
     return (
-        <Box ml={['0', '0', '360px']} minHeight="100vh" pt={['84px']} color={'#fff'}>
-            <EditProfile {...{ isEditProfile, setIsEditProfile }} />
+        <Box ml={['0', '0', '360px']} minHeight="100vh" sx={{ paddingTop: '80px' }} color={'#fff'}>
+            <EditProfile {...{ isEditProfile, setIsEditProfile }} data={data} />
             <Box
                 pos={['initial', 'initial', 'fixed']}
                 top={['0']}
                 left={['0', '0', '120px']}
-                mt={'60px'}
+                mt={[0, 0, '60px']}
                 mb={['24px', '24px', '0']}
                 borderLeft={['none', 'none', '1px solid rgba(255, 255, 255, 0.2)']}
                 borderRight={['none', 'none', '1px solid rgba(255, 255, 255, 0.2)']}
             >
                 <Box minH={['initial', 'initial', '100vh']} margin={['0 12px', '0 24px', '0 24px']}>
-                    <Profile {...{ setIsEditProfile }} {...data} userId={user.id} />
+                    <Profile {...{ setIsEditProfile }} data={data} userId={user.id} />
                 </Box>
             </Box>
             <Box margin={['0 12px', '0 24px', '0 56px']}>

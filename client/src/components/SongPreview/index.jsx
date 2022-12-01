@@ -11,10 +11,10 @@ import {
     MdOutlineMoreHoriz,
     MdPause,
     MdPlayArrow,
-    MdPlaylistAdd
+    MdPlaylistAdd,
 } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import waveGif from "../../assets/animated.gif";
+import waveGif from '../../assets/animated.gif';
 import defaultPreview from '../../assets/song_preview.jpg';
 import { UserContext } from '../../stores';
 import { PlayerContext } from '../../stores/playerStore';
@@ -35,7 +35,7 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
 
     const likeSong = async () => {
         try {
-            if (isLiked && onUnlike) onUnlike() 
+            if (isLiked && onUnlike) onUnlike();
             setIsLiked(!isLiked);
             await fetchAPI(`/song/like/${song.id}`, {
                 method: isLiked ? 'DELETE' : 'POST',
@@ -116,16 +116,16 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
             </Box>
             <Flex direction="column" mt={1}>
                 {!isOwner && (
-                    <Text fontSize={14} fontWeight={600} className="one-line-title">
-                        {isPlayThisSong && <Image width={3} mr={1} src={waveGif} display="inline"/>}
+                    <Link to={`/music/${song.id}`} fontSize={14} fontWeight={600} className="one-line-title">
+                        {isPlayThisSong && <Image width={3} mr={1} src={waveGif} display="inline" />}
                         {song.title}
-                    </Text>
+                    </Link>
                 )}
                 {isOwner && (
                     <Flex justify="space-between">
-                        <Text fontSize={14} fontWeight={600} className="one-line-title">
+                        <Link to={`/music/${song.id}`} fontSize={14} fontWeight={600} className="one-line-title">
                             {song.title}
-                        </Text>
+                        </Link>
                         <Menu>
                             <MenuButton>
                                 <Icon as={FiEdit} display="flex" fontSize={20} />
