@@ -4,7 +4,7 @@ import { AiFillLike } from 'react-icons/ai';
 import { TbMessageReport } from 'react-icons/tb';
 import { MdAccessTime } from 'react-icons/md';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 // import { Comment } from './index';
 
 const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...props }) => {
@@ -21,8 +21,8 @@ const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...
 
     return (
         <Flex mt={'8px'} pt="8px" pr={'16px'} borderTop="1px solid" borderTopColor={'primaryBorderColor'}>
-            <Avatar size={'md'} src="comment?.author?.avatar" mr={'16px'} />
-            <Box flex={'1'}>
+            <Avatar size={'md'} src={comment?.author?.avatar} mr={'16px'} />
+            <Box flex={1} overflow="auto">
                 <Box m={'0 0 8px'} lineHeight={'100%'} fontSize={'1.3rem'}>
                     {comment && <Link to={`/profile/${comment.author.id}`}>{comment.author.name}</Link>}
                 </Box>
@@ -30,11 +30,11 @@ const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...
                     <MdAccessTime fontSize={'12px'} />
                     <Text fontSize={'0.7rem'}>{date}</Text>
                 </Flex>
-                <Text fontSize={'sm'} mt={'8px'} color={'rgba(255, 255, 255, 0.9)'}>
+                <Text width={'100%'} fontSize={'sm'} mt={'8px'} color={'rgba(255, 255, 255, 0.9)'}>
                     {comment && comment.content}
                 </Text>
                 <Flex justifyContent={'flex-end'} color={'text'} mt={'16px'} flex={'1'}>
-                    <Flex justify={'end'} gap="16px" mr={'16px'} fontSize={'sm'}>
+                    <Flex justify={'end'} gap="16px" fontSize={'sm'}>
                         {/* like */}
                         <Flex gap="4px" align={'center'}>
                             <Box onClick={() => hasLike(!isLiked)} cursor={'pointer'} mb={'4px'}>

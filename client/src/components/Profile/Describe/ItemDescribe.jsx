@@ -2,12 +2,12 @@ import { Box, Text, ListItem, Flex } from '@chakra-ui/react';
 
 const ItemDescribe = ({ name, amount }) => {
     return (
-        <ListItem>
-            <Flex justify={'space-between'}>
-                <Text>{name}</Text>
-                <Box>{amount}</Box>
+        <Flex flex={['50%', '33.33%', '100%']} justify={'space-between'}>
+            <Text w={['100px', '100px', '100px']}>{name}</Text>
+            <Flex flex={1} ml="auto" justify={['start', 'start', 'end']}>
+                {amount}
             </Flex>
-        </ListItem>
+        </Flex>
     );
 };
 
