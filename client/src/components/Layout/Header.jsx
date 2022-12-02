@@ -49,20 +49,20 @@ export default function Header() {
                             <VscTriangleDown />
                         </Flex>
                     </MenuButton>
-                    <MenuList minWidth={44} bgColor="blackAlpha.900" border="none">
-                        <Link to={`/profile/${user.id}`} _hover={{}}>
-                            <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} _hover={{}}>
+                    <MenuList minWidth={44} border="none">
+                        <Link to={`/profile/${user.id}`} >
+                            <MenuItem _active={{}} >
                                 Profile
                             </MenuItem>
                         </Link>
-                        <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} onClick={logOut} _hover={{}}>
+                        <MenuItem onClick={logOut} >
                             Sign Out
                         </MenuItem>
                     </MenuList>
                 </Menu>
             ) : (
                 <Box ml="auto">
-                    <Link to="/signin" _hover={{}}>
+                    <Link to="/signin" >
                         <Button variant="outline" _hover={{ color: 'var(--primary-color)' }} colorScheme="white" size={{base: "xs", sm: "sm"}}>
                             Sign in
                         </Button>

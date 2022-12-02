@@ -6,15 +6,17 @@ const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpe
 // define the base component styles
 const baseStyle = definePartsStyle({
     list: {
-        bg: '#2d3748',
+        bg: 'blackAlpha.900',
     },
     item: {
         color: 'white',
         _hover: {
-            bg: '#51555e',
+            color: 'var(--primary-color)',
+            bg: '#211826'
         },
         _focus: {
-            bg: '#51555e',
+            color: 'var(--primary-color)',
+            bg: "none"
         },
     },
 });
