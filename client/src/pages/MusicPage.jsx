@@ -31,6 +31,10 @@ const MusicPage = () => {
         }
     }, []);
 
+    if (!data) {
+        return;
+    }
+
     return (
         <Box className="music-page">
             <Box mb={'24px'}>

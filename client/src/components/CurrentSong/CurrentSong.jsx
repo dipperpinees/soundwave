@@ -19,13 +19,9 @@ const CurrentSong = (props) => {
 
     const isPlayThisSong = id === songList[indexSongPlayed]?.id;
     const showPauseIcon = id === songList[indexSongPlayed]?.id && isPlayed;
-    console.log('title', title);
-    let songName;
-    let singerName;
-    if (title) {
-        [songName, singerName] = title?.split(' - ');
-    }
-    // const [isPlayed, hasPlayed] = useState(false);
+
+    const [songName, singerName] = title?.split(' - ');
+
     const download = () => window.open(url.replace('/upload/', '/upload/fl_attachment/'), '_blank');
 
     return (

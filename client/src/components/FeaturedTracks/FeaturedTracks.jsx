@@ -39,6 +39,10 @@ const FeaturedTracks = ({ currentUserId }) => {
         }
     };
 
+    if (!data) {
+        return;
+    }
+
     return (
         <Box>
             <Flex justifyContent="space-between">

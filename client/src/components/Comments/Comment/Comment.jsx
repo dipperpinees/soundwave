@@ -16,7 +16,6 @@ const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...
     date = date && date.split('-').reverse().join('/');
 
     useEffect(() => {
-        console.log('use effect');
         isLiked ? setLikeNumber(likeNumber + 1) : setLikeNumber(likeNumber - 1);
     }, [isLiked]);
 
