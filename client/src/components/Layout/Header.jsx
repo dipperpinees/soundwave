@@ -1,14 +1,4 @@
-import {
-    Avatar,
-    Box,
-    Button,
-    Flex,
-    Icon, Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
-    useMediaQuery
-} from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Icon, Menu, MenuButton, MenuItem, MenuList, useMediaQuery } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { MdOutlineNotifications } from 'react-icons/md';
 import { VscTriangleDown } from 'react-icons/vsc';
@@ -30,9 +20,11 @@ export default function Header() {
 
     return (
         <Flex align="center" className="header" color="white" zIndex={10}>
-            {!isMobile && <Box width="50%">
-                <SearchInput />
-            </Box>}
+            {!isMobile && (
+                <Box width="50%">
+                    <SearchInput />
+                </Box>
+            )}
             {!!user.id && <Icon as={MdOutlineNotifications} fontSize={20} ml="auto" />}
             {!!user.id ? (
                 <Menu>
@@ -50,25 +42,35 @@ export default function Header() {
                         </Flex>
                     </MenuButton>
                     <MenuList minWidth={44} border="none">
-                        <Link to={`/profile/${user.id}`} >
-                            <MenuItem _active={{}} >
+                        <Link to={`/profile/${user.id}`}>
+                            <MenuItem fontSize={14} fontWeight={600}>
                                 Profile
                             </MenuItem>
                         </Link>
-                        <MenuItem onClick={logOut} >
+                        <MenuItem fontSize={14} fontWeight={600} onClick={logOut}>
                             Sign Out
                         </MenuItem>
                     </MenuList>
                 </Menu>
             ) : (
                 <Box ml="auto">
-                    <Link to="/signin" >
-                        <Button variant="outline" _hover={{ color: 'var(--primary-color)' }} colorScheme="white" size={{base: "xs", sm: "sm"}}>
+                    <Link to="/signin">
+                        <Button
+                            variant="outline"
+                            _hover={{ color: 'var(--primary-color)' }}
+                            colorScheme="white"
+                            size={{ base: 'xs', sm: 'sm' }}
+                        >
                             Sign in
                         </Button>
                     </Link>
                     <Link to="/signup">
-                        <Button variant="ghost" _hover={{ color: 'var(--primary-color)' }} colorScheme="white" size={{base: "xs", sm: "sm"}}>
+                        <Button
+                            variant="ghost"
+                            _hover={{ color: 'var(--primary-color)' }}
+                            colorScheme="white"
+                            size={{ base: 'xs', sm: 'sm' }}
+                        >
                             Sign up
                         </Button>
                     </Link>

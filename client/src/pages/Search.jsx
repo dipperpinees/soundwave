@@ -19,7 +19,7 @@ export default function Search({ type }) {
     const [searchParams] = useSearchParams();
     const [isMobile] = useMediaQuery('(max-width: 48em)');
 
-    const handleChangeSearch = (newSearchParams) => {
+    const handleChangeSearchQuery = (newSearchParams) => {
         const queryParams = {
             ...queryString.parse(location.search),
             ...newSearchParams,
@@ -76,7 +76,7 @@ export default function Search({ type }) {
                             width={{ base: 'auto', md: 40 }}
                             defaultValue={searchParams.get('genre')}
                             focusBorderColor="primary.500"
-                            onChange={(e) => handleChangeSearch({ genre: e.target.value })}
+                            onChange={(e) => handleChangeSearchQuery({ genre: e.target.value, page: 1 })}
                         >
                             <option value="lastest">All</option>
                             {genre.map(({ id, name }) => (
@@ -89,7 +89,7 @@ export default function Search({ type }) {
                             width={{ base: 'auto', md: 40 }}
                             defaultValue={searchParams.get('order')}
                             focusBorderColor="primary.500"
-                            onChange={(e) => handleChangeSearch({ order: e.target.value })}
+                            onChange={(e) => handleChangeSearchQuery({ order: e.target.value, page: 1 })}
                         >
                             <option value="lastest">Lastest</option>
                             <option value="like">Most likes</option>
@@ -103,7 +103,7 @@ export default function Search({ type }) {
                         width={40}
                         defaultValue={searchParams.get('order')}
                         focusBorderColor="primary.500"
-                        onChange={(e) => handleChangeSearch({ order: e.target.value })}
+                        onChange={(e) => handleChangeSearchQuery({ order: e.target.value, page: 1 })}
                     >
                         <option value="lastest">Lastest</option>
                         <option value="follow">Most followers</option>
@@ -111,16 +111,14 @@ export default function Search({ type }) {
                     </Select>
                 )}
             </Flex>
-            {type === 'tracks' && <SearchSongs />}
-            {type === 'people' && <SearchPeople />}
-            <Pagination paginator={{totalPages: 3, page: 1}}/>
+            {type === 'tracks' && <SearchSongs {...{ handleChangeSearchQuery }} />}
+            {type === 'people' && <SearchPeople {...{ handleChangeSearchQuery }} />}
         </Flex>
     );
 }
 
-const SearchSongs = () => {
+const SearchSongs = ({ handleChangeSearchQuery }) => {
     const [searchParams] = useSearchParams();
-
     const [userSearchParams, setUserSearchParams] = useState();
     const { data: searchTracksData } = useSongs(queryString.stringify(userSearchParams), {
         enabled: !!userSearchParams,
@@ -131,6 +129,7 @@ const SearchSongs = () => {
             search: searchParams.get('q'),
             orderBy: searchParams.get('order'),
             genreID: searchParams.get('genre'),
+            page: Number(searchParams.get('page')),
         });
     }, [searchParams]);
 
@@ -154,11 +153,20 @@ const SearchSongs = () => {
                     ? searchTracksData.data.map((song) => <SongPreview key={song.id} song={song} />)
                     : [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)}
             </Grid>
+            {searchTracksData && searchTracksData.pagination.totalPages > 1 && (
+                <Pagination
+                    onChangePage={(page) => handleChangeSearchQuery({ page })}
+                    paginator={{
+                        totalPages: searchTracksData.pagination.totalPages,
+                        page: Number(searchParams.get('page')),
+                    }}
+                />
+            )}
         </>
     );
 };
 
-const SearchPeople = () => {
+const SearchPeople = ({ handleChangeSearchQuery }) => {
     const [searchParams] = useSearchParams();
     const [peopleSearchParams, setPeopleSearchParams] = useState();
     const { data: searchPeopleData } = useUsers(queryString.stringify(peopleSearchParams), {
@@ -169,6 +177,7 @@ const SearchPeople = () => {
         setPeopleSearchParams({
             search: searchParams.get('q'),
             orderBy: searchParams.get('order'),
+            page: Number(searchParams.get('page')),
         });
     }, [searchParams]);
 
@@ -183,6 +192,15 @@ const SearchPeople = () => {
             <Flex direction="column" width="100%">
                 {searchPeopleData && searchPeopleData.data.map((user) => <Artist key={user.id} {...user} size="lg" />)}
             </Flex>
+            {searchPeopleData && searchPeopleData.pagination.totalPages > 1 && (
+                <Pagination
+                    onChangePage={(page) => handleChangeSearchQuery({ page })}
+                    paginator={{
+                        totalPages: searchPeopleData.pagination.totalPages,
+                        page: Number(searchParams.get('page')),
+                    }}
+                />
+            )}
         </>
     );
 };

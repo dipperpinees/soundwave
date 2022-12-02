@@ -22,11 +22,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 600;
         }
     }
 
     & .selected a{
-        background-color: var(--primary-color);
-        border-color: var(--primary-color)
+        background-color: white;
+        color: black;
+        border-color: white;
     }
 }
