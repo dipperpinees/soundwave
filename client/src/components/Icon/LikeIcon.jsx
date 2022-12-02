@@ -1,4 +1,4 @@
-import { useState, useContext, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { RiHeartLine, RiHeartFill } from 'react-icons/ri';
 import { Text } from '@chakra-ui/react';
 import fetchAPI from '../../utils/fetchAPI';
@@ -6,8 +6,15 @@ import fetchAPI from '../../utils/fetchAPI';
 const LikeIcon = ({ showLikeNumber = true, ...props }) => {
     const { data, setData } = props;
     const song = data?.at(props?.index);
-    const [isLiked, setLiked] = useState(song?.isLiked);
-    const [likeNumber, setLikeNumber] = useState(song?.likeNumber);
+    const [isLiked, setLiked] = useState();
+    const [likeNumber, setLikeNumber] = useState();
+
+    // update changes from current song
+    useEffect(() => {
+        setLiked(song?.isLiked);
+        setLikeNumber(song?.likeNumber);
+        console.log('like useEffect');
+    }, [song?.id]);
 
     const toggleLike = async () => {
         try {
