@@ -41,12 +41,12 @@ export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail }
                         <MenuButton>
                             <Icon as={FiEdit} display="flex" fontSize="1.5rem" />
                         </MenuButton>
-                        <MenuList minWidth={24} bgColor="blackAlpha.900" border="none" fontSize="0.75rem">
-                            <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} padding="2px 8px">
+                        <MenuList minWidth={24} border="none" fontSize="0.75rem">
+                            <MenuItem padding="2px 8px">
                                 <Icon as={MdModeEditOutline} marginRight={1} />
                                 Edit
                             </MenuItem>
-                            <MenuItem _focus={{ color: 'var(--primary-color)' }} _active={{}} padding="2px 8px" onClick={() => onDelete(id)}>
+                            <MenuItem padding="2px 8px" onClick={() => onDelete(id)}>
                                 <Icon as={MdDeleteOutline} marginRight={1} />
                                 Delete
                             </MenuItem>

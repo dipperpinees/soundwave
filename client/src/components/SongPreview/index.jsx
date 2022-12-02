@@ -83,16 +83,12 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                                 <Icon as={MdOutlineMoreHoriz} display="flex" />
                             </MenuButton>
                             <MenuList
-                                bgColor="blackAlpha.900"
                                 border="none"
                                 fontSize="0.75rem"
                                 marginTop={-3}
                                 minWidth={36}
                             >
                                 <MenuItem
-                                    _focus={{ color: 'var(--primary-color)' }}
-                                    _active={{}}
-                                    _hover={{}}
                                     padding="2px 8px"
                                     onClick={download}
                                 >
@@ -100,9 +96,6 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                                     Download
                                 </MenuItem>
                                 <MenuItem
-                                    _focus={{ color: 'var(--primary-color)' }}
-                                    _active={{}}
-                                    _hover={{}}
                                     padding="2px 8px"
                                 >
                                     <Icon as={MdOutlineContentCopy} marginRight={1} />
@@ -110,9 +103,6 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                                 </MenuItem>
                                 {!!user.id && (
                                     <MenuItem
-                                        _focus={{ color: 'var(--primary-color)' }}
-                                        _active={{}}
-                                        _hover={{}}
                                         padding="2px 8px"
                                         onClick={() => playlistDispatch({ type: 'ShowAddSong', payload: song.id })}
                                     >
@@ -127,16 +117,18 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
             </Box>
             <Flex direction="column" mt={1}>
                 {!isOwner && (
-                    <Link to={`/music/${song.id}`} fontSize="0.875rem" fontWeight={600} className="one-line-title">
-                        {isPlayThisSong && <Image width={3} mr={1} src={waveGif} display="inline" />}
-                        {song.title}
-                    </Link>
+                    <Text fontSize="0.875rem" fontWeight={600} className="one-line-title">
+                        <Link to={`/music/${song.id}`}>
+                            {isPlayThisSong && <Image width={3} mr={1} src={waveGif} display="inline" />}
+                            {song.title}
+                        </Link>
+                    </Text>
                 )}
                 {isOwner && (
                     <Flex justify="space-between">
-                        <Link to={`/music/${song.id}`} fontSize="0.875rem" fontWeight={600} className="one-line-title">
-                            {song.title}
-                        </Link>
+                        <Text fontSize="0.875rem" fontWeight={600} className="one-line-title">
+                            <Link to={`/music/${song.id}`}>{song.title}</Link>
+                        </Text>
                         <Menu>
                             <MenuButton>
                                 <Icon as={FiEdit} display="flex" fontSize="1.5rem" />
@@ -144,13 +136,9 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                             <MenuList
                                 minWidth={24}
                                 maxWidth={30}
-                                bgColor="blackAlpha.900"
-                                border="none"
                                 fontSize="0.75rem"
                             >
                                 <MenuItem
-                                    _focus={{ color: 'var(--primary-color)' }}
-                                    _active={{}}
                                     padding="2px 8px"
                                     onClick={onEdit}
                                     _hover={{}}
@@ -159,9 +147,6 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                                     Edit
                                 </MenuItem>
                                 <MenuItem
-                                    _focus={{ color: 'var(--primary-color)' }}
-                                    _active={{}}
-                                    _hover={{}}
                                     padding="2px 8px"
                                     onClick={onDelete}
                                 >
