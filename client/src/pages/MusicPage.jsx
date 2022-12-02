@@ -24,12 +24,12 @@ const MusicPage = () => {
     }, [id]);
 
     // chuyển hướng nếu chưa đăng nhập
-    useLayoutEffect(() => {
-        if (!user.id) {
-            navigate('/signin');
-            return;
-        }
-    }, []);
+    // useLayoutEffect(() => {
+    //     if (user.id === 0) {
+    //         navigate('/signin');
+    //         return;
+    //     }
+    // }, []);
 
     if (!data) {
         return;
@@ -38,7 +38,7 @@ const MusicPage = () => {
     return (
         <Box className="music-page">
             <Box mb={'24px'}>
-                <CurrentSong {...data} />
+                <CurrentSong {...{ data }} />
             </Box>
             <Flex>
                 {/* width = image width */}

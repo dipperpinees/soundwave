@@ -4,16 +4,15 @@ import { GiPauseButton } from 'react-icons/gi';
 import { FaPlay } from 'react-icons/fa';
 import { BsDownload, BsThreeDotsVertical } from 'react-icons/bs';
 import { LikeIcon } from '../Icon';
-import { useState, useContext, Fragment } from 'react';
+import { useContext, Fragment } from 'react';
 import { PlayerContext } from '../../stores/playerStore';
 
 const CurrentSong = (props) => {
-    const [data, setData] = useState([props]);
-    const { id, title, url, thumbnail, author, likeNumber, playCount, genre } = props;
+    const { id, title, url, thumbnail, author, playCount, genre } = props.data;
 
     const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
 
-    const addAndPlay = () => setPlayer({ type: 'Add', payload: props });
+    const addAndPlay = () => setPlayer({ type: 'Add', payload: props.data });
 
     const togglePlay = () => setPlayer({ type: 'Toggle' });
 
@@ -74,7 +73,7 @@ const CurrentSong = (props) => {
                             align="center"
                             justify="center"
                         >
-                            <LikeIcon index={0} data={data} setData={setData} showLikeNumber={false} />
+                            <LikeIcon index={0} data={[props.data]} showLikeNumber={false} />
                         </Flex>
                     </Flex>
                     <Flex gap={'16px'}>
