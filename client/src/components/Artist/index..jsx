@@ -7,6 +7,7 @@ import { Button } from '@chakra-ui/react';
 import { useState } from 'react';
 import { BsSoundwave } from 'react-icons/bs';
 import { IoIosPersonAdd, IoMdPeople } from 'react-icons/io';
+import { MdDone } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import fetchAPI from '../../utils/fetchAPI';
 
@@ -49,17 +50,9 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                         </Flex>
                     </Stack>
                 </Flex>
-                <Button
-                    size="xs"
-                    variant="outline"
-                    _hover={{ color: 'var(--primary-color)' }}
-                    flex
-                    alignItems="center"
-                    gap={1}
-                    onClick={toggleFollow}
-                >
-                    <IoIosPersonAdd />
-                    {isFollow ? 'Unfollow' : 'Follow'}
+                <Button size="xs" variant="outline" flex alignItems="center" gap={1} onClick={toggleFollow} _hover={{}}>
+                    {isFollow ? <MdDone /> : <IoIosPersonAdd />}
+                    {isFollow ? 'Following' : 'Follow'}
                 </Button>
             </Flex>
         );
@@ -73,7 +66,7 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                     </Link>
                     <Stack>
                         <Link to={`/profile/${id}`}>
-                            <Text fontSize={{ base: "1rem", md: "1.25rem" }}>{name}</Text>
+                            <Text fontSize={{ base: '1rem', md: '1.25rem' }}>{name}</Text>
                         </Link>
                         <Flex fontSize="0.75rem">
                             <Icon as={IoMdPeople} fontSize="1rem" mr={1} /> {followerNumber}
@@ -82,16 +75,15 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                         <Button
                             size="sm"
                             variant="outline"
-                            _hover={!isFollow && { color: 'var(--primary-color)' }}
                             flex
                             alignItems="center"
                             gap={1}
                             onClick={toggleFollow}
                             width="120px"
-                            bgColor={isFollow && 'primary.500'}
+                            _hover={{}}
                         >
-                            <IoIosPersonAdd />
-                            {isFollow ? 'Unfollow' : 'Follow'}
+                            {isFollow ? <IoIosPersonAdd /> : <MdDone />}
+                            {isFollow ? 'Following' : 'Follow'}
                         </Button>
                     </Stack>
                 </Flex>
