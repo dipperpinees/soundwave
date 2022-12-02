@@ -76,11 +76,11 @@ func (SongController) FindMany(c *gin.Context) {
 	c.BindQuery(&query)
 
 	listSong, total, err := songService.FindMany(query.Page, query.Search, query.OrderBy, query.GenreID, query.Limit, userID)
-
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
+
 	totalPages := int(math.Ceil(float64(total) / float64(query.Limit)))
 	c.JSON(
 		http.StatusOK,

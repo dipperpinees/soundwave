@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"math"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -112,4 +113,25 @@ func (PlaylistController) Delete(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Delete playlist successfully"})
+}
+
+func (PlaylistController) FindMany(c *gin.Context) {
+	userID := helper.GetUserID(c)
+	query := dtos.PlaylistFilterInput{}
+	c.BindQuery(&query)
+
+	playlists, total, err := playlistService.FindMany(query.Page, query.Search, query.Limit, userID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	totalPages := int(math.Ceil(float64(total) / float64(query.Limit)))
+	c.JSON(
+		http.StatusOK,
+		gin.H{
+			"data":       *playlists,
+			"pagination": dtos.Paginate{Page: query.Page, TotalPages: totalPages, TotalDocs: total},
+		},
+	)
 }
