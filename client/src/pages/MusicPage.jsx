@@ -9,7 +9,7 @@ import { UserContext } from '../stores/userStore';
 
 const MusicPage = () => {
     const { id } = useParams();
-    const [user, userDispatch] = useContext(UserContext);
+    const [user] = useContext(UserContext);
     const navigate = useNavigate();
     const [data, setData] = useState(null);
 
@@ -42,10 +42,10 @@ const MusicPage = () => {
             </Box>
             <Flex>
                 {/* width = image width */}
-                <Box width="260px">
+                <Box flex={'25%'} maxW={'25%'}>
                     <RelatedTracks id={data?.author?.id} />
                 </Box>
-                <Box flex={1}>
+                <Box flex={'75%'} maxW={'75%'}>
                     <Comments songId={id} />
                 </Box>
             </Flex>

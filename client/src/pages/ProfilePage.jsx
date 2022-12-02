@@ -28,8 +28,8 @@ const ProfilePage = () => {
     }
 
     return (
-        <Box ml={['0', '0', '360px']} minHeight="100vh" sx={{ paddingTop: '80px' }} color={'#fff'}>
-            <EditProfile {...{ isEditProfile, setIsEditProfile }} data={data} />
+        <Box m={['0 24px', '0 24px', '0 24px 0 360px']} minHeight="100vh" sx={{ paddingTop: '80px' }} color={'#fff'}>
+            {id == user.id && <EditProfile {...{ isEditProfile, setIsEditProfile }} data={data} />}
             <Box
                 pos={['initial', 'initial', 'fixed']}
                 top={['0']}
@@ -39,18 +39,18 @@ const ProfilePage = () => {
                 borderLeft={['none', 'none', '1px solid rgba(255, 255, 255, 0.2)']}
                 borderRight={['none', 'none', '1px solid rgba(255, 255, 255, 0.2)']}
             >
-                <Box minH={['initial', 'initial', '100vh']} margin={['0 12px', '0 24px', '0 24px']}>
+                <Box minH={['initial', 'initial', '100vh']} m={['0', '0', '0 12px']}>
                     <Profile {...{ setIsEditProfile }} data={data} userId={user.id} />
                 </Box>
             </Box>
-            <Box margin={['0 12px', '0 24px', '0 56px']}>
+            <Box>
                 <Box>
                     <FeaturedTracks currentUserId={id} />
                 </Box>
                 {/* <Box flexBasis={['100%', '100%', '100%', '38%']} width={['100%', '100%', '100%', '38%']}>
                     <RecentlyLikes userId={id} />
                 </Box> */}
-                <Box mt={'48px'} pb={'36px'} flex="100%" width={['100%']}>
+                <Box mt={['24px', '24px', '48px']} pb={'36px'} flex="100%" width={['100%']}>
                     <Albums currentUserId={id} />
                 </Box>
             </Box>

@@ -19,13 +19,16 @@ import {
     Flex,
 } from '@chakra-ui/react';
 import { MdPhotoCamera } from 'react-icons/md';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import fetchAPI from '../../../utils/fetchAPI';
+import { UserContext } from '../../../stores';
 // import { EditProfileContext } from '../../stores';
 
 const EditProfile = ({ data, ...props }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
+
+    const [user, userDispatch] = useContext(UserContext);
 
     const { isEditProfile, setIsEditProfile } = props;
     const [imageURL, setImageURL] = useState(data?.avatar);
@@ -69,11 +72,13 @@ const EditProfile = ({ data, ...props }) => {
                     margin: '20px',
                     title: 'Update profile successfully.',
                     status: 'success',
-                    duration: 5000,
+                    duration: 2000,
                     isClosable: true,
                 });
                 // update props
-                response.avatar && (data.avatar = response.avatar);
+                response.avatar &&
+                    (data.avatar = response.avatar) &&
+                    userDispatch({ type: 'Update', payload: { avatar: data.avatar } });
                 data.name = response.name;
                 data.description = response.description;
                 setShowSpinner(false);
@@ -83,7 +88,7 @@ const EditProfile = ({ data, ...props }) => {
                     position: 'top',
                     title: error.message,
                     status: 'error',
-                    duration: 5000,
+                    duration: 2000,
                     isClosable: true,
                 });
             }
@@ -95,7 +100,7 @@ const EditProfile = ({ data, ...props }) => {
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
 
-            <ModalContent pos={'relative'} bgColor={'#2d3748'} color={'white'} m={['80px 12px 0', '80px 24px 0']}>
+            <ModalContent pos={'relative'} bgColor={'#2d3748'} color={'white'} m={['80px 24px 0', '80px 24px 0']}>
                 <ModalHeader>Edit Profile</ModalHeader>
                 <ModalCloseButton />
                 {showSpinner && (

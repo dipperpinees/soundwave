@@ -1,19 +1,25 @@
-import { Box, Flex, Text, List, ListItem, HStack } from '@chakra-ui/react';
+import { Box, Flex, Text, List, Heading } from '@chakra-ui/react';
 import ItemDescribe from './ItemDescribe';
 
 const Describe = ({ data }) => {
     return (
-        <Box>
-            {data.description !== '' && (
-                <Box borderTop={'1px solid #fff'} borderBottom={'1px solid #fff'} margin="12px 0">
-                    <Text>{data.description}</Text>
-                </Box>
-            )}
-            <List width={'100%'}>
-                <ItemDescribe name={'Songs'} amount={data.trackNumber} />
+        <Box margin="12px 0">
+            <Heading fontSize={['1.5rem', '1.5rem', '1.2rem']} mb={['8px', '12px']}>
+                Introduction
+            </Heading>
+            <Flex width={'100%'} flexWrap={'wrap'}>
                 <ItemDescribe name={'Followers'} amount={data.followerNumber} />
                 <ItemDescribe name={'Following'} amount={data.followingNumber} />
-            </List>
+                <ItemDescribe name={'Songs'} amount={data.trackNumber} />
+            </Flex>
+            {data.description !== '' && (
+                <Box mt={'16px'}>
+                    <Heading fontSize={['1.5rem', '1.5rem', '1.2rem']} mb={['8px', '12px']}>
+                        Description
+                    </Heading>
+                    <Text fontSize={['initial', '0.875rem', '0.875rem']}>{data.description}</Text>
+                </Box>
+            )}
         </Box>
     );
 };

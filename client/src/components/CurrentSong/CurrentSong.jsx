@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, HStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Image, HStack, AspectRatio } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { GiPauseButton } from 'react-icons/gi';
 import { FaPlay } from 'react-icons/fa';
@@ -25,11 +25,12 @@ const CurrentSong = (props) => {
 
     return (
         <Flex id={id}>
-            <Box boxSize="260px" bg="white" borderRadius={'10px'} overflow="hidden">
-                {/* current song image */}
-                <Image src={thumbnail} alt="song image" boxSize="100%" objectFit="cover" />
+            <Box flex={'25%'}>
+                <AspectRatio maxW={'100%'} ratio={1}>
+                    <Image src={thumbnail} alt="song image" boxSize="100%" objectFit="cover" borderRadius={'10px'} />
+                </AspectRatio>
             </Box>
-            <Flex flex={1} m={'0 48px'} flexDirection={'column'}>
+            <Flex flex={'75%'} padding={['0 12px', '0 24px', '0 48px']} flexDirection={'column'}>
                 <Flex align={'center'}>
                     <Heading fontSize="3xl" mb={'12px'}>
                         {songName}

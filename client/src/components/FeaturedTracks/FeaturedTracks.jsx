@@ -46,7 +46,7 @@ const FeaturedTracks = ({ currentUserId }) => {
     return (
         <Box>
             <Flex justifyContent="space-between">
-                <Heading fontSize="xl">Featured Tracks</Heading>
+                <Heading fontSize={['1.5rem']}>Featured Tracks</Heading>
                 {data.length !== 0 && (
                     <Flex align={'center'}>
                         <Menu autoSelect="false">
@@ -82,6 +82,11 @@ const FeaturedTracks = ({ currentUserId }) => {
                     </Flex>
                 )}
             </Flex>
+            {data.length === 0 && (
+                <Flex mt={'24px'} ml={['0', '48px']} justify={['center', 'initial']}>
+                    <Text fontSize={'1.2rem'}>The user currently has no songs</Text>
+                </Flex>
+            )}
             <List>
                 {data &&
                     data.map((song, index) => {

@@ -1,10 +1,12 @@
 import { Box, Avatar, Textarea, Flex, InputGroup, Input, InputRightElement } from '@chakra-ui/react';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { MdSend } from 'react-icons/md';
+import { UserContext } from '../../../stores';
 import fetchAPI from '../../../utils/fetchAPI';
 
-const WriteComment = ({ songId, getComments }) => {
+const WriteComment = ({ songId, comments, setComments }) => {
     const input = useRef();
+    const [user] = useContext(UserContext);
 
     const handlePostComment = () => {
         const content = input.current.value;
@@ -14,11 +16,11 @@ const WriteComment = ({ songId, getComments }) => {
             const formData = new FormData();
             formData.append('content', content);
             try {
-                await fetchAPI(`/song/${songId}/comment`, {
+                const response = await fetchAPI(`/song/${songId}/comment`, {
                     method: 'POST',
                     body: JSON.stringify({ content, replyID: '' }),
                 });
-                getComments();
+                setComments([response, ...comments]);
             } catch (error) {}
         };
         PostComment();
@@ -26,29 +28,7 @@ const WriteComment = ({ songId, getComments }) => {
 
     return (
         <Flex width={'100%'} align={'center'} m={'8px 0'}>
-            <Avatar size={'md'} src="" mr={'16px'} />
-            {/* text area comment */}
-            {/* <Flex width={'100%'} position={'relative'} size={'sm'} alignItems={'center'}>
-                <Textarea
-                    scrollBehavior={'none'}
-                    ref={input}
-                    resize={'none'}
-                    size={'sm'}
-                    placeholder="Write a comment"
-                    borderRadius="20px"
-                    pr={'48px'}
-                />
-                <Box position={'absolute'} right="16px">
-                    <MdSend
-                        cursor={'pointer'}
-                        onClick={() => {
-                            handleSendComment();
-                        }}
-                        fontSize={'24px'}
-                    />
-                </Box>
-            </Flex> */}
-            {/* input comment */}
+            <Avatar size={'md'} src={user.avatar} mr={'16px'} />
             <InputGroup size={'md'}>
                 <Input
                     onKeyDown={(e) => {
