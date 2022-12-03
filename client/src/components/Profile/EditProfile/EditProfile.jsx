@@ -132,6 +132,7 @@ const EditProfile = ({ data, ...props }) => {
                     <Input
                         display={'none'}
                         ref={inputImage}
+                        accept="image/*"
                         type={'file'}
                         name={'profileImage'}
                         onChange={(e) => loadImage(e)}

@@ -52,10 +52,10 @@ const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...
                                 <Box minW={'16px'}>{likeNumber}</Box>
                             )}
                         </Flex>
-                        <Flex cursor={'pointer'} gap="2px" align={'center'}>
+                        {/* <Flex cursor={'pointer'} gap="2px" align={'center'}>
                             <TbMessageReport fontSize={'20px'} />
                             <span>Report</span>
-                        </Flex>
+                        </Flex> */}
                         <Flex
                             cursor={'pointer'}
                             gap="2px"

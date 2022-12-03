@@ -26,8 +26,6 @@ const FeaturedTracks = ({ currentUserId }) => {
             case 'like':
                 sortFn = (a, b) => b.likeNumber - a.likeNumber;
                 break;
-            // case 'download'
-            //     sortFunction = (a, b) => a.download > b.download;
             default:
                 sortFn = (a, b) => 0;
                 break;
@@ -70,23 +68,12 @@ const FeaturedTracks = ({ currentUserId }) => {
                                 >
                                     Like
                                 </MenuItem>
-                                {/* <MenuItem
-                                onClick={() => {
-                                    setTypeSort('download');
-                                }}
-                            >
-                                Download
-                            </MenuItem> */}
                             </MenuList>
                         </Menu>
                     </Flex>
                 )}
             </Flex>
-            {data.length === 0 && (
-                <Flex mt={'24px'} ml={['0', '48px']} justify={['center', 'initial']}>
-                    <Text fontSize={'1.2rem'}>The user currently has no songs</Text>
-                </Flex>
-            )}
+            {data.length === 0 && <Text>The user currently has no songs</Text>}
             <List>
                 {data &&
                     data.map((song, index) => {
