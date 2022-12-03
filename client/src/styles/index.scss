@@ -25,6 +25,7 @@
 @media screen and (max-width: 48em) {
     :root {
         --navbar-width: 0;
+        --menu-bg: transparent;
     }
 }
 
@@ -104,4 +105,8 @@ select {
     overflow: hidden;
     word-break: break-word;
     max-width: 100%;
+}
+
+.chakra-menu__menu-list {
+    --menu-bg: transparent;
 }
