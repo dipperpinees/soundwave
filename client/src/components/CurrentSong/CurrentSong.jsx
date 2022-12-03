@@ -5,6 +5,7 @@ import {
     Heading,
     Image,
     HStack,
+    Text,
     AspectRatio,
     Menu,
     MenuButton,
@@ -42,7 +43,7 @@ const CurrentSong = (props) => {
 
     return (
         <Flex id={id}>
-            <Box flex={['30%', '25%']}>
+            <Box flex={['30%', '25%']} maxW={['30%', '25%']}>
                 <AspectRatio maxW={'100%'} ratio={1}>
                     <Image
                         src={thumbnail}
@@ -54,16 +55,38 @@ const CurrentSong = (props) => {
                     />
                 </AspectRatio>
             </Box>
-            <Flex flex={['70%', '75%']} p={['0 0 0 12px', '0 0 0 24px', ' 0 48px']} flexDirection={'column'}>
-                <Flex align={'center'}>
-                    <Heading fontSize={['1.2rem', '1.5rem', '1.9rem']} mb={[0, '12px']}>
-                        {songName}
-                    </Heading>
-                </Flex>
-                <HStack mb={['8px', '24px']} color={'text'} fontSize={['0.875rem', '1rem']}>
-                    <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
+            <Flex
+                flex={['70%', '75%']}
+                maxW={['70%', '75%']}
+                p={['0 0 0 12px', '0 0 0 24px', ' 0 48px']}
+                flexDirection={'column'}
+            >
+                <Heading
+                    textOverflow={'ellipsis'}
+                    overflow="hidden"
+                    whiteSpace={'nowrap'}
+                    width={'90%'}
+                    fontSize={['1.2rem', '1.5rem', '1.9rem']}
+                    mb={[0, '12px']}
+                >
+                    {songName}
+                </Heading>
+                <HStack
+                    // textOverflow={'ellipsis'}
+                    // overflow="hidden"
+                    whiteSpace={'nowrap'}
+                    width={'90%'}
+                    mb={['8px', '24px']}
+                    color={'text'}
+                    fontSize={['0.875rem', '1rem']}
+                >
+                    <Text>
+                        <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
+                    </Text>
                     <Box m="0 4px">-</Box>
-                    <Link to={''}>{singerName}</Link>
+                    <Text textOverflow={'ellipsis'} overflow="hidden">
+                        <Link to={''}>{singerName}</Link>
+                    </Text>
                 </HStack>
                 <Flex justify={'space-between'} align={'center'}>
                     <Flex gap={'16px'}>

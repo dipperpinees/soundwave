@@ -28,7 +28,7 @@ const EditProfile = ({ data, ...props }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
 
-    const [user, userDispatch] = useContext(UserContext);
+    const userDispatch = useContext(UserContext)[1];
 
     const { isEditProfile, setIsEditProfile } = props;
     const [imageURL, setImageURL] = useState(data?.avatar);

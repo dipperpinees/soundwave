@@ -1,4 +1,4 @@
-import { Box, Flex, Text, List, Heading } from '@chakra-ui/react';
+import { Box, Flex, Text, Heading } from '@chakra-ui/react';
 import { useState } from 'react';
 import ItemDescribe from './ItemDescribe';
 

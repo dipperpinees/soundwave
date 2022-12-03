@@ -1,5 +1,5 @@
-import { Box, calc, Flex } from '@chakra-ui/react';
-import { useContext, useState, useLayoutEffect } from 'react';
+import { Box } from '@chakra-ui/react';
+import { useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Albums from '../components/Albums';
 import FeaturedTracks from '../components/FeaturedTracks';

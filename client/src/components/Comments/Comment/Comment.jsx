@@ -1,7 +1,6 @@
 import { Box, Avatar, Text, Flex } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { AiFillLike } from 'react-icons/ai';
-import { TbMessageReport } from 'react-icons/tb';
 import { MdAccessTime } from 'react-icons/md';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { useEffect, useState } from 'react';
