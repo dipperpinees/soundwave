@@ -1,7 +1,6 @@
 import { Box, Avatar, Text, Flex } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { AiFillLike } from 'react-icons/ai';
-import { TbMessageReport } from 'react-icons/tb';
 import { MdAccessTime } from 'react-icons/md';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { useEffect, useState } from 'react';
@@ -52,10 +51,10 @@ const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...
                                 <Box minW={'16px'}>{likeNumber}</Box>
                             )}
                         </Flex>
-                        <Flex cursor={'pointer'} gap="2px" align={'center'}>
+                        {/* <Flex cursor={'pointer'} gap="2px" align={'center'}>
                             <TbMessageReport fontSize={'20px'} />
                             <span>Report</span>
-                        </Flex>
+                        </Flex> */}
                         <Flex
                             cursor={'pointer'}
                             gap="2px"

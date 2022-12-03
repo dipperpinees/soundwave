@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Link, Select, HStack } from '@chakra-ui/react';
+import { Box, Flex, Select } from '@chakra-ui/react';
 import WriteComment from './WriteComment';
 import Comment from './Comment/Comment';
 import { useEffect } from 'react';
@@ -41,7 +41,7 @@ const Comments = ({ songId }) => {
     };
 
     return (
-        <Box p={['0 12px 12px', '0 24px 24px', '0 48px 24px']}>
+        <Box>
             <Box>
                 <Flex mb={'16px'} justify={'space-between'}>
                     <Box fontSize={'lg'}>
@@ -50,11 +50,12 @@ const Comments = ({ songId }) => {
                     <Select
                         borderRadius={'5px'}
                         size={'sm'}
-                        maxW={'80px'}
+                        maxW={'100px'}
                         onChange={(e) => sortComments(e.target.value)}
+                        fontSize={'0.875rem'}
                     >
-                        <option value="new">New</option>
-                        <option value="old">Old</option>
+                        <option value="latest">Latest</option>
+                        <option value="oldest">Oldest</option>
                         <option value="like">Like</option>
                     </Select>
                 </Flex>

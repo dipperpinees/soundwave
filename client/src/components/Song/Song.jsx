@@ -5,12 +5,13 @@ import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { PlayerContext } from '../../stores/playerStore';
+import defaultPreview from '../../assets/song_preview.jpg';
 import './styles.scss';
 import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
 
 const Song = ({ ...props }) => {
     const { data } = props;
-    const { id, title, thumbnail, author, playCount, genre } = data[props.index];
+    const { id, title, thumbnail, author, playCount } = data[props.index];
 
     const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
 
@@ -22,11 +23,10 @@ const Song = ({ ...props }) => {
     const showPauseIcon = id === songList[indexSongPlayed]?.id && isPlayed;
 
     const { isLikeIcon, isViewIcon } = props;
-    const { borderBottom } = props;
     const [songName, singerName] = title.split(' - ');
 
     return (
-        <Box id={id} borderBottom={borderBottom} padding="12px 0">
+        <Box id={id} borderBottom="1px solid rgba(255, 255, 255, 0.2)" padding="12px 0">
             <Flex h="42px" overflow="hidden" justify="space-between">
                 <Box
                     className="image-song"
@@ -38,7 +38,14 @@ const Song = ({ ...props }) => {
                     cursor={'pointer'}
                 >
                     <AspectRatio maxW={'100%'} ratio={1}>
-                        <Image src={thumbnail || DEFAULT_SONG_THUMBNAIL} alt={title} boxSize="100%" objectFit={'cover'} borderRadius={2} />
+                        <Image
+                            src={thumbnail}
+                            fallbackSrc={defaultPreview}
+                            alt="song image"
+                            boxSize="100%"
+                            objectFit={'cover'}
+                            borderRadius={2}
+                        />
                     </AspectRatio>
                     <Center
                         className="play-btn"
@@ -67,7 +74,14 @@ const Song = ({ ...props }) => {
                     >
                         <Link to={`/music/${id}`}>{songName}</Link>
                     </Text>
-                    <Flex fontSize="xs" overflow={'hidden'} whiteSpace={'nowrap'} maxW={['90%', '90%']}>
+                    <Flex
+                        fontSize="xs"
+                        color={'text'}
+                        fontWeight={'600'}
+                        overflow={'hidden'}
+                        whiteSpace={'nowrap'}
+                        maxW={['90%', '90%']}
+                    >
                         <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
                         <Text m="0 4px">-</Text>
                         <Text textOverflow={'ellipsis'} overflow="hidden">
@@ -81,7 +95,6 @@ const Song = ({ ...props }) => {
                         <LikeIcon {...props} />
                     </Flex>
                 )}
-
                 {isViewIcon && (
                     <Flex display={['none', 'flex', 'none', 'flex']} alignItems="center" margin="0 12px">
                         <BsPlay fontSize={'24px'} />

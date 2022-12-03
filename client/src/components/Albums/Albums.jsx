@@ -5,6 +5,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import { LineRightIcon, LikeIcon } from '../Icon';
 import { useEffect, useState } from 'react';
 import fetchAPI from '../../utils/fetchAPI';
+import defaultPreview from '../../assets/song_preview.jpg';
 
 const Albums = ({ currentUserId }) => {
     const [data, setData] = useState(null);
@@ -27,18 +28,19 @@ const Albums = ({ currentUserId }) => {
                 <Flex flexWrap={['wrap', 'initial', 'initial']} justifyContent={'space-between'} mt={'16px'}>
                     <Box flex={['100%', '16%']}>
                         {/* ảnh albums */}
-                        <AspectRatio maxW={'150px'} ratio={'1'} borderRadius={10}>
+                        <AspectRatio w={['150px', '100%']} ratio={'1'} borderRadius={10}>
                             <Image
                                 src={
                                     'https://images.macrumors.com/t/hi1_a2IdFGRGMsJ0x31SdD_IcRk=/1600x/article-new/2018/05/apple-music-note.jpg'
                                 }
+                                fallbackSrc={defaultPreview}
                                 borderRadius={10}
                                 alt="song image"
                                 boxSize="100%"
                                 objectFit="cover"
                             />
                         </AspectRatio>
-                        <Flex justify={'space-between'} align={'center'} mt="8px">
+                        <Flex w={['150px', '100%']} justify={'space-between'} align={'center'} mt="8px">
                             <LikeIcon showLikeNumber={false} />
                             <BsThreeDots />
                         </Flex>
@@ -86,8 +88,14 @@ const Albums = ({ currentUserId }) => {
                     </Box>
                 </Flex>
             ) : (
-                <Flex mt={'24px'} ml={['0', '48px']} justify={['center', 'initial']}>
-                    <Text fontSize={'1.2rem'}>The user currently has no albums</Text>
+                <Flex
+                    fontWeight={'600'}
+                    color={'text'}
+                    mt={['8px', '24px']}
+                    ml={['0', '48px']}
+                    justify={['center', 'initial']}
+                >
+                    <Text fontSize={['initial', 'initial', '1.2rem']}>The user currently has no albums</Text>
                 </Flex>
             )}
         </Box>

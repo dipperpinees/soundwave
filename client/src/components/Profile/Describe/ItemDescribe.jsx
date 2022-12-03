@@ -1,4 +1,4 @@
-import { Box, Text, ListItem, Flex } from '@chakra-ui/react';
+import { Text, Flex } from '@chakra-ui/react';
 
 const ItemDescribe = ({ name, amount }) => {
     return (

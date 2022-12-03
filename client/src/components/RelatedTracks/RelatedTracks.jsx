@@ -3,19 +3,29 @@ import { Box, Heading, List, Flex, Text, Link } from '@chakra-ui/react';
 import { LineRightIcon } from '../Icon';
 import { useEffect, useState } from 'react';
 import fetchAPI from '../../utils/fetchAPI';
+import SongPreview from '../SongPreview';
+import Slider from 'react-slick';
 
 const RelatedTracks = ({ id }) => {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        const fetchListSong = async () => {
+        const getListSong = async () => {
             try {
                 const data = await fetchAPI(`/user/${id}/songs`);
                 setData(data);
             } catch (e) {}
         };
-        if (id !== undefined) fetchListSong();
+        if (id !== undefined) getListSong();
     }, [id]);
+
+    const settings = {
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+    };
+
     return (
         <Box>
             <Flex justifyContent="space-between" align={'center'}>
@@ -33,24 +43,30 @@ const RelatedTracks = ({ id }) => {
                     </Flex>
                 )}
             </Flex>
-            <List>
+            <List display={['none', 'none', 'block']}>
                 {data &&
                     data.map((song, index) => {
                         if (index >= 5) {
                             return null;
                         }
-                        return (
-                            <Song
-                                key={song.id}
-                                index={index}
-                                setData={setData}
-                                data={data}
-                                userName={'user name'}
-                                borderBottom="1px solid rgba(255, 255, 255, 0.2)"
-                            />
-                        );
+                        return <Song key={song.id} index={index} setData={setData} data={data} />;
                     })}
             </List>
+            <Box p={['24px']} display={['block', 'block', 'none']}>
+                <Slider {...settings}>
+                    {data &&
+                        data.map((song, index) => {
+                            if (index >= 5) {
+                                return null;
+                            }
+                            return (
+                                <Box p={['0 4px', '0 8px']}>
+                                    <SongPreview key={index} song={song} />
+                                </Box>
+                            );
+                        })}
+                </Slider>
+            </Box>
         </Box>
     );
 };
