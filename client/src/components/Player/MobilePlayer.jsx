@@ -49,7 +49,7 @@ export default function MobilePlayer({
             className="mobile-player"
             pt="var(--header-height)"
             px={22}
-            zIndex={1}
+            zIndex={6}
             as={motion.div}
             initial={{ top: '100vh' }}
             animate={{ top: isShow ? 0 : '100vh' }}
