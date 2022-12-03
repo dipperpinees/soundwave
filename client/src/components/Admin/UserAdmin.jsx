@@ -1,7 +1,11 @@
 import {
     Avatar,
-    Box, Button, Checkbox,
-    Flex, Icon, Table,
+    Box,
+    Button,
+    Checkbox,
+    Flex,
+    Icon,
+    Table,
     TableContainer,
     Tbody,
     Td,
@@ -49,11 +53,12 @@ export default function UserAdmin() {
                                 <Th>Followers</Th>
                                 <Th>Followings</Th>
                                 <Th>Join Date</Th>
+                                <Th>Action</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
                             {users?.data.map(
-                                ({ id, name, avatar, followerNumber, followingNumber, trackNumber, createdAt }) => (
+                                ({ id, name, avatar, followerNumber, followingNumber, trackNumber, createdAt, isBanned }) => (
                                     <Tr key={id}>
                                         <Td>
                                             <Checkbox
@@ -70,6 +75,9 @@ export default function UserAdmin() {
                                         <Td>{followerNumber}</Td>
                                         <Td>{followingNumber}</Td>
                                         <Td>{formatDate(createdAt)}</Td>
+                                        <Td>
+                                            {isBanned ? <Button>Unban</Button> : <Button colorScheme='red'>Ban</Button>}
+                                        </Td>
                                     </Tr>
                                 )
                             )}

@@ -8,7 +8,7 @@ export default function Layout({ children }) {
 
     return (
         <>
-            {!['/signin', '/signup', '/admin'].includes(location.pathname) && (
+            {!['/signin', '/signup', '/admin', '/forgot'].includes(location.pathname) && (
                 <>
                     <Header />
                     <Navbar />

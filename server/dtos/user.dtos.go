@@ -16,9 +16,9 @@ type UserEmailInput struct {
 }
 
 type UserResetPasswordInput struct {
-	UserID      uint   `json:"userID,string,omitempty" binding:"required"`
-	Code        string `json:"code,omitempty" binding:"required"`
-	NewPassword string `json:"newPassword,omitempty" binding:"required,min=6"`
+	UserID      uint   `json:"userID" binding:"required"`
+	Code        string `json:"code" binding:"required"`
+	NewPassword string `json:"newPassword" binding:"required,min=6"`
 }
 
 type UserGoogleInput struct {

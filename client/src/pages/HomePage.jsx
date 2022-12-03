@@ -34,7 +34,7 @@ const MostStreamedSong = () => {
         <ListSongPreview
             songs={isLoading ? null : mostStreamedSong.data}
             title="Most-streamed songs"
-            moreUrl="/search?orderBy=listen"
+            moreUrl="/search?order=listen"
         />
     );
 };

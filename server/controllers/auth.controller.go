@@ -58,6 +58,11 @@ func (AuthController) SignIn(c *gin.Context) {
 		return
 	}
 
+	if user.IsBanned {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Your account has been banned"})
+		return
+	}
+
 	tokenString, _ := common.GenerateJWT(user.ID)
 
 	common.SetTokenCookie(c, tokenString)
@@ -80,7 +85,7 @@ func (AuthController) ForgetPassword(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-
+	origin := c.Request.Header.Get("Origin")
 	var user userModel
 	if err := common.GetDB().Where("email = ?", body.Email).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "This user doesn't exist"})
@@ -88,7 +93,7 @@ func (AuthController) ForgetPassword(c *gin.Context) {
 	}
 
 	code, err := userService.CreateForget(user.ID)
-	mail.Send([]string{user.Email}, "Reset your password", fmt.Sprintf("<p>Your code is <strong>%s</strong></p>", code))
+	mail.Send([]string{user.Email}, "Reset your password", helper.ResetPasswordTemplate(fmt.Sprintf("%s/forgot?code=%s&userID=%d", origin, code, user.ID)))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -106,7 +111,7 @@ func (AuthController) ResetPassword(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, "Reset password successfully")
+	c.JSON(http.StatusOK, gin.H{"message": "Reset password successfully"})
 }
 
 func (AuthController) GoogleLogin(c *gin.Context) {

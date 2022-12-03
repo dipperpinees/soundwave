@@ -9,5 +9,6 @@ import (
 var adminController = controllers.AdminController{}
 
 func adminRouter(router *gin.RouterGroup) {
-	router.DELETE("/user/:id", guard.Auth(), guard.AdminGuard(), adminController.DeleteUser)
+	router.POST("/ban/:id", guard.Auth(), guard.AdminGuard(), adminController.BanUser)
+	router.DELETE("/ban/:id", guard.Auth(), guard.AdminGuard(), adminController.UnbanUser)
 }

@@ -27,6 +27,7 @@ import { LoadingContext } from '../stores/loadingStore';
 import blobToFile from '../utils/blobToFile';
 import fetchAPI from '../utils/fetchAPI';
 import { DEFAULT_SONG_THUMBNAIL } from '../utils/image';
+import { Helmet } from 'react-helmet';
 
 window.process = process;
 window.global = window;
@@ -161,6 +162,9 @@ export default function Upload() {
 
     return (
         <form onSubmit={handleUpload} className="upload">
+            <Helmet>
+                <title>Upload song</title>
+            </Helmet>
             <Container
                 centerContent
                 height="100vh"

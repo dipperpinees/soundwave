@@ -202,7 +202,3 @@ func (UserService) UpdateOne(userID uint, avatar string, description string, nam
 	err := common.GetDB().Model(&userModel{}).Where("id = ?", userID).Updates(updateData).Error
 	return updateData, err
 }
-
-func (UserService) DeleteOne(userID uint) error {
-	return common.GetDB().Where("id = ?", userID).Delete(&userModel{}).Error
-}

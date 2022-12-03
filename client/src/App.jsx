@@ -11,6 +11,7 @@ import Library from './pages/Library';
 import MusicPage from './pages/MusicPage';
 import PlaylistPage from './pages/PlaylistPage';
 import ProfilePage from './pages/ProfilePage';
+import ResetPassword from './pages/ResetPassword';
 import Search from './pages/Search';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
@@ -43,7 +44,8 @@ function App() {
                                             <Route path="/search/people" element={<Search type="people" />} />
                                             <Route path="/library" element={<Library />} />
                                             <Route path="/favorite" element={<FavoriteSongs />} />
-                                            <Route path="admin" element={<Admin />} />
+                                            <Route path="/admin" element={<Admin />} />
+                                            <Route path="/forgot" element={<ResetPassword />} />
                                         </Routes>
                                     </Layout>
                                 </Store>

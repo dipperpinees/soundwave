@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { SongAdmin, UserAdmin } from '../components/Admin';
 import { UserContext } from '../stores';
 import fetchAPI from '../utils/fetchAPI';
+import { Helmet } from 'react-helmet';
 
 export default function Admin() {
     const [{ isAuth, role }, userDispatch] = useContext(UserContext);
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         //not admin, navigate to home page
         if (isAuth && role !== 'admin') navigate('/');
@@ -23,6 +24,9 @@ export default function Admin() {
 
     return (
         <Box bgColor="white" width="100%" pt="var(--header-height)}">
+            <Helmet>
+                <title>Admin Dashboard</title>
+            </Helmet>
             <Flex
                 align="center"
                 position="fixed"

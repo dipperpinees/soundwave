@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { PlayerContext } from '../../stores/playerStore';
 import './styles.scss';
+import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
 
 const Song = ({ ...props }) => {
     const { data } = props;
@@ -37,7 +38,7 @@ const Song = ({ ...props }) => {
                     cursor={'pointer'}
                 >
                     <AspectRatio maxW={'100%'} ratio={1}>
-                        <Image src={thumbnail} alt="song image" boxSize="100%" objectFit={'cover'} borderRadius={2} />
+                        <Image src={thumbnail || DEFAULT_SONG_THUMBNAIL} alt={title} boxSize="100%" objectFit={'cover'} borderRadius={2} />
                     </AspectRatio>
                     <Center
                         className="play-btn"

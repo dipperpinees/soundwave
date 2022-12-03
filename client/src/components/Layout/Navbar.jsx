@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import { HiHeart, HiHome, HiMusicalNote } from 'react-icons/hi2';
 import { MdClose, MdLibraryMusic } from 'react-icons/md';
-import { RiUploadCloud2Fill } from 'react-icons/ri';
+import { RiSearch2Line, RiUploadCloud2Fill } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 import { UserContext } from '../../stores';
 
@@ -94,7 +94,12 @@ function Navbar() {
                 >
                     <Icon as={HiHome} fontSize="1.75rem" />
                 </NavLink>
-
+                {isMobile && <NavLink
+                    to="/search"
+                    onClick={closeMobileBar}
+                >
+                    <Icon as={RiSearch2Line} fontSize="1.75rem" />
+                </NavLink>}
                 <Icon as={HiMusicalNote} fontSize="1.75rem" onClick={closeMobileBar} />
                 {!!user.id && (
                     <NavLink to="/favorite" style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>
@@ -110,6 +115,7 @@ function Navbar() {
                         <Icon as={RiUploadCloud2Fill} fontSize="1.75rem" />
                     </NavLink>
                 )}
+
                 {!!user.id && (
                     <NavLink
                         to="/library"

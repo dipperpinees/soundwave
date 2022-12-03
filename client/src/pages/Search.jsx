@@ -56,10 +56,10 @@ export default function Search({ type }) {
                         Tracks
                     </Button>
                 </Link>
-                <Link to={`/search/people?q=${searchParams.get('q')}`}>
+                <Link to={`/search/people?q=${searchParams.get('q') || ""}`}>
                     <Button
                         variant="ghost"
-                        color="white"
+                        color="white"   
                         _hover={{}}
                         colorScheme="primary"
                         bgColor={type === 'people' && 'var(--primary-color)'}

@@ -20,4 +20,5 @@ type User struct {
 	FollowerNumber  int       `gorm:"->;-:migration" json:"followerNumber"`
 	FollowingNumber int       `gorm:"->;-:migration" json:"followingNumber"`
 	IsFollowed      bool      `gorm:"->;-:migration" json:"isFollowed"`
+	IsBanned        bool      `gorm:"default:0" json:"isBanned"`
 }

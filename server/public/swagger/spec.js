@@ -155,7 +155,7 @@ var spec =
                             "type": "object",
                             "properties": {
                                 "userID": {
-                                    "type": "string"
+                                    "type": "number"
                                 },
                                 "newPassword": {
                                     "type": "string"
@@ -816,5 +816,45 @@ var spec =
                 }
             }
         },
+        "/admin/ban/{userID}": {
+            post: {
+                tags: ["admin"],
+                summary: "Ban user",
+                operationId: "BanUser",
+                consumes: ["application/json"],
+                produces: ["application/json"],
+                parameters: [              
+                    {
+                        in: "path",
+                        name: "userID",
+                        type: "int",
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            },
+            delete: {
+                tags: ["admin"],
+                summary: "Unban user",
+                operationId: "UnnanUser",
+                consumes: ["application/json"],
+                produces: ["application/json"],
+                parameters: [              
+                    {
+                        in: "path",
+                        name: "userID",
+                        type: "int",
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        }
     }
 };
