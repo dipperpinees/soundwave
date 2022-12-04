@@ -13,7 +13,6 @@ const LikeIcon = ({ showLikeNumber = true, ...props }) => {
     useEffect(() => {
         setLiked(song?.isLiked);
         setLikeNumber(song?.likeNumber);
-        console.log('like useEffect');
     }, [song?.id]);
 
     const toggleLike = async () => {
