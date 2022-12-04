@@ -1,12 +1,12 @@
-import { Flex, Image, Box, Text, Center, Icon, background, AspectRatio } from '@chakra-ui/react';
+import { Flex, Image, Box, Text, Center, Icon, AspectRatio } from '@chakra-ui/react';
 import { LikeIcon } from '../Icon';
 import { BsPlay } from 'react-icons/bs';
 import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { PlayerContext } from '../../stores/playerStore';
-import defaultPreview from '../../assets/song_preview.jpg';
 import './styles.scss';
+import waveGif from '../../assets/animated.gif';
 import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
 
 const Song = ({ ...props }) => {
@@ -32,7 +32,6 @@ const Song = ({ ...props }) => {
                     className="image-song"
                     pos={'relative'}
                     boxSize="42px"
-                    bg="white"
                     overflow={'hidden'}
                     borderRadius={2}
                     cursor={'pointer'}
@@ -40,27 +39,35 @@ const Song = ({ ...props }) => {
                     <AspectRatio maxW={'100%'} ratio={1}>
                         <Image
                             src={thumbnail}
-                            fallbackSrc={defaultPreview}
+                            fallbackSrc={DEFAULT_SONG_THUMBNAIL}
                             alt="song image"
                             boxSize="100%"
                             objectFit={'cover'}
                             borderRadius={2}
                         />
                     </AspectRatio>
+                    <Flex
+                        align={'end'}
+                        width={'100%'}
+                        height={'60%'}
+                        bottom={0}
+                        left={0}
+                        pos={'absolute'}
+                        display={showPauseIcon ? 'flex' : 'none'}
+                        overflow={'hidden'}
+                    >
+                        <Image src={waveGif} objectFit={'cover'} />
+                        <Image src={waveGif} objectFit={'cover'} />
+                    </Flex>
                     <Center
                         className="play-btn"
                         top={'0'}
                         left={'0'}
                         boxSize={'100%'}
-                        onClick={isPlayed ? togglePlay : addAndPlay}
+                        _hover={{ color: 'var(--primary-color)' }}
+                        onClick={isPlayThisSong ? togglePlay : addAndPlay}
                     >
-                        <Icon
-                            as={showPauseIcon ? AiFillPauseCircle : AiFillPlayCircle}
-                            fontSize="24px"
-                            _focus={{ color: 'var(--primary-color)' }}
-                            _active={{}}
-                            _hover={{}}
-                        />
+                        <Icon as={showPauseIcon ? AiFillPauseCircle : AiFillPlayCircle} fontSize="24px" />
                     </Center>
                 </Box>
                 <Box ml={2} flex="1" maxW={'80%'}>

@@ -24,7 +24,7 @@ import defaultPreview from '../../assets/song_preview.jpg';
 import { UserContext } from '../../stores';
 
 const CurrentSong = (props) => {
-    const { id, title, url, thumbnail, author, playCount, genre } = props.data;
+    const { id, title, url, thumbnail, author } = props.data;
 
     const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
     const playlistDispatch = useContext(PlaylistContext)[1];
@@ -72,8 +72,6 @@ const CurrentSong = (props) => {
                     {songName}
                 </Heading>
                 <HStack
-                    // textOverflow={'ellipsis'}
-                    // overflow="hidden"
                     whiteSpace={'nowrap'}
                     width={'90%'}
                     mb={['8px', '24px']}
@@ -89,12 +87,12 @@ const CurrentSong = (props) => {
                     </Text>
                 </HStack>
                 <Flex justify={'space-between'} align={'center'}>
-                    <Flex gap={'16px'}>
+                    <Flex gap={['10px']}>
                         <Button
                             borderRadius={'full'}
                             colorScheme={'red'}
                             onClick={isPlayThisSong ? togglePlay : addAndPlay}
-                            width={'120px'}
+                            width={['106px', '120px']}
                         >
                             {showPauseIcon ? (
                                 <Fragment>
@@ -105,7 +103,7 @@ const CurrentSong = (props) => {
                                 </Fragment>
                             ) : (
                                 <Fragment>
-                                    <FaPlay fontSize={'16px'} />
+                                    <FaPlay fontSize={['16px']} />
                                     <Box ml={'18px'} lineHeight={'100%'}>
                                         Play
                                     </Box>
