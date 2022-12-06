@@ -1,6 +1,5 @@
 import { AiOutlineRight, AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 import { BsDownload } from 'react-icons/bs';
-import { FaRegEye } from 'react-icons/fa';
 
 const lineIconStyle = { fontSize: '12px', display: 'inline', marginLeft: '4px' };
 

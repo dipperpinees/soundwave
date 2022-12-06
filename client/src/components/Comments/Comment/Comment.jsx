@@ -1,17 +1,19 @@
-import { Box, Avatar, Text, Flex } from '@chakra-ui/react';
+import { Box, Avatar, Text, Flex, Menu, MenuButton, MenuItem, MenuList, Icon } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { AiFillLike } from 'react-icons/ai';
+import { MdAccessTime, MdEdit } from 'react-icons/md';
 import { TbMessageReport } from 'react-icons/tb';
-import { MdAccessTime } from 'react-icons/md';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { useEffect, useState } from 'react';
-// import { Comment } from './index';
+import { useEffect, useState, useContext } from 'react';
+import { UserContext } from '../../../stores';
 
 const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...props }) => {
     const [isLiked, hasLike] = useState(liked);
     const [likeNumber, setLikeNumber] = useState(++initLikeNumber);
     const { comments, index } = props;
     const comment = comments[index];
+    const user = useContext(UserContext)[0];
+
     let date = comment?.updated_at?.split('T').at(0);
     date = date && date.split('-').reverse().join('/');
 
@@ -52,10 +54,6 @@ const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...
                                 <Box minW={'16px'}>{likeNumber}</Box>
                             )}
                         </Flex>
-                        <Flex cursor={'pointer'} gap="2px" align={'center'}>
-                            <TbMessageReport fontSize={'20px'} />
-                            <span>Report</span>
-                        </Flex>
                         <Flex
                             cursor={'pointer'}
                             gap="2px"
@@ -65,7 +63,25 @@ const Comment = ({ isSubComment = false, initLikeNumber = 11, liked = false, ...
                             justify="center"
                             _hover={{ background: 'hoverColor' }}
                         >
-                            <BsThreeDotsVertical fontSize={'20px'} />
+                            <Menu autoSelect="false">
+                                <MenuButton fontSize="md" cursor={'pointer'}>
+                                    <BsThreeDotsVertical fontSize={'20px'} />
+                                </MenuButton>
+                                <MenuList zIndex={'1000'} minW="20px" mt={'8px'} fontSize={'0.875rem'}>
+                                    {!!user.id && user.id === comment.author.id ? (
+                                        <MenuItem onClick={() => {}}>
+                                            <Icon as={MdEdit} fontSize={'16px'} mr={'2px'} />
+                                            edit
+                                        </MenuItem>
+                                    ) : (
+                                        <MenuItem onClick={() => {}}>
+                                            <Icon as={TbMessageReport} fontSize={'18px'} mr={'2px'} />
+                                            report
+                                        </MenuItem>
+                                    )}
+                                    {/* <MenuItem display={['initial', 'initial', 'none']}>Download</MenuItem> */}
+                                </MenuList>
+                            </Menu>
                         </Flex>
                         {/* more menu */}
                     </Flex>

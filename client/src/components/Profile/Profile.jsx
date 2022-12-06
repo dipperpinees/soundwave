@@ -1,5 +1,6 @@
 import { Avatar, Box, Button, Flex, Heading, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
+import { FaUserPlus, FaUserMinus } from 'react-icons/fa';
 import fetchAPI from '../../utils/fetchAPI';
 import Describe from './Describe';
 
@@ -15,6 +16,7 @@ const Profile = ({ data, ...props }) => {
                 await fetchAPI(`/user/${type}/${data.id}`, {
                     method: 'POST',
                 });
+                isFollowed ? --data.followerNumber : ++data.followerNumber;
                 setisFollowed(!isFollowed);
             } catch (e) {
                 toast({
@@ -48,12 +50,13 @@ const Profile = ({ data, ...props }) => {
                         <Button
                             colorScheme="whiteAlpha"
                             variant="outline"
-                            textColor="white"
+                            textColor={!isFollowed ? 'white' : 'var(--primary-color)'}
                             borderRadius="20px"
                             margin="8px 0"
                             onClick={toggleFollow}
+                            leftIcon={!isFollowed && <FaUserPlus style={{ 'margin-bottom': '2px' }} />}
                         >
-                            {isFollowed ? 'Followed' : 'Following'}
+                            {isFollowed ? 'Followed' : 'Follow'}
                         </Button>
                     ) : (
                         <Button

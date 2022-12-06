@@ -28,19 +28,22 @@ const EditProfile = ({ data, ...props }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
 
-    const [user, userDispatch] = useContext(UserContext);
+    const userDispatch = useContext(UserContext)[1];
 
     const { isEditProfile, setIsEditProfile } = props;
-    const [imageURL, setImageURL] = useState(data?.avatar);
+    const [imageURL, setImageURL] = useState('');
     const [inputAvatar, setInputAvatar] = useState();
-    const [inputUserName, setInputUserName] = useState(data?.name);
-    const [inputDescription, setInputDescription] = useState(data?.description);
+    const [inputUserName, setInputUserName] = useState('');
+    const [inputDescription, setInputDescription] = useState('');
     const [showSpinner, setShowSpinner] = useState(false);
 
     const inputImage = useRef();
 
     useEffect(() => {
         isEditProfile ? onOpen() : onClose();
+        setImageURL(data?.avatar);
+        setInputUserName(data?.name);
+        setInputDescription(data?.description);
     }, [isEditProfile]);
 
     useEffect(() => {
@@ -132,6 +135,7 @@ const EditProfile = ({ data, ...props }) => {
                     <Input
                         display={'none'}
                         ref={inputImage}
+                        accept="image/*"
                         type={'file'}
                         name={'profileImage'}
                         onChange={(e) => loadImage(e)}
