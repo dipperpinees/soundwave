@@ -1,5 +1,6 @@
 import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, Text, useToast } from '@chakra-ui/react';
 import { useContext } from 'react';
+import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../stores';
@@ -48,6 +49,9 @@ export default function SignUp() {
 
     return (
         <Flex width="100%" justify="center" align="center" direction="column" minHeight="100vh" color="white">
+            <Helmet>
+                <title>Sign Up</title>
+            </Helmet>
             <Box fontSize="4xl">
                 <h1>Sign up</h1>
             </Box>

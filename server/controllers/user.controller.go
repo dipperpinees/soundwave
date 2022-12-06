@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/dtos"
 	"github.com/hiepnguyen223/int3306-project/helper"
 	"github.com/hiepnguyen223/int3306-project/helper/upload"
@@ -33,6 +34,9 @@ func (UserController) UpdateUser(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
+
+	//clear cache
+	common.DeleteCache(fmt.Sprintf("%v", userID))
 
 	c.JSON(http.StatusOK, &user)
 }

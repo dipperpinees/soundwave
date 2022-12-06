@@ -96,6 +96,7 @@ function Navbar() {
                 </NavLink>
                 {isMobile && <NavLink
                     to="/search"
+                    style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}
                     onClick={closeMobileBar}
                 >
                     <Icon as={RiSearch2Line} fontSize="1.75rem" />

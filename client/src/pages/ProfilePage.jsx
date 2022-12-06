@@ -1,5 +1,6 @@
 import { Box, calc, Flex } from '@chakra-ui/react';
 import { useContext, useState, useLayoutEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
 import Albums from '../components/Albums';
 import FeaturedTracks from '../components/FeaturedTracks';
@@ -29,6 +30,9 @@ const ProfilePage = () => {
 
     return (
         <Box m={['0 24px', '0 24px', '0 24px 0 360px']} minHeight="100vh" sx={{ paddingTop: '80px' }} color={'#fff'}>
+            <Helmet>
+                <title>Profile Page</title>
+            </Helmet>
             {id == user.id && <EditProfile {...{ isEditProfile, setIsEditProfile }} data={data} />}
             <Box
                 pos={['initial', 'initial', 'fixed']}

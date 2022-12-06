@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useLayoutEffect, useContext } from 'react';
 import fetchAPI from '../utils/fetchAPI';
 import { UserContext } from '../stores/userStore';
+import { Helmet } from 'react-helmet';
 
 const MusicPage = () => {
     const { id } = useParams();
@@ -37,6 +38,9 @@ const MusicPage = () => {
 
     return (
         <Box className="music-page">
+            <Helmet>
+                <title>Music Page</title>
+            </Helmet>
             <Box mb={'24px'}>
                 <CurrentSong {...{ data }} />
             </Box>

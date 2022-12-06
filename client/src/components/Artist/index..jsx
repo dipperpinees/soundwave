@@ -1,9 +1,4 @@
-import { Icon } from '@chakra-ui/react';
-import { Avatar } from '@chakra-ui/react';
-import { Stack } from '@chakra-ui/react';
-import { Text } from '@chakra-ui/react';
-import { Flex } from '@chakra-ui/react';
-import { Button } from '@chakra-ui/react';
+import { Avatar, Button, Flex, Icon, Stack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { BsSoundwave } from 'react-icons/bs';
 import { IoIosPersonAdd, IoMdPeople } from 'react-icons/io';
@@ -28,18 +23,16 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
     if (size === 'md') {
         return (
             <Flex align="center" justify="space-between" my={2} width="100%" gap={3}>
-                <Flex align="center" gap={1}>
+                <Flex align="center" gap={1} overflow="hidden">
                     <Link to={`/profile/${id}`}>
-                        <Avatar name={name} src={avatar} size="lg" />
+                        <Avatar name={name} src={avatar} size="md" />
                     </Link>
-                    <Stack>
+                    <Stack  overflow="hidden">
                         <Link to={`/profile/${id}`}>
                             <Text
-                                fontSize="0.875rem"
-                                width={{ base: 160, md: 36 }}
-                                whiteSpace="nowrap"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
+                                fontSize="0.75rem"
+                                fontWeight={500}
+                                className="one-line-title"
                             >
                                 {name}
                             </Text>
@@ -53,11 +46,11 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                 <Button
                     size="xs"
                     variant="outline"
-                    flex
                     alignItems="center"
                     gap={1}
                     onClick={toggleFollow}
                     _hover={{ borderColor: 'var(--primary-color)' }}
+                    flex="none"
                 >
                     {isFollow ? <MdDone /> : <IoIosPersonAdd />}
                     {isFollow ? 'Following' : 'Follow'}

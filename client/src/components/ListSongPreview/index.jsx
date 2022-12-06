@@ -10,11 +10,11 @@ export default function ListSongPreview({ title, songs, moreUrl }) {
                 <Text as="b" fontSize="1.25rem" >
                     {title}
                 </Text>
-                <Link to={moreUrl}>
+                {moreUrl && <Link to={moreUrl}>
                     <Text as="span" fontSize="0.75rem" color="whiteAlpha.700">
                         More
                     </Text>
-                </Link>
+                </Link>}
             </Flex>
             <Grid templateColumns={{base: "repeat(2, minmax(0, 1fr))", md: "repeat(4, minmax(0, 1fr))"}} gap={6}>
                 {songs ? (

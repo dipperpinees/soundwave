@@ -1,5 +1,6 @@
 import { Button, Flex, Icon } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { BsFillPeopleFill, BsSoundwave } from 'react-icons/bs';
 import { Link, useSearchParams } from 'react-router-dom';
 import { PlaylistLibrary, SongsLibrary } from '../components/Library';
@@ -24,6 +25,9 @@ export default function Library() {
             paddingLeft={{ base: 4, md: 0 }}
             minHeight={'calc(100vh - var(--header-height))'}
         >
+            <Helmet>
+                <title>Library</title>
+            </Helmet>
             <Flex gap={2} mb={4} mt={4}>
                 <Link to="/library?q=songs">
                     <Button

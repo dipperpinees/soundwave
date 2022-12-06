@@ -10,14 +10,14 @@ import { PlayerContext } from '../../stores/playerStore';
 const CurrentSong = (props) => {
     const { id, title, url, thumbnail, author, playCount, genre } = props.data;
 
-    const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
+    const [{ songList, songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
 
     const addAndPlay = () => setPlayer({ type: 'Add', payload: props.data });
 
     const togglePlay = () => setPlayer({ type: 'Toggle' });
 
-    const isPlayThisSong = id === songList[indexSongPlayed]?.id;
-    const showPauseIcon = id === songList[indexSongPlayed]?.id && isPlayed;
+    const isPlayThisSong = id === songPlayed?.id;
+    const showPauseIcon = id === songPlayed?.id && isPlayed;
 
     const [songName, singerName] = title?.split(' - ');
 

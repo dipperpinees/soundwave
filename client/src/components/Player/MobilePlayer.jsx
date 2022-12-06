@@ -4,7 +4,7 @@ import { useCallback, useRef } from 'react';
 import { CgHeart } from 'react-icons/cg';
 import { GiNextButton, GiPreviousButton } from 'react-icons/gi';
 import { IoIosRepeat, IoMdClose } from 'react-icons/io';
-import { MdPause, MdPlayArrow } from 'react-icons/md';
+import { MdDownload, MdPause, MdPlayArrow, MdPlaylistPlay } from 'react-icons/md';
 import { TiArrowShuffle } from 'react-icons/ti';
 import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
 
@@ -18,11 +18,13 @@ export default function MobilePlayer({
     nextSong,
     prevSong,
     autoPlay,
+    url,
     songDuration,
     currentTime,
     isShow,
     onClose,
-    changeTimePlay
+    changeTimePlay,
+    openNextUp,
 }) {
     const progressRef = useRef();
 
@@ -33,6 +35,11 @@ export default function MobilePlayer({
         },
         [changeTimePlay]
     );
+
+    const download = useCallback(() => {
+        console.log("fdsfd")
+        window.open(url.replace('/upload/', '/upload/fl_attachment/'), '_blank');
+    }, [url])
 
     return (
         <Flex
@@ -83,7 +90,7 @@ export default function MobilePlayer({
                     </Flex>
                     <Icon as={CgHeart} fontSize="2.25rem" color={isLiked ? 'tomato' : 'white'} onClick={likeSong} />
                 </Flex>
-                <div style={{ flex: 1, width: "100%" }} onClick={handleChangeProgress} ref={progressRef}>
+                <div style={{ flex: 1, width: '100%' }} onClick={handleChangeProgress} ref={progressRef}>
                     <Progress
                         value={songDuration === 0 ? 0 : (currentTime / songDuration) * 100}
                         colorScheme="primary"
@@ -122,6 +129,10 @@ export default function MobilePlayer({
                         onClick={() => changeAutoPlay('shuffle')}
                         className={autoPlay === 'shuffle' && 'player-choose'}
                     />
+                </Flex>
+                <Flex align="center" justify="space-between" width="100%">
+                    <Icon fontSize="1.5rem" as={MdDownload} onClick={download}/>
+                    <Icon fontSize="1.75rem" as={MdPlaylistPlay} onClick={openNextUp} />
                 </Flex>
             </Flex>
         </Flex>

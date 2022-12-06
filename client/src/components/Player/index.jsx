@@ -16,7 +16,7 @@ import { NextUp } from './NextUp';
 import SoundVolume from './SoundVolume';
 import './styles.scss';
 
-export default function Player({ songList, indexSongPlayed, isPlayed, currentTime, songDuration, autoPlay, dispatch }) {
+export default function Player({ songList, songPlayed, isPlayed, currentTime, songDuration, autoPlay, dispatch }) {
     const [showPlaylist, setShowPlaylist] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const progressRef = useRef();
@@ -26,8 +26,8 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
     const [showMobilePlayer, setShowMobilePlayer] = useState(false);
 
     useEffect(() => {
-        setIsLiked(songList?.[indexSongPlayed]?.isLiked || false);
-    }, [songList, indexSongPlayed]);
+        setIsLiked(songPlayed?.isLiked || false);
+    }, [songPlayed]);
 
     const changeTimePlay = useCallback((progress) => {
         dispatch({ type: 'ChangeTime', payload: progress });
@@ -54,13 +54,13 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
 
     const likeSong = useCallback(async () => {
         try {
-            const { isLiked, id } = songList[indexSongPlayed];
+            const { isLiked, id } = songPlayed;
             setIsLiked(!isLiked);
             await fetchAPI(`/song/like/${id}`, {
                 method: isLiked ? 'DELETE' : 'POST',
             });
         } catch (e) {}
-    }, [indexSongPlayed, songList]);
+    }, [songPlayed]);
 
     const nextSong = useCallback(() => {
         dispatch({ type: 'NextSong' });
@@ -76,6 +76,10 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
         },
         [isMobile]
     );
+
+    const openNextUp = useCallback(() => {
+        setShowPlaylist(true)
+    }, [])
 
     //dont show on signin signup page
     if (location.pathname === '/signin' || location.pathname === '/signup' || !songList.length) return null;
@@ -111,13 +115,13 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
                 )}
 
                 <Flex alignItems="center" gap={2} width={{ base: '80%', md: '16%' }}>
-                    <Avatar name="thumbnail" src={songList[indexSongPlayed]?.thumbnail || DEFAULT_SONG_THUMBNAIL} />
+                    <Avatar name="thumbnail" src={songPlayed?.thumbnail || DEFAULT_SONG_THUMBNAIL} />
                     <Flex direction="column" flex={1} overflow="hidden">
                         <Heading color="white" fontSize="0.75rem" as="h4" whiteSpace="nowrap" className="one-line-title">
-                            {songList[indexSongPlayed]?.title}
+                            {songPlayed?.title}
                         </Heading>
                         <Text color="white" fontSize="0.675rem">
-                            {songList[indexSongPlayed]?.author?.name}
+                            {songPlayed?.author?.name}
                         </Text>
                     </Flex>
                 </Flex>
@@ -167,7 +171,7 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
                         className={autoPlay === 'shuffle' && 'player-choose'}
                     />
                     <Icon fontSize="1.25rem" as={CgHeart} color={isLiked ? 'tomato' : 'white'} onClick={likeSong} />
-                    <Icon fontSize="1.25rem" as={MdPlaylistPlay} onClick={() => setShowPlaylist(true)} />
+                    <Icon fontSize="1.25rem" as={MdPlaylistPlay} onClick={openNextUp} />
                     <Icon fontSize="1.25rem" as={SoundVolume} />
                 </Flex>
 
@@ -187,7 +191,7 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
                             isLiked,
                             likeSong,
                             isPlayed,
-                            songPlayed: songList?.[indexSongPlayed],
+                            songPlayed,
                             changeAutoPlay,
                             prevSong,
                             nextSong,
@@ -196,7 +200,9 @@ export default function Player({ songList, indexSongPlayed, isPlayed, currentTim
                             songDuration,
                             isShow: showMobilePlayer,
                             onClose: () => setShowMobilePlayer(false),
-                            changeTimePlay
+                            changeTimePlay,
+                            openNextUp,
+                            url: songPlayed.url
                         }}
                     />
                 </>

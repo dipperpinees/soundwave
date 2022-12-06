@@ -82,7 +82,6 @@ export default function Upload() {
             setPlayAudio(true);
         }
     };
-    console.log(duration);
     const getMetaTagsFromAudio = (file) => {
         musicMetadata.parseBlob(file, { native: true }).then((metadata) => {
             if (metadata.common.picture) {

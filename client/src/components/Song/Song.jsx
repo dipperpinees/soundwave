@@ -12,14 +12,14 @@ const Song = ({ ...props }) => {
     const { data } = props;
     const { id, title, thumbnail, author, playCount, genre } = data[props.index];
 
-    const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
+    const [{ songList, songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
 
     const addAndPlay = () => setPlayer({ type: 'Add', payload: data[props.index] });
 
     const togglePlay = () => setPlayer({ type: 'Toggle' });
 
-    const isPlayThisSong = id === songList[indexSongPlayed]?.id;
-    const showPauseIcon = id === songList[indexSongPlayed]?.id && isPlayed;
+    const isPlayThisSong = id === songPlayed?.id;
+    const showPauseIcon = id === songPlayed?.id && isPlayed;
 
     const { isLikeIcon, isViewIcon } = props;
     const { borderBottom } = props;
@@ -45,7 +45,7 @@ const Song = ({ ...props }) => {
                         top={'0'}
                         left={'0'}
                         boxSize={'100%'}
-                        onClick={isPlayed ? togglePlay : addAndPlay}
+                        onClick={isPlayThisSong ? togglePlay : addAndPlay}
                     >
                         <Icon
                             as={showPauseIcon ? AiFillPauseCircle : AiFillPlayCircle}

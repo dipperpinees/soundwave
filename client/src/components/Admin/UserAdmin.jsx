@@ -11,15 +11,16 @@ import {
     Td,
     Th,
     Thead,
-    Tr
+    Tr,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { MdDelete } from 'react-icons/md';
 import useUsers from '../../hooks/useUsers';
+import fetchAPI from '../../utils/fetchAPI';
 import formatDate from '../../utils/formatDate';
 
 export default function UserAdmin() {
-    const { data: users, isLoading } = useUsers();
+    const { data: users } = useUsers("");
     const [selected, setSelected] = useState({});
 
     const handleCheck = (isChecked, id) => {
@@ -57,30 +58,9 @@ export default function UserAdmin() {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {users?.data.map(
-                                ({ id, name, avatar, followerNumber, followingNumber, trackNumber, createdAt, isBanned }) => (
-                                    <Tr key={id}>
-                                        <Td>
-                                            <Checkbox
-                                                onChange={(e) => handleCheck(e.target.checked, id)}
-                                                isChecked={!!selected[id]}
-                                            ></Checkbox>
-                                        </Td>
-                                        <Td>
-                                            <Flex align="center" gap={2}>
-                                                <Avatar colorScheme={name} name="Uchiha kakashi" src={avatar} /> {name}
-                                            </Flex>
-                                        </Td>
-                                        <Td>{trackNumber}</Td>
-                                        <Td>{followerNumber}</Td>
-                                        <Td>{followingNumber}</Td>
-                                        <Td>{formatDate(createdAt)}</Td>
-                                        <Td>
-                                            {isBanned ? <Button>Unban</Button> : <Button colorScheme='red'>Ban</Button>}
-                                        </Td>
-                                    </Tr>
-                                )
-                            )}
+                            {users?.data.map((user) => (
+                                <Row key={user.id} {...{ ...user, handleCheck, isChecked: !!selected[user.id] }} />
+                            ))}
                         </Tbody>
                     </Table>
                 </TableContainer>
@@ -88,3 +68,49 @@ export default function UserAdmin() {
         </>
     );
 }
+
+const Row = ({
+    id,
+    name,
+    avatar,
+    followerNumber,
+    followingNumber,
+    trackNumber,
+    createdAt,
+    isBanned: _isBanned,
+    handleCheck,
+    isChecked,
+}) => {
+    const [isBanned, setIsBanned] = useState(_isBanned);
+    const toggleBan = async () => {
+        setIsBanned(!isBanned);
+        await fetchAPI(`/admin/ban/${id}`, {
+            method: isBanned ? 'DELETE' : 'POST',
+        });
+    };
+    return (
+        <Tr key={id}>
+            <Td>
+                <Checkbox onChange={(e) => handleCheck(e.target.checked, id)} isChecked={isChecked}></Checkbox>
+            </Td>
+            <Td>
+                <Flex align="center" gap={2}>
+                    <Avatar colorScheme={name} name="Uchiha kakashi" src={avatar} /> {name}
+                </Flex>
+            </Td>
+            <Td>{trackNumber}</Td>
+            <Td>{followerNumber}</Td>
+            <Td>{followingNumber}</Td>
+            <Td>{formatDate(createdAt)}</Td>
+            <Td>
+                {isBanned ? (
+                    <Button onClick={toggleBan}>Unban</Button>
+                ) : (
+                    <Button colorScheme="red" onClick={toggleBan}>
+                        Ban
+                    </Button>
+                )}
+            </Td>
+        </Tr>
+    );
+};

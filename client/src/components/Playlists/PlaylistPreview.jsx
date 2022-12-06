@@ -1,12 +1,18 @@
 import { AspectRatio, Box, Flex, Icon, Image, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
-import { useState } from 'react';
-import { AiFillPlayCircle } from 'react-icons/ai';
+import { useContext, useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
-import { MdDeleteOutline, MdModeEditOutline } from 'react-icons/md';
+import { MdDeleteOutline, MdModeEditOutline, MdPause, MdPlayArrow } from 'react-icons/md';
+import { PlayerContext } from '../../stores';
 import { DEFAULT_PLAYLIST_THUMBNAIL } from '../../utils/image';
 
-export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail }) {
+export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail, showSettings }) {
     const [showPlay, setShowPlay] = useState(false);
+    const [{ isPlayed, playlistID }, dispatch] = useContext(PlayerContext);
+
+    const playPlaylist = () => dispatch({ type: 'PlayPlaylist', payload: { id, songs } });
+
+    const togglePlay = () => dispatch({ type: 'Toggle' });
+
     return (
         <Box width="100%">
             <Box
@@ -16,19 +22,27 @@ export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail }
                 onMouseLeave={() => setShowPlay(false)}
             >
                 <AspectRatio width="100%" ratio={1}>
-                    <Image objectFit="cover" src={thumbnail || DEFAULT_PLAYLIST_THUMBNAIL} alt={name} borderRadius={16} />
+                    <Image
+                        objectFit="cover"
+                        src={thumbnail || DEFAULT_PLAYLIST_THUMBNAIL}
+                        alt={name}
+                        borderRadius={16}
+                    />
                 </AspectRatio>
                 {showPlay && (
                     <Icon
-                        color="var(--primary-color)"
-                        as={AiFillPlayCircle}
+                        bgColor="var(--primary-color)"
                         fontSize="3.75rem"
                         position="absolute"
                         top="50%"
                         left="50%"
+                        width={12}
+                        height={12}
+                        padding={2}
+                        as={playlistID === id && isPlayed ? MdPause : MdPlayArrow}
                         transform="translate(-50%, -50%)"
                         borderRadius="50%"
-                        // onClick={isPlayThisSong ? togglePlay : addAndPlay}
+                        onClick={playlistID === id ? togglePlay : playPlaylist}
                     />
                 )}
             </Box>
@@ -37,9 +51,9 @@ export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail }
                     <Text fontSize="0.875rem" fontWeight={600} className="one-line-title">
                         {name}
                     </Text>
-                    <Menu>
+                    {showSettings && <Menu>
                         <MenuButton>
-                            <Icon as={FiEdit} display="flex" fontSize="1.5rem" />
+                            <Icon as={FiEdit} display="flex" fontSize="1.25rem" />
                         </MenuButton>
                         <MenuList minWidth={24} border="none" fontSize="0.75rem">
                             <MenuItem padding="2px 8px">
@@ -51,7 +65,7 @@ export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail }
                                 Delete
                             </MenuItem>
                         </MenuList>
-                    </Menu>
+                    </Menu>}
                 </Flex>
                 <Text fontSize="0.75rem" fontWeight={600} color="whiteAlpha.700" as="span">
                     Playlist • {songs.length} songs

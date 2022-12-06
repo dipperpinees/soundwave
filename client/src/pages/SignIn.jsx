@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { useContext } from 'react';
+import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { Link, useNavigate } from 'react-router-dom';
@@ -59,7 +60,7 @@ export default function SignIn() {
     const loginGoogle = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
             try {
-                const { id, name, avatar } = await fetchAPI('/google/signin', {
+                const { id, name, avatar, role } = await fetchAPI('/google/signin', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -67,6 +68,8 @@ export default function SignIn() {
                     body: JSON.stringify(tokenResponse),
                 });
                 userDispatch({ type: 'Update', payload: { avatar, name, id } });
+                if (role === 'admin') navigate('/admin');
+                else navigate('/');
             } catch (e) {
                 toast({
                     title: e.message,
@@ -80,6 +83,9 @@ export default function SignIn() {
 
     return (
         <Flex width="100%" justify="center" align="center" direction="column" height="100vh" color="white">
+            <Helmet>
+                <title>Sign In</title>
+            </Helmet>
             <Box fontSize="4xl" mb={8}>
                 <h1>Sign in</h1>
             </Box>

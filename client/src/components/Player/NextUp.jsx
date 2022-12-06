@@ -1,36 +1,88 @@
 import {
+    AspectRatio,
     Drawer,
     DrawerBody,
     DrawerCloseButton,
     DrawerContent,
     DrawerHeader,
     DrawerOverlay,
-    Input,
+    Flex,
+    Icon,
+    Image,
+    Text,
 } from '@chakra-ui/react';
 import React, { useContext } from 'react';
+import { BsFillPlayFill, BsPauseFill, BsX } from 'react-icons/bs';
 import { PlayerContext } from '../../stores';
-import Song from '../Song';
+import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
 
 export function NextUp({ isOpen, toggleOpen }) {
-    const [{ songList, indexSongPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
+    const [{ songList, songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
+
+    const togglePlay = () => setPlayer({ type: 'Toggle' });
+
+    const changeSong = (id) => {
+        return () => setPlayer({ type: 'ChangeIndexSong', payload: id });
+    };
+
+    const removeSong = (id) => {
+        return () => {
+            setPlayer({ type: 'RemoveFromNextUp', payload: id });
+        };
+    };
+
     return (
         <>
-            <Drawer isOpen={isOpen} onClose={toggleOpen} placement="right">
+            <Drawer isOpen={isOpen} onClose={toggleOpen} placement="right" size={{ base: 'sm', md: 'xs' }}>
                 <DrawerOverlay />
                 <DrawerContent bgColor="blackAlpha.800" color="white">
                     <DrawerCloseButton />
                     <DrawerHeader>Next up playlist</DrawerHeader>
 
-                    <DrawerBody>
-                        {songList.map((song) => (
-                            <Song
-                                key={song.id}
-                                index={1}
-                                data={songList}
-                                userName={'user name'}
-                                borderBottom="1px solid rgba(255, 255, 255, 0.2)"
-                            />
-                        ))}
+                    <DrawerBody px={4}>
+                        <Flex direction="column" gap={2}>
+                            {songList.map(({ thumbnail, title, author, id }, index) => (
+                                <Flex
+                                    align="center"
+                                    gap={2}
+                                    key={id}
+                                    opacity={songPlayed.id === id ? 1 : 0.6}
+                                    _hover={{ opacity: 1 }}
+                                >
+                                    <Icon
+                                        _hover={{ cursor: 'pointer' }}
+                                        onClick={songPlayed.id === id ? togglePlay : changeSong(id)}
+                                        mr={1}
+                                        fontSize={24}
+                                        as={songPlayed.id === id && isPlayed ? BsPauseFill : BsFillPlayFill}
+                                    />
+                                    <AspectRatio width={10} ratio={1} flex="none">
+                                        <Image
+                                            src={thumbnail || DEFAULT_SONG_THUMBNAIL}
+                                            alt={title}
+                                            boxSize="100%"
+                                            objectFit={'cover'}
+                                            borderRadius={2}
+                                        />
+                                    </AspectRatio>
+                                    <Flex direction="column" overflow="hidden">
+                                        <Text fontSize="0.75rem" fontWeight={500} className="one-line-title">
+                                            {title}
+                                        </Text>
+                                        <Text fontSize="0.75rem" color="whiteAlpha.600">
+                                            {author.name}
+                                        </Text>
+                                    </Flex>
+                                    <Icon
+                                        fontSize={20}
+                                        as={BsX}
+                                        _hover={{ cursor: 'pointer' }}
+                                        ml="auto"
+                                        onClick={removeSong(id)}
+                                    />
+                                </Flex>
+                            ))}
+                        </Flex>
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>

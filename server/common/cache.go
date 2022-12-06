@@ -20,3 +20,7 @@ func GetCache(key string) interface{} {
 	data, _ := c.Get(key)
 	return data
 }
+
+func DeleteCache(key string) {
+	c.Delete(key)
+}

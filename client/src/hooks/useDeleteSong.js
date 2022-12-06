@@ -1,9 +1,9 @@
-import { useToast } from "@chakra-ui/react";
-import { useContext } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { UserContext } from "../stores";
-import { LoadingContext } from "../stores/loadingStore";
-import fetchAPI from "../utils/fetchAPI";
+import { useToast } from '@chakra-ui/react';
+import { useContext } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { UserContext } from '../stores';
+import { LoadingContext } from '../stores/loadingStore';
+import fetchAPI from '../utils/fetchAPI';
 
 export default function useDeleteSong() {
     const toast = useToast();
@@ -13,16 +13,21 @@ export default function useDeleteSong() {
 
     const deleteSong = async (id) => {
         setLoading(true);
-        await fetchAPI(`/song/${id}`, { method: 'DELETE' });
-        setLoading(false);
+        try {
+            await fetchAPI(`/song/${id}`, { method: 'DELETE' });
+            setLoading(false);
+        } catch (e) {
+            setLoading(false);
+            throw e;
+        }
         return id;
-    }
-    
+    };
+
     return useMutation(deleteSong, {
         onSuccess: (id) => {
             queryClient.setQueryData(['user-songs', user.id], (oldData) => {
-                return oldData.filter((data) => data.id !== id)
-            })
+                return oldData.filter((data) => data.id !== id);
+            });
             toast({
                 title: 'Delete song successfully.',
                 status: 'success',
@@ -37,6 +42,6 @@ export default function useDeleteSong() {
                 duration: 5000,
                 isClosable: true,
             });
-        }
-    })
+        },
+    });
 }

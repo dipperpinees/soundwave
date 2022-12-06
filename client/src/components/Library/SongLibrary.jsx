@@ -27,7 +27,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AiFillCamera } from 'react-icons/ai';
 import useDeleteSong from '../../hooks/useDeleteSong';
 import useUpdateSong from '../../hooks/useUpdateSong';
-import useUsersSongs from '../../hooks/useUsersSongs';
+import useUserSongs from '../../hooks/useUserSongs';
 import { GenreContext, UserContext } from '../../stores';
 import { LoadingContext } from '../../stores/loadingStore';
 import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
@@ -38,12 +38,12 @@ export default function SongsLibrary() {
     const user = useContext(UserContext)[0];
     const [editedTrack, setEditedTrack] = useState(null);
     const [deleteTrack, setDeleteTrack] = useState(null);
-    const { data: tracks } = useUsersSongs(user.id);
+    const { data: tracks } = useUserSongs(user.id);
     const { mutate: deleteSong } = useDeleteSong();
 
     return (
         <>
-            <Text as="h3" fontSize="1.25rem" fontWeight={600}>
+            <Text as="h3" fontSize="1.25rem" fontWeight={600} mb={1}>
                 Songs Library
             </Text>
             <Grid

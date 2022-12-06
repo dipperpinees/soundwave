@@ -21,7 +21,7 @@ export default function Header() {
     return (
         <Flex align="center" className="header" color="white" zIndex={10}>
             {!isMobile && (
-                <Box width="50%">
+                <Box width="40%">
                     <SearchInput />
                 </Box>
             )}

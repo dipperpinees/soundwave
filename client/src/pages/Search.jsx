@@ -1,6 +1,7 @@
 import { Button, Flex, Grid, Icon, Select, Text, useMediaQuery } from '@chakra-ui/react';
 import queryString from 'query-string';
 import { useContext, useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { BsFillPeopleFill, BsSoundwave } from 'react-icons/bs';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Artist from '../components/Artist/index.';
@@ -56,10 +57,10 @@ export default function Search({ type }) {
                         Tracks
                     </Button>
                 </Link>
-                <Link to={`/search/people?q=${searchParams.get('q') || ""}`}>
+                <Link to={`/search/people?q=${searchParams.get('q') || ''}`}>
                     <Button
                         variant="ghost"
-                        color="white"   
+                        color="white"
                         _hover={{}}
                         colorScheme="primary"
                         bgColor={type === 'people' && 'var(--primary-color)'}
@@ -183,6 +184,9 @@ const SearchPeople = ({ handleChangeSearchQuery }) => {
 
     return (
         <>
+            <Helmet>
+                <title>Search</title>
+            </Helmet>
             <Text>
                 {searchPeopleData &&
                     `Found ${searchPeopleData.pagination.totalDocs} results ${
