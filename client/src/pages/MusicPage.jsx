@@ -1,8 +1,8 @@
 import { Box, Flex } from '@chakra-ui/react';
-import CurrentSong from '../components/CurrentSong';
+import MusicPageHeader from '../components/MusicPageHeader';
 import Comments from '../components/Comments';
 import RelatedTracks from '../components/RelatedTracks/RelatedTracks';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useLayoutEffect } from 'react';
 import fetchAPI from '../utils/fetchAPI';
 import { Helmet } from 'react-helmet';
@@ -37,12 +37,17 @@ const MusicPage = () => {
     }
 
     return (
-        <Box m={['0 24px', '0 24px', '0']} minH={'100vh'} className="music-page">
+        <Box
+            p={'calc(var(--header-height) + 24px) 0 0 var(--navbar-width) '}
+            m={['0 24px', '0 24px', '0']}
+            minH={'100vh'}
+            color={'white'}
+        >
             <Helmet>
                 <title>Music Page</title>
             </Helmet>
             <Box mb={['24px']}>
-                <CurrentSong {...{ data }} />
+                <MusicPageHeader {...{ data }} />
             </Box>
             <Flex wrap={'wrap'}>
                 {/* width = image width */}

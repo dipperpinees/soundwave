@@ -64,7 +64,7 @@ const ProfilePage = () => {
                 </Box> */}
                 <Box mt={['24px']} pb={'36px'} flex="100%" width={['100%']}>
                     {/* <Albums currentUserId={id} /> */}
-                    <PlaylistLibrary />
+                    <PlaylistLibrary userId={id} />
                 </Box>
             </Box>
         </Box>

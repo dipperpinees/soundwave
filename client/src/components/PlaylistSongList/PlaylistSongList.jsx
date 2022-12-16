@@ -2,20 +2,13 @@ import Song from '../Song';
 import { Box, Heading, List, Flex, Text, Link, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { LineRightIcon, LineDownIcon } from '../Icon';
 import { useEffect, useState } from 'react';
-import fetchAPI from '../../utils/fetchAPI';
 
-const FeaturedTracks = ({ currentUserId }) => {
-    const [data, setData] = useState(null);
+const PlaylistSongList = ({ songs }) => {
+    const [data, setData] = useState();
 
     useEffect(() => {
-        const fetchSong = async () => {
-            try {
-                const data = await fetchAPI(`/user/${currentUserId}/songs`);
-                setData(data);
-            } catch (e) {}
-        };
-        fetchSong();
-    }, [currentUserId]);
+        setData(songs);
+    }, [songs]);
 
     const sortSongs = (typeSort) => {
         let sortFn;
@@ -31,7 +24,7 @@ const FeaturedTracks = ({ currentUserId }) => {
                 break;
         }
         if (data) {
-            let newData = [...data];
+            const newData = [...data];
             newData.sort(sortFn);
             setData(newData);
         }
@@ -44,10 +37,9 @@ const FeaturedTracks = ({ currentUserId }) => {
     return (
         <Box>
             <Flex justifyContent="space-between">
-                {/* featured tracks heading */}
-                <Heading fontSize={['1.5rem']}>Featured Tracks</Heading>
+                <Heading fontSize={['1.2rem']}>Song List</Heading>
                 {data.length !== 0 && (
-                    <Flex align={'center'}>
+                    <Flex justifyItems={'flex-end'} align={'center'}>
                         <Menu autoSelect="false">
                             <MenuButton as={Text} fontSize="md" cursor={'pointer'}>
                                 <Flex align={'center'}>
@@ -74,8 +66,7 @@ const FeaturedTracks = ({ currentUserId }) => {
                     </Flex>
                 )}
             </Flex>
-            {data.length === 0 && <Text>The user currently has no songs</Text>}
-            {/* featured tracks song list */}
+            {data.length === 0 && <Text>The playlist currently has no songs</Text>}
             <List>
                 {data &&
                     data.map((song, index) => {
@@ -110,4 +101,4 @@ const FeaturedTracks = ({ currentUserId }) => {
     );
 };
 
-export default FeaturedTracks;
+export default PlaylistSongList;

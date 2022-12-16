@@ -23,7 +23,7 @@ import { PlaylistContext } from '../../stores/playlistStore';
 import defaultPreview from '../../assets/song_preview.jpg';
 import { UserContext } from '../../stores';
 
-const CurrentSong = (props) => {
+const MusicPageHeader = (props) => {
     const { id, title, url, thumbnail, author } = props.data;
 
     const [{ songList, songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
@@ -177,4 +177,4 @@ const CurrentSong = (props) => {
     );
 };
 
-export default CurrentSong;
+export default MusicPageHeader;
