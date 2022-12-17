@@ -1,29 +1,14 @@
 import { Box } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import fetchAPI from '../utils/fetchAPI';
 import { Helmet } from 'react-helmet';
 import PlaylistPageHeader from '../components/PlaylistPageHeader';
 import PlaylistSongList from '../components/PlaylistSongList';
+import usePlaylist from '../hooks/usePlaylist';
+import { PageHeaderSkeleton } from '../components/SquareSkeleton';
 
 const PlaylistPage = () => {
     const { id } = useParams();
-    const [data, setData] = useState(null);
-    const [playlist, setPlaylist] = useState();
-
-    useEffect(() => {
-        const fetchSong = async () => {
-            try {
-                const data = await fetchAPI(`/playlist/${id}`);
-                setData(data);
-            } catch (e) {}
-        };
-        if (id !== undefined) fetchSong();
-    }, [id]);
-
-    if (!data) {
-        return;
-    }
+    const { data, isLoading } = usePlaylist(id);
 
     return (
         <Box
@@ -36,10 +21,10 @@ const PlaylistPage = () => {
                 <title>Playlist Page</title>
             </Helmet>
             <Box mb={['24px']}>
-                <PlaylistPageHeader {...data} />
+                {isLoading ? <PageHeaderSkeleton /> : <PlaylistPageHeader {...data} isLoading={isLoading} />}
             </Box>
             <Box>
-                <PlaylistSongList songs={data.songs} />
+                <PlaylistSongList songs={data?.songs} isLoading={isLoading} />
             </Box>
         </Box>
     );

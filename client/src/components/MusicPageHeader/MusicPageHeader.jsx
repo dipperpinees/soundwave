@@ -26,7 +26,7 @@ import { UserContext } from '../../stores';
 const MusicPageHeader = (props) => {
     const { id, title, url, thumbnail, author } = props.data;
 
-    const [{ songList, songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
+    const [{ songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
     const playlistDispatch = useContext(PlaylistContext)[1];
     const user = useContext(UserContext)[0];
 
@@ -35,7 +35,7 @@ const MusicPageHeader = (props) => {
     const togglePlay = () => setPlayer({ type: 'Toggle' });
 
     const isPlayThisSong = id === songPlayed?.id;
-    const showPauseIcon = id === songPlayed?.id && isPlayed;
+    const showPauseIcon = isPlayThisSong && isPlayed;
 
     const [songName, singerName] = title?.split(' - ');
 

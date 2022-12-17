@@ -38,7 +38,7 @@ const Song = ({ ...props }) => {
     const download = () => window.open(url.replace('/upload/', '/upload/fl_attachment/'), '_blank');
 
     const isPlayThisSong = id === songPlayed?.id;
-    const showPauseIcon = id === songPlayed?.id && isPlayed;
+    const showPauseIcon = isPlayThisSong && isPlayed;
 
     const { isLikeIcon, isViewIcon } = props;
     const [songName, singerName] = title.split(' - ');
@@ -109,7 +109,7 @@ const Song = ({ ...props }) => {
                             whiteSpace={'nowrap'}
                             maxW={['90%', '90%']}
                             fontSize="md"
-                            color={showPauseIcon ? 'var(--primary-color)' : 'white'}
+                            color={isPlayThisSong ? 'var(--primary-color)' : 'white'}
                         >
                             <Link to={`/music/${id}`}>
                                 {songName}fkdsjf;lsdfj;l sdkjfl; ksdjf sd fjds;klfj sk;lfdjglkdfs glkdfs jgl;kdfs
@@ -160,7 +160,7 @@ const Song = ({ ...props }) => {
                             </Text>
                         </Flex>
                     )}
-
+                    {/* menu */}
                     <Flex height={'100%'} width={'24px'} align="center" justify="center">
                         <Menu autoSelect="false">
                             <MenuButton cursor={'pointer'} _hover={{ color: 'white' }} fontSize="md">

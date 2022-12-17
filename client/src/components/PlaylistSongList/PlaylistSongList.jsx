@@ -2,8 +2,9 @@ import Song from '../Song';
 import { Box, Heading, List, Flex, Text, Link, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { LineRightIcon, LineDownIcon } from '../Icon';
 import { useEffect, useState } from 'react';
+import { ProfileSongSkeleton } from '../SquareSkeleton';
 
-const PlaylistSongList = ({ songs }) => {
+const PlaylistSongList = ({ songs, isLoading }) => {
     const [data, setData] = useState();
 
     useEffect(() => {
@@ -30,15 +31,11 @@ const PlaylistSongList = ({ songs }) => {
         }
     };
 
-    if (!data) {
-        return;
-    }
-
     return (
         <Box>
             <Flex justifyContent="space-between">
                 <Heading fontSize={['1.2rem']}>Song List</Heading>
-                {data.length !== 0 && (
+                {!isLoading && data?.length !== 0 && (
                     <Flex justifyItems={'flex-end'} align={'center'}>
                         <Menu autoSelect="false">
                             <MenuButton as={Text} fontSize="md" cursor={'pointer'}>
@@ -66,7 +63,7 @@ const PlaylistSongList = ({ songs }) => {
                     </Flex>
                 )}
             </Flex>
-            {data.length === 0 && <Text>The playlist currently has no songs</Text>}
+            {!isLoading && data?.length === 0 && <Text>The playlist currently has no songs</Text>}
             <List>
                 {data &&
                     data.map((song, index) => {
@@ -86,6 +83,7 @@ const PlaylistSongList = ({ songs }) => {
                             />
                         );
                     })}
+                {isLoading && [...Array(5).keys()].map((id) => <ProfileSongSkeleton key={id} />)}
             </List>
             {data && data.length > 5 && (
                 <Flex justifyContent="end" mt="4px">

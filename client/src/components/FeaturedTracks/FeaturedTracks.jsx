@@ -1,8 +1,10 @@
 import Song from '../Song';
-import { Box, Heading, List, Flex, Text, Link, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { Box, Heading, List, Flex, Text, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { LineRightIcon, LineDownIcon } from '../Icon';
 import { useEffect, useState } from 'react';
 import fetchAPI from '../../utils/fetchAPI';
+import { ProfileSongSkeleton } from '../SquareSkeleton';
+import { Link } from 'react-router-dom';
 
 const FeaturedTracks = ({ currentUserId }) => {
     const [data, setData] = useState(null);
@@ -37,16 +39,12 @@ const FeaturedTracks = ({ currentUserId }) => {
         }
     };
 
-    if (!data) {
-        return;
-    }
-
     return (
         <Box>
             <Flex justifyContent="space-between">
                 {/* featured tracks heading */}
                 <Heading fontSize={['1.5rem']}>Featured Tracks</Heading>
-                {data.length !== 0 && (
+                {data?.length !== 0 && (
                     <Flex align={'center'}>
                         <Menu autoSelect="false">
                             <MenuButton as={Text} fontSize="md" cursor={'pointer'}>
@@ -74,31 +72,32 @@ const FeaturedTracks = ({ currentUserId }) => {
                     </Flex>
                 )}
             </Flex>
-            {data.length === 0 && <Text>The user currently has no songs</Text>}
             {/* featured tracks song list */}
             <List>
-                {data &&
-                    data.map((song, index) => {
-                        if (index >= 5) {
-                            return null;
-                        }
-                        return (
-                            <Song
-                                key={song.id}
-                                index={index}
-                                data={data}
-                                setData={setData}
-                                userName={'user name'}
-                                isLikeIcon={true}
-                                isViewIcon={true}
-                                borderBottom="1px solid rgba(255, 255, 255, 0.2)"
-                            />
-                        );
-                    })}
+                {data
+                    ? data.map((song, index) => {
+                          if (index >= 5) {
+                              return null;
+                          }
+                          return (
+                              <Song
+                                  key={song.id}
+                                  index={index}
+                                  data={data}
+                                  setData={setData}
+                                  userName={'user name'}
+                                  isLikeIcon={true}
+                                  isViewIcon={true}
+                                  borderBottom="1px solid rgba(255, 255, 255, 0.2)"
+                              />
+                          );
+                      })
+                    : [...Array(5).keys()].map((id) => <ProfileSongSkeleton key={id} />)}
             </List>
-            {data && data.length > 5 && (
+            {data?.length === 0 && <Text>The user currently has no songs</Text>}
+            {data && data.length > 4 && (
                 <Flex justifyContent="end" mt="4px">
-                    <Link href="#">
+                    <Link to="">
                         <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer">
                             See more
                             <LineRightIcon />

@@ -62,22 +62,26 @@ const PlaylistPageHeader = ({ id, name, songs, thumbnail }) => {
                     />
                 </Box>
             </Box>
-            <Box flex={['70%', '75%']} maxW={['70%', '75%']} pl={['12px', '24px', '48px']}>
+            <Box overflow="hidden" flex={['70%', '75%']} maxW={['70%', '75%']} pl={['12px', '24px', '48px']}>
+                <Heading
+                    fontSize={['0.8rem', '1rem', '1.2rem']}
+                    m={['0', '12px 0 0 0', '24px 0 12px 0']}
+                    color={'white'}
+                    fontWeight={'400'}
+                >
+                    Playlist
+                </Heading>
                 <Heading
                     textOverflow={'ellipsis'}
                     overflow="hidden"
                     whiteSpace={'nowrap'}
                     width={'90%'}
-                    fontSize={['0.8rem', '1rem', '1.2rem']}
-                    m={['12px 0 0 0', '24px 0 12px 0']}
-                    fontWeight={'400'}
+                    mb={['8px', '8px', '16px']}
+                    fontSize={['1.7rem', '2.5rem', '3rem']}
                 >
-                    Playlist
-                </Heading>
-                <Heading mb={['24px']} fontSize={['3rem']}>
                     {name}
                 </Heading>
-                <Text color={'whiteAlpha.600'}>
+                <Text width={'90%'} mb={['8px', '24px']} fontSize={['0.75rem', '1rem']} color={'whiteAlpha.600'}>
                     {songs.length +
                         ' songs - about ' +
                         (hours === 0 ? '' : hours + (hours === 1 ? 'hour' : ' hours ')) +
