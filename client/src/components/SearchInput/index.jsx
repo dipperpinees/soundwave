@@ -66,7 +66,6 @@ export default function SearchInput() {
                 <InputGroup width="100%" size="sm">
                     <InputLeftElement pointerEvents="none" children={<BiSearchAlt color="gray.300" />} />
                     <Input
-                        type="tel"
                         placeholder="Search for artists, song,..."
                         borderRadius="40px"
                         size="sm"

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import SongPreview from '../components/SongPreview';
 import SongSkeleton from '../components/SquareSkeleton';
+import { APP_NAME } from '../utils/constant';
 import fetchAPI from '../utils/fetchAPI';
 
 export default function FavoriteSongs() {
@@ -32,7 +33,7 @@ export default function FavoriteSongs() {
             minHeight={'calc(100vh - var(--header-height))'}
         >
             <Helmet>
-                <title>Favorite Songs</title>
+                <title>{APP_NAME}  - Favorite Songs</title>
             </Helmet>
             <Text as="h4" fontWeight={600} mb={2} fontSize="1.25rem" mt={4}>
                 Favorite Songs

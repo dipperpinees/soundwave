@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import Footer from './Footer';
 import Header from './Header';
 import Navbar from './Navbar';
 import './styles.scss';
@@ -15,6 +16,7 @@ export default function Layout({ children }) {
                 </>
             )}
             {children}
+            {location.pathname === '/' && <Footer />}
         </>
     );
 }

@@ -76,7 +76,7 @@ func (PlaylistService) FindMany(page int, search string, limit int, userID uint)
 	go func() {
 		db := common.GetDB()
 		if search != "" {
-			db = db.Where("title LIKE ?", "%"+search+"%")
+			db = db.Where("name LIKE ?", "%"+search+"%")
 		}
 		queueErr <- db.
 			Preload("Songs").

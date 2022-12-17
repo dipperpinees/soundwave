@@ -28,7 +28,7 @@
     }
 }
 
-select {
+select:not(.select-white) {
     option {
         background: black !important;
     }

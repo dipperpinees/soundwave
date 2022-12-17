@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useLayoutEffect } from 'react';
 import fetchAPI from '../utils/fetchAPI';
 import { Helmet } from 'react-helmet';
+import { APP_NAME } from '../utils/constant';
 // import { UserContext } from '../stores/userStore';
 
 const MusicPage = () => {
@@ -32,31 +33,34 @@ const MusicPage = () => {
     //     }
     // }, []);
 
-    if (!data) {
-        return;
-    }
-
+    console.log(data);
     return (
         <Box m={['0 24px', '0 24px', '0']} minH={'100vh'} className="music-page">
             <Helmet>
-                <title>Music Page</title>
+                <title>
+                    {APP_NAME} - {data ? data.title : 'Music Page'}
+                </title>
             </Helmet>
-            <Box mb={['24px']}>
-                <CurrentSong {...{ data }} />
-            </Box>
-            <Flex wrap={'wrap'}>
-                {/* width = image width */}
-                <Box flex={['100%', '100%', '25%']} maxW={['100%', '100%', '25%']}>
-                    <RelatedTracks id={data?.author?.id} />
-                </Box>
-                <Box
-                    flex={['100%', '100%', '75%']}
-                    maxW={['100%', '100%', '75%']}
-                    p={['0 0 12px', '0 0 24px', '0 48px 24px']}
-                >
-                    <Comments songId={id} />
-                </Box>
-            </Flex>
+            {data && (
+                <>
+                    <Box mb={['24px']}>
+                        <CurrentSong {...{ data }} />
+                    </Box>
+                    <Flex wrap={'wrap'}>
+                        {/* width = image width */}
+                        <Box flex={['100%', '100%', '25%']} maxW={['100%', '100%', '25%']}>
+                            <RelatedTracks id={data?.author?.id} />
+                        </Box>
+                        <Box
+                            flex={['100%', '100%', '75%']}
+                            maxW={['100%', '100%', '75%']}
+                            p={['0 0 12px', '0 0 24px', '0 48px 24px']}
+                        >
+                            <Comments songId={id} />
+                        </Box>
+                    </Flex>
+                </>
+            )}
         </Box>
     );
 };

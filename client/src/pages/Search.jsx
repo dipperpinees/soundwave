@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { BsFillPeopleFill, BsSoundwave } from 'react-icons/bs';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import Artist from '../components/Artist/index.';
+import Artist from '../components/Artist/index';
 import Pagination from '../components/Pagination';
 import SearchInput from '../components/SearchInput';
 import SongPreview from '../components/SongPreview';
@@ -12,6 +12,7 @@ import SongSkeleton from '../components/SquareSkeleton';
 import useSongs from '../hooks/useSongs';
 import useUsers from '../hooks/useUsers';
 import { GenreContext } from '../stores';
+import { APP_NAME } from '../utils/constant';
 
 export default function Search({ type }) {
     const location = useLocation();
@@ -43,6 +44,9 @@ export default function Search({ type }) {
             minHeight={'calc(100vh - var(--header-height))'}
             gap={4}
         >
+            <Helmet>
+                [<title>{APP_NAME} - Search</title>
+            </Helmet>
             {isMobile && <SearchInput />}
             <Flex flexWrap={{ base: 'wrap', md: 'inherit' }} gap={{ base: 2, md: 0 }}>
                 <Link to={`/search?q=${searchParams.get('q')}`}>

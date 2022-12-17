@@ -13,36 +13,43 @@ import (
 
 func Upload(c *gin.Context, filesStruct interface{}) error {
 	s := structs.New(filesStruct)
+	queueErr := make(chan error, len(s.Map()))
 	for key := range s.Map() {
-		field := s.Field(key)
-		if field.Tag("upload") == "" {
-			continue
-		}
-		tagArr := strings.Split(field.Tag("upload"), ",")
-		name := tagArr[0]
-		isRequired := tagArr[1] == "required"
-		fileType := tagArr[2]
+		go func(key string) {
+			field := s.Field(key)
+			if field.Tag("upload") == "" {
+				queueErr <- nil
+				return
+			}
+			tagArr := strings.Split(field.Tag("upload"), ",")
+			name := tagArr[0]
+			isRequired := tagArr[1] == "required"
+			fileType := tagArr[2]
 
-		file, err := c.FormFile(name)
-		if isRequired && err != nil {
-			return fmt.Errorf("%s required", key)
-		}
-		if !isRequired && err != nil {
-			continue
-		}
-		if !helper.IsValidContentType(fileType, file) {
-			return errors.New("invalid file type")
-		}
+			file, err := c.FormFile(name)
+			if isRequired && err != nil {
+				queueErr <- fmt.Errorf("%s required", key)
+				return
+			}
+			if !isRequired && err != nil {
+				queueErr <- nil
+				return
+			}
+			if !helper.IsValidContentType(fileType, file) {
+				queueErr <- errors.New("invalid file type")
+				return
+			}
 
-		dst := "public/" + file.Filename
-		c.SaveUploadedFile(file, dst)
-		defer os.Remove(dst)
+			dst := "public/" + file.Filename
+			c.SaveUploadedFile(file, dst)
+			defer os.Remove(dst)
 
-		uploadUrl, err := NewMediaUpload().Single(dst)
-		field.Set(uploadUrl)
-		if err != nil {
-			return err
-		}
+			uploadUrl, err := NewMediaUpload().Single(dst)
+			field.Set(uploadUrl)
+			queueErr <- err
+		}(key)
 	}
-	return nil
+
+	err := helper.GroupError(queueErr, len(s.Map()))
+	return err
 }
