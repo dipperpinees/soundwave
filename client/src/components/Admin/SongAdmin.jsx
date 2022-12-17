@@ -1,35 +1,128 @@
 import {
-    Table,
-    Thead,
-    Tbody,
-    Tfoot,
-    Tr,
-    Th,
-    Td,
-    TableCaption,
-    TableContainer,
-    Box,
-    Checkbox,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
     Avatar,
-    Flex,
+    Box,
     Button,
-    Icon,
+    Checkbox,
+    Flex,
+    Input,
+    InputGroup,
+    InputLeftElement,
+    Select,
+    Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
+    useToast,
 } from '@chakra-ui/react';
-import { MdDelete } from 'react-icons/md';
+import { useRef, useState } from 'react';
+import { BiSearchAlt } from 'react-icons/bi';
+import useDeleteSong from '../../hooks/useDeleteSong';
+import useSongs from '../../hooks/useSongs';
+import fetchAPI from '../../utils/fetchAPI';
+import formatDate from '../../utils/formatDate';
+
 export default function SongAdmin() {
+    const [search, setSearch] = useState('');
+    const [orderBy, setOrderBy] = useState('lastest');
+    const { data: songs, refetch } = useSongs(`limit=9999999&orderBy=${orderBy}&search=${search}`);
+    const [selected, setSelected] = useState({});
+    const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+    const debounce = useRef();
+    const toast = useToast();
+
+    const handleCheck = (isChecked, id) => {
+        selected[id] = isChecked;
+        setSelected({ ...selected });
+    };
+    const handleSearch = (e) => {
+        clearTimeout(debounce.current);
+        debounce.current = setTimeout(() => {
+            setSearch(e.target.value);
+        }, 500);
+    };
+
+    const handleSort = (e) => {
+        setOrderBy(e.target.value);
+    };
+
+    const handleDelete = async () => {
+        await Promise.all(Object.keys(selected).map((id) => fetchAPI(`/song/${id}`, { method: 'DELETE' })));
+        await refetch();
+        setOpenDeleteAlert(false);
+        toast({
+            title: 'Delete successfully',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+        });
+    };
+
     return (
         <>
-            <Button marginLeft={"auto"}>
-                <Icon as = {MdDelete} />
-                Delete
-            </Button>
+            <AlertDialog isOpen={openDeleteAlert} onClose={() => setOpenDeleteAlert(false)}>
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            Delete songs
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+
+                        <AlertDialogFooter>
+                            <Button onClose={() => setOpenDeleteAlert(false)}>Cancel</Button>
+                            <Button
+                                colorScheme="red"
+                                onClose={() => setOpenDeleteAlert(false)}
+                                ml={3}
+                                onClick={handleDelete}
+                            >
+                                Delete
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+            <Flex justifyContent="end" gap={4} mb={4}>
+                <InputGroup width={360}>
+                    <InputLeftElement pointerEvents="none" children={<BiSearchAlt color="gray.300" />} />
+                    <Input placeholder="Search" onChange={handleSearch} />
+                </InputGroup>
+                <Select width={180} className="select-white" onChange={handleSort}>
+                    <option value="lastest">Lastest</option>
+                    <option value="like">Most likes</option>
+                    <option value="listen">Most listens</option>
+                </Select>
+                <Button
+                    colorScheme="red"
+                    onClick={() => setOpenDeleteAlert(true)}
+                    disabled={!Object.keys(selected).length}
+                >
+                    Delete
+                </Button>
+            </Flex>
             <Box borderWidth={1} borderRadius={12}>
                 <TableContainer>
                     <Table variant="simple">
                         <Thead>
                             <Tr>
                                 <Th>
-                                    <Checkbox></Checkbox>
+                                    <Checkbox
+                                        onChange={(e) => {
+                                            songs?.data.forEach(({ id }) => {
+                                                selected[id] = e.target.checked;
+                                            });
+                                            setSelected({ ...selected });
+                                        }}
+                                    ></Checkbox>
                                 </Th>
                                 <Th>ID</Th>
                                 <Th>Title</Th>
@@ -41,48 +134,14 @@ export default function SongAdmin() {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Tr>
-                                <Td>
-                                    <Checkbox></Checkbox>
-                                </Td>
-                                <Td>
-                                    00001
-                                </Td>
-                                <Td>song 1</Td>
-                                <Td>100</Td>
-                                <Td>100</Td>
-                                <Td>Pop</Td>
-                                <Td>Author</Td>
-                                <Td>10/10/2002</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>
-                                    <Checkbox></Checkbox>
-                                </Td>
-                                <Td>
-                                    00002
-                                </Td>
-                                <Td>song 2</Td>
-                                <Td>100</Td>
-                                <Td>100</Td>
-                                <Td>Pop</Td>
-                                <Td>Author</Td>
-                                <Td>10/10/2002</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>
-                                    <Checkbox></Checkbox>
-                                </Td>
-                                <Td>
-                                    00003
-                                </Td>
-                                <Td>song 3</Td>
-                                <Td>100</Td>
-                                <Td>100</Td>
-                                <Td>Pop</Td>
-                                <Td>Author</Td>
-                                <Td>10/10/2002</Td>
-                            </Tr>
+                            {songs?.data.map((song) => (
+                                <Row
+                                    key={song.id}
+                                    {...song}
+                                    handleCheck={handleCheck}
+                                    isChecked={!!selected[song.id]}
+                                />
+                            ))}
                         </Tbody>
                     </Table>
                 </TableContainer>
@@ -90,3 +149,28 @@ export default function SongAdmin() {
         </>
     );
 }
+
+const Row = ({ id, thumbnail, title, likeNumber, playCount, genre, author, createdAt, handleCheck, isChecked }) => {
+    return (
+        <Tr key={id}>
+            <Td>
+                <Checkbox onChange={(e) => handleCheck(e.target.checked, id)} isChecked={isChecked}></Checkbox>
+            </Td>
+            <Td>{id}</Td>
+            <Td>
+                <Flex align="center" gap={2}>
+                    <Avatar name={title} src={thumbnail} /> {title}
+                </Flex>
+            </Td>
+            <Td>{likeNumber}</Td>
+            <Td>{playCount}</Td>
+            <Td>{genre.name}</Td>
+            <Td>
+                <Flex align="center" gap={2}>
+                    <Avatar name={author.name} src={author.avatar} /> {author.name}
+                </Flex>
+            </Td>
+            <Td>{formatDate(createdAt)}</Td>
+        </Tr>
+    );
+};

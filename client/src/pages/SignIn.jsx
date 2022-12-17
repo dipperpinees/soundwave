@@ -19,6 +19,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../stores';
 import { LoadingContext } from '../stores/loadingStore';
 import '../styles/SignIn.scss';
+import { APP_NAME } from '../utils/constant';
 import fetchAPI from '../utils/fetchAPI';
 
 export default function SignIn() {
@@ -84,7 +85,7 @@ export default function SignIn() {
     return (
         <Flex width="100%" justify="center" align="center" direction="column" height="100vh" color="white">
             <Helmet>
-                <title>Sign In</title>
+                <title>Sign In - {APP_NAME}</title>
             </Helmet>
             <Box fontSize="4xl" mb={8}>
                 <h1>Sign in</h1>

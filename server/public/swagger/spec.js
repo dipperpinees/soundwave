@@ -628,9 +628,29 @@ var spec =
         },
         "/user/{userID}/songs": {
             get: {
-                tags: ["user"],
+                tags: ["user", "song"],
                 summary: "Lấy các bài nhạc user đã đăng tải",
                 operationId: "GetSongOfUser",
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "userID",
+                        type: "int",
+                    }
+                ],
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
+        "/user/{userID}/playlists": {
+            get: {
+                tags: ["user", "playlist"],
+                summary: "Lấy playlist của user",
+                operationId: "GetPlaylistsOfUser",
                 produces: ["application/json"],
                 parameters: [
                     {
@@ -745,24 +765,20 @@ var spec =
                 tags: ["playlist"],
                 summary: "Tạo playlist",
                 operationId: "CreatePlaylist",
-                consumes: ["application/json"],
+                consumes: ["multipart/form-data"],
                 produces: ["application/json"],
-                parameters: [              
+                parameters: [
                     {
-                        "in": "body",      
-                        "name": "Thông tin playlist",  
-                        "required": "true",   
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "string"
-                                },
-                                "songs": {
-                                    "type": "string"
-                                }
-                            }
-                        },
+                        in: "formData",
+                        name: "thumbnail",
+                        type: "file",
+                        required: true
+                    },
+                    {
+                        in: "formData",
+                        name: "name",
+                        type: "string",
+                        required: true
                     }
                 ],
                 responses: {
@@ -773,8 +789,28 @@ var spec =
             },
             get: {
                 tags: ["playlist"],
-                summary: "Lấy thông tin playlist",
-                operationId: "GetPlaylist",
+                summary: "Lấy danh sách các playlist",
+                operationId: "GetPlaylists",
+                responses: {
+                    200: {                                    
+                        description: "OK",   
+                    },
+                }
+            }
+        },
+        "/playlist/{playlistID}": {
+            get: {
+                tags: ["playlist"],
+                summary: "Lấy playlist bằng id",
+                operationId: "GetPlaylistByID",
+                produces: ["application/json"],
+                parameters: [
+                    {
+                        in: "path",
+                        name: "playlistID",
+                        type: "int",
+                    }
+                ],
                 responses: {
                     200: {                                    
                         description: "OK",   

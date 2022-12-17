@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../stores';
 import { LoadingContext } from '../stores/loadingStore';
 import '../styles/SignUp.scss';
+import { APP_NAME } from '../utils/constant';
 import fetchAPI from '../utils/fetchAPI';
 
 export default function SignUp() {
@@ -50,7 +51,7 @@ export default function SignUp() {
     return (
         <Flex width="100%" justify="center" align="center" direction="column" minHeight="100vh" color="white">
             <Helmet>
-                <title>Sign Up</title>
+                <title>Sign Up - {APP_NAME}</title>
             </Helmet>
             <Box fontSize="4xl">
                 <h1>Sign up</h1>

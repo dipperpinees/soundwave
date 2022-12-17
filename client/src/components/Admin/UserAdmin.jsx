@@ -2,9 +2,11 @@ import {
     Avatar,
     Box,
     Button,
-    Checkbox,
     Flex,
-    Icon,
+    Input,
+    InputGroup,
+    InputLeftElement,
+    Select,
     Table,
     TableContainer,
     Tbody,
@@ -13,33 +15,54 @@ import {
     Thead,
     Tr,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import { MdDelete } from 'react-icons/md';
+import { useRef, useState } from 'react';
+import { BiSearchAlt } from 'react-icons/bi';
 import useUsers from '../../hooks/useUsers';
 import fetchAPI from '../../utils/fetchAPI';
 import formatDate from '../../utils/formatDate';
 
 export default function UserAdmin() {
-    const { data: users } = useUsers("");
+    const [search, setSearch] = useState('');
+    const [orderBy, setOrderBy] = useState('lastest');
+    const { data: users } = useUsers(`limit=9999999&orderBy=${orderBy}&search=${search}`);
     const [selected, setSelected] = useState({});
+    const debounce = useRef();
 
     const handleCheck = (isChecked, id) => {
         selected[id] = isChecked;
         setSelected({ ...selected });
     };
 
+    const handleSearch = (e) => {
+        clearTimeout(debounce.current);
+        debounce.current = setTimeout(() => {
+            setSearch(e.target.value);
+        }, 500);
+    };
+
+    const handleSort = (e) => {
+        setOrderBy(e.target.value);
+    };
+
     return (
         <>
-            <Button marginLeft={'auto'}>
-                <Icon as={MdDelete} />
-                Delete
-            </Button>
+            <Flex justifyContent="end" gap={4} mb={4}>
+                <InputGroup width={360}>
+                    <InputLeftElement pointerEvents="none" children={<BiSearchAlt color="gray.300" />} />
+                    <Input placeholder="Search" onChange={handleSearch} />
+                </InputGroup>
+                <Select width={180} className="select-white" onChange={handleSort}>
+                    <option value="lastest">Lastest</option>
+                    <option value="follow">Most followers</option>
+                    <option value="track">Most tracks</option>
+                </Select>
+            </Flex>
             <Box borderWidth={1} borderRadius={12}>
                 <TableContainer>
                     <Table variant="simple">
                         <Thead>
                             <Tr>
-                                <Th>
+                                {/* <Th>
                                     <Checkbox
                                         onChange={(e) => {
                                             users?.data.forEach(({ id }) => {
@@ -48,7 +71,8 @@ export default function UserAdmin() {
                                             setSelected({ ...selected });
                                         }}
                                     ></Checkbox>
-                                </Th>
+                                </Th> */}
+                                <Th>ID</Th>
                                 <Th>User</Th>
                                 <Th>Number of songs</Th>
                                 <Th>Followers</Th>
@@ -90,12 +114,13 @@ const Row = ({
     };
     return (
         <Tr key={id}>
-            <Td>
+            {/* <Td>
                 <Checkbox onChange={(e) => handleCheck(e.target.checked, id)} isChecked={isChecked}></Checkbox>
-            </Td>
+            </Td> */}
+            <Td>{id}</Td>
             <Td>
                 <Flex align="center" gap={2}>
-                    <Avatar colorScheme={name} name="Uchiha kakashi" src={avatar} /> {name}
+                    <Avatar name={name}  src={avatar} /> {name}
                 </Flex>
             </Td>
             <Td>{trackNumber}</Td>

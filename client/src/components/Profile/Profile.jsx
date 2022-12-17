@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Flex, Heading, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
-import { FaUserPlus, FaUserMinus } from 'react-icons/fa';
+import { FaUserPlus } from 'react-icons/fa';
 import fetchAPI from '../../utils/fetchAPI';
 import Describe from './Describe';
 

@@ -82,7 +82,7 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
     }, [])
 
     //dont show on signin signup page
-    if (location.pathname === '/signin' || location.pathname === '/signup' || !songList.length) return null;
+    if (["/signin", "/signup", "/admin"].includes(location.pathname) || !songList.length) return null;
 
     return (
         <>

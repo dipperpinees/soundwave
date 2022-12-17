@@ -99,11 +99,11 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                         <Icon
                             as={AiFillHeart}
                             color={isLiked ? 'tomato' : 'white'}
-                            fontSize="0.75rem"
+                            fontSize="1rem"
                             onClick={likeSong}
                         />
-                        <Icon as={MdPlaylistAdd} onClick={addToNextUp} />
-                        <Menu strategy="fixed">
+                        <Icon as={MdPlaylistAdd} onClick={addToNextUp} fontSize="1.25rem"/>
+                        <Menu strategy="fixed" fontSize="1.25rem">
                             <MenuButton>
                                 <Icon as={MdOutlineMoreHoriz} display="flex" />
                             </MenuButton>
@@ -134,7 +134,7 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                 {!isOwner && (
                     <Text fontSize="0.875rem" fontWeight={600} className="one-line-title">
                         <Link to={`/music/${song.id}`}>
-                            {isPlayThisSong && <Image width={3} mr={1} src={waveGif} display="inline" />}
+                            {isPlayThisSong && isPlayed && <Image width={3} mr={1} src={waveGif} display="inline" />}
                             {song.title}
                         </Link>
                     </Text>

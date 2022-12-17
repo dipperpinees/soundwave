@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import { BsFillPeopleFill, BsSoundwave } from 'react-icons/bs';
 import { Link, useSearchParams } from 'react-router-dom';
 import { PlaylistLibrary, SongsLibrary } from '../components/Library';
+import { APP_NAME } from '../utils/constant';
 
 export default function Library() {
     const [searchParams] = useSearchParams();
@@ -26,7 +27,7 @@ export default function Library() {
             minHeight={'calc(100vh - var(--header-height))'}
         >
             <Helmet>
-                <title>Library</title>
+                <title>{APP_NAME} - Library</title>
             </Helmet>
             <Flex gap={2} mb={4} mt={4}>
                 <Link to="/library?q=songs">

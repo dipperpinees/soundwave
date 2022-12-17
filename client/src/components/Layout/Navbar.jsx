@@ -1,12 +1,13 @@
-import { Box, Flex, Icon, Text, useMediaQuery } from '@chakra-ui/react';
+import { Box, Flex, Icon, Image, Text, useMediaQuery } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import { HiHeart, HiHome, HiMusicalNote } from 'react-icons/hi2';
 import { MdClose, MdLibraryMusic } from 'react-icons/md';
 import { RiSearch2Line, RiUploadCloud2Fill } from 'react-icons/ri';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { UserContext } from '../../stores';
+import { ICON } from '../../utils/image';
 
 function Navbar() {
     const user = useContext(UserContext)[0];
@@ -71,9 +72,11 @@ function Navbar() {
                 {...(isMobile && mobileNavbarAnimation)}
             >
                 {!isMobile && (
-                    <Text position="absolute" top={5}>
-                        LOGO
-                    </Text>
+                    <Flex position="absolute" top={3}>
+                        <Link to="/">
+                            <Image src={ICON} width={16} />
+                        </Link>
+                    </Flex>
                 )}
                 {isMobile && (
                     <Icon
@@ -94,13 +97,15 @@ function Navbar() {
                 >
                     <Icon as={HiHome} fontSize="1.75rem" />
                 </NavLink>
-                {isMobile && <NavLink
-                    to="/search"
-                    style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}
-                    onClick={closeMobileBar}
-                >
-                    <Icon as={RiSearch2Line} fontSize="1.75rem" />
-                </NavLink>}
+                {isMobile && (
+                    <NavLink
+                        to="/search"
+                        style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}
+                        onClick={closeMobileBar}
+                    >
+                        <Icon as={RiSearch2Line} fontSize="1.75rem" />
+                    </NavLink>
+                )}
                 <Icon as={HiMusicalNote} fontSize="1.75rem" onClick={closeMobileBar} />
                 {!!user.id && (
                     <NavLink to="/favorite" style={({ isActive }) => (isActive ? { color: 'white' } : undefined)}>
