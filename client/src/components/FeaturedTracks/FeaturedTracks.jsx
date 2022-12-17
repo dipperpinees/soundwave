@@ -52,7 +52,7 @@ const FeaturedTracks = ({ currentUserId }) => {
                                     Sort <LineDownIcon />
                                 </Flex>
                             </MenuButton>
-                            <MenuList minW="20px">
+                            <MenuList minW={24} border="none" fontSize="0.875rem">
                                 <MenuItem
                                     onClick={() => {
                                         sortSongs('view');

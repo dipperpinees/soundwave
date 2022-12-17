@@ -8,16 +8,16 @@ import { UserContext } from '../stores/userStore';
 import { PlaylistLibrary } from '../components/Library';
 import { Helmet } from 'react-helmet';
 import { ProfileSkeleton } from '../components/SquareSkeleton';
+import { APP_NAME } from '../utils/constant';
 
 const ProfilePage = () => {
     const { id } = useParams();
-    const { data, isLoading } = useProfile(id);
+    const { data } = useProfile(id);
     const [user] = useContext(UserContext);
-
     return (
         <Box m={['0 24px', '0 24px', '0 24px 0 360px']} minHeight="100vh" sx={{ paddingTop: '80px' }} color={'white'}>
             <Helmet>
-                <title>Profile Page</title>
+                [<title>{APP_NAME} - {data ? data.name : 'Profile Page'}</title>
             </Helmet>
             <Box
                 className="profile-container"

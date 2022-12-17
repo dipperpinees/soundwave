@@ -7,6 +7,7 @@ import { useState, useLayoutEffect } from 'react';
 import fetchAPI from '../utils/fetchAPI';
 import { Helmet } from 'react-helmet';
 import { PageHeaderSkeleton } from '../components/SquareSkeleton';
+import { APP_NAME } from '../utils/constant';
 
 const MusicPage = () => {
     const { id } = useParams();
@@ -31,7 +32,9 @@ const MusicPage = () => {
             color={'white'}
         >
             <Helmet>
-                <title>Music Page</title>
+                <title>
+                    {APP_NAME} - {data ? data.title : 'Music Page'}
+                </title>
             </Helmet>
             <Box mb={['24px']}>{data ? <MusicPageHeader {...{ data }} /> : <PageHeaderSkeleton />}</Box>
             {data && (

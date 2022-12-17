@@ -210,7 +210,7 @@ export function PlayerStore({ children }) {
     }, [songPlayed]);
 
     useEffect(() => {
-        if (location.pathname === '/signin' || location.pathname === '/signup') dispatch({ type: 'Pause' });
+        if (['/signin', '/signup', '/admin'].includes(location.pathname)) dispatch({ type: 'Pause' });
     }, [location]);
 
     return (

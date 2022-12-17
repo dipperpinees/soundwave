@@ -9,10 +9,11 @@ import {
     Flex,
     Icon,
     Image,
-    Text,
+    Text
 } from '@chakra-ui/react';
 import React, { useContext } from 'react';
-import { BsFillPlayFill, BsPauseFill, BsX } from 'react-icons/bs';
+import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
+import { IoMdRemove } from 'react-icons/io';
 import { PlayerContext } from '../../stores';
 import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
 
@@ -75,7 +76,7 @@ export function NextUp({ isOpen, toggleOpen }) {
                                     </Flex>
                                     <Icon
                                         fontSize={20}
-                                        as={BsX}
+                                        as={IoMdRemove}
                                         _hover={{ cursor: 'pointer' }}
                                         ml="auto"
                                         onClick={removeSong(id)}
