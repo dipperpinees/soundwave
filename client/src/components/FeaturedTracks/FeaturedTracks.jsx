@@ -95,7 +95,7 @@ const FeaturedTracks = ({ currentUserId }) => {
                     : [...Array(5).keys()].map((id) => <ProfileSongSkeleton key={id} />)}
             </List>
             {data?.length === 0 && <Text>The user currently has no songs</Text>}
-            {data && data.length > 4 && (
+            {data && data.length > 5 && (
                 <Flex justifyContent="end" mt="4px">
                     <Link to="">
                         <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer">
