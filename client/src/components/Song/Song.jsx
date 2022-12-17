@@ -23,15 +23,14 @@ import waveGif from '../../assets/animated.gif';
 import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
 import { PlaylistContext, UserContext } from '../../stores';
 
-const Song = ({ ...props }) => {
-    const { data } = props;
-    const { id, title, thumbnail, author, playCount, url, duration } = data[props.index];
+const Song = ({ isLikeIcon, isViewIcon, ...props }) => {
+    const { id, title, thumbnail, author, playCount, url, duration } = props.data[props.index];
 
     const [{ songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
     const playlistDispatch = useContext(PlaylistContext)[1];
     const user = useContext(UserContext)[0];
 
-    const addAndPlay = () => setPlayer({ type: 'Add', payload: data[props.index] });
+    const addAndPlay = () => setPlayer({ type: 'Add', payload: props.data[props.index] });
 
     const togglePlay = () => setPlayer({ type: 'Toggle' });
 
@@ -40,13 +39,12 @@ const Song = ({ ...props }) => {
     const isPlayThisSong = id === songPlayed?.id;
     const showPauseIcon = isPlayThisSong && isPlayed;
 
-    const { isLikeIcon, isViewIcon } = props;
     const [songName, singerName] = title.split(' - ');
 
     return (
         <Box color={'whiteAlpha.700'} id={id} borderBottom="1px solid rgba(255, 255, 255, 0.2)" padding="12px 0">
             <Flex h="42px" overflow="hidden">
-                <Flex flex={1} maxW={['70%', '64%', '64%']}>
+                <Flex flex={1} overflow={'hidden'}>
                     <Box
                         className="image-song"
                         pos={'relative'}
@@ -101,28 +99,18 @@ const Song = ({ ...props }) => {
                             />
                         </Center>
                     </Box>
-                    <Box ml={2} flex="1" maxW={['75%', '75%']}>
+                    <Box ml={'8px'} flex="1" overflow={'hidden'}>
                         {/* Song name */}
                         <Text
                             textOverflow={'ellipsis'}
                             overflow="hidden"
                             whiteSpace={'nowrap'}
-                            maxW={['90%', '90%']}
                             fontSize="md"
                             color={isPlayThisSong ? 'var(--primary-color)' : 'white'}
                         >
-                            <Link to={`/music/${id}`}>
-                                {songName}fkdsjf;lsdfj;l sdkjfl; ksdjf sd fjds;klfj sk;lfdjglkdfs glkdfs jgl;kdfs
-                                j;lgksj d;lgkjs d;gljdsk fg;lsdjfk gl;fdkj g
-                            </Link>
+                            <Link to={`/music/${id}`}>{songName}</Link>
                         </Text>
-                        <Flex
-                            fontSize="xs"
-                            fontWeight={'600'}
-                            overflow={'hidden'}
-                            whiteSpace={'nowrap'}
-                            maxW={['90%', '90%']}
-                        >
+                        <Flex fontSize="xs" fontWeight={'600'} overflow={'hidden'} whiteSpace={'nowrap'}>
                             <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
                             <Text m="0 4px">-</Text>
                             <Text textOverflow={'ellipsis'} overflow="hidden">
@@ -132,10 +120,10 @@ const Song = ({ ...props }) => {
                         </Flex>
                     </Box>
                 </Flex>
-                <Flex ml={'auto'}>
+                <Flex>
                     {/* like number */}
                     {isLikeIcon && (
-                        <Flex alignItems="center" margin="0">
+                        <Flex ml={'8px'} alignItems="center">
                             <LikeIcon {...props} />
                         </Flex>
                     )}
