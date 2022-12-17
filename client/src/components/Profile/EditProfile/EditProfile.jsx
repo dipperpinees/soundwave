@@ -24,13 +24,12 @@ import fetchAPI from '../../../utils/fetchAPI';
 import { UserContext } from '../../../stores';
 // import { EditProfileContext } from '../../stores';
 
-const EditProfile = ({ data, ...props }) => {
+const EditProfile = ({ data, isEditProfile, setIsEditProfile }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
 
     const userDispatch = useContext(UserContext)[1];
 
-    const { isEditProfile, setIsEditProfile } = props;
     const [imageURL, setImageURL] = useState('');
     const [inputAvatar, setInputAvatar] = useState();
     const [inputUserName, setInputUserName] = useState('');

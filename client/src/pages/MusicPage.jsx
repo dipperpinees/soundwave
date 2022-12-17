@@ -1,51 +1,44 @@
 import { Box, Flex } from '@chakra-ui/react';
-import CurrentSong from '../components/CurrentSong';
+import MusicPageHeader from '../components/MusicPageHeader';
 import Comments from '../components/Comments';
 import RelatedTracks from '../components/RelatedTracks/RelatedTracks';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useLayoutEffect } from 'react';
 import fetchAPI from '../utils/fetchAPI';
 import { Helmet } from 'react-helmet';
 import { APP_NAME } from '../utils/constant';
-// import { UserContext } from '../stores/userStore';
+import { PageHeaderSkeleton } from '../components/SquareSkeleton';
 
 const MusicPage = () => {
     const { id } = useParams();
-    // const [user] = useContext(UserContext);
-    // const navigate = useNavigate();
     const [data, setData] = useState(null);
 
+    // fetch data
     useLayoutEffect(() => {
-        const fetchSong = async () => {
+        const getSong = async () => {
             try {
                 const data = await fetchAPI(`/song/${id}`);
                 setData(data);
             } catch (e) {}
         };
-        if (id !== undefined) fetchSong();
+        if (id !== undefined) getSong();
     }, [id]);
 
-    // chuyển hướng nếu chưa đăng nhập
-    // useLayoutEffect(() => {
-    //     if (user.id === 0) {
-    //         navigate('/signin');
-    //         return;
-    //     }
-    // }, []);
-
-    console.log(data);
     return (
-        <Box m={['0 24px', '0 24px', '0']} minH={'100vh'} className="music-page">
+        <Box
+            p={'calc(var(--header-height) + 24px) 0 0 var(--navbar-width) '}
+            m={['0 24px', '0 24px', '0']}
+            minH={'100vh'}
+            color={'white'}
+        >
             <Helmet>
                 <title>
                     {APP_NAME} - {data ? data.title : 'Music Page'}
                 </title>
             </Helmet>
+            <Box mb={['24px']}>{data ? <MusicPageHeader {...{ data }} /> : <PageHeaderSkeleton />}</Box>
             {data && (
                 <>
-                    <Box mb={['24px']}>
-                        <CurrentSong {...{ data }} />
-                    </Box>
                     <Flex wrap={'wrap'}>
                         {/* width = image width */}
                         <Box flex={['100%', '100%', '25%']} maxW={['100%', '100%', '25%']}>

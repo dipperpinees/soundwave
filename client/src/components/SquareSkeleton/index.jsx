@@ -1,5 +1,7 @@
 import { AspectRatio, Skeleton, Stack } from '@chakra-ui/react';
 export { default as ProfileSongSkeleton } from './ProfileSongSkeleton';
+export { default as ProfileSkeleton } from './ProfileSkeleton';
+export { default as PageHeaderSkeleton } from './PageHeaderSkeleton';
 
 export default function SongSkeleton() {
     return (
