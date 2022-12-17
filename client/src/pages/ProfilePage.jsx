@@ -17,7 +17,6 @@ const ProfilePage = () => {
     return (
         <Box m={['0 24px', '0 24px', '0 24px 0 360px']} minHeight="100vh" sx={{ paddingTop: '80px' }} color={'white'}>
             <Helmet>
-                [
                 <title>
                     {APP_NAME} - {data ? data.name : 'Profile Page'}
                 </title>

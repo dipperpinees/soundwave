@@ -8,11 +8,13 @@ import { useState } from 'react';
 const Comments = ({ songId }) => {
     const [comments, setComments] = useState(null);
 
+    console.log('re render');
+
     useEffect(() => {
         const getComments = async () => {
             try {
                 const response = await fetchAPI(`/song/${songId}/comment`);
-                setComments(response);
+                setComments(response.reverse());
             } catch (e) {}
         };
         songId !== undefined && getComments();
@@ -20,21 +22,20 @@ const Comments = ({ songId }) => {
 
     const sortComments = (typeSort) => {
         let sortFn;
+        console.log('sort');
         switch (typeSort) {
-            case 'new':
-                sortFn = (a, b) => b.playCount - a.playCount;
+            case 'latest':
+                sortFn = (a, b) => b.updated_at.localeCompare(a.updated_at);
                 break;
-            case 'old':
-                sortFn = (a, b) => b.likeNumber - a.likeNumber;
+            case 'oldest':
+                sortFn = (a, b) => a.updated_at.localeCompare(b.updated_at);
                 break;
-            // case 'like'
-            //     sortFunction = (a, b) => a.download > b.download;
             default:
                 sortFn = (a, b) => 0;
                 break;
         }
         if (comments) {
-            let newComments = [...Comments];
+            const newComments = [...comments];
             newComments.sort(sortFn);
             setComments(newComments);
         }
@@ -56,7 +57,7 @@ const Comments = ({ songId }) => {
                     >
                         <option value="latest">Latest</option>
                         <option value="oldest">Oldest</option>
-                        <option value="like">Like</option>
+                        {/* <option value="like">Like</option> */}
                     </Select>
                 </Flex>
                 <Box mb={'16px'}>
