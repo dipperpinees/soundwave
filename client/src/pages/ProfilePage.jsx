@@ -2,19 +2,18 @@ import { Box } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import FeaturedTracks from '../components/FeaturedTracks';
-import { PlaylistLibrary } from '../components/Library';
 import Profile from '../components/Profile';
 import useProfile from '../hooks/useProfile';
 import { UserContext } from '../stores/userStore';
-import { APP_NAME } from '../utils/constant';
+import { PlaylistLibrary } from '../components/Library';
 import { Helmet } from 'react-helmet';
 import { ProfileSkeleton } from '../components/SquareSkeleton';
+import { APP_NAME } from '../utils/constant';
 
 const ProfilePage = () => {
     const { id } = useParams();
     const { data, isLoading } = useProfile(id);
     const [user] = useContext(UserContext);
-
     return (
         <Box m={['0 24px', '0 24px', '0 24px 0 360px']} minHeight="100vh" sx={{ paddingTop: '80px' }} color={'white'}>
             <Helmet>
