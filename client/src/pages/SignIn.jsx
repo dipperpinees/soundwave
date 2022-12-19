@@ -7,11 +7,19 @@ import {
     FormLabel,
     Icon,
     Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Text,
+    useDisclosure,
     useToast,
 } from '@chakra-ui/react';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { Link, useNavigate } from 'react-router-dom';
@@ -27,9 +35,26 @@ export default function SignIn() {
         formState: { errors },
     } = useForm();
     const userDispatch = useContext(UserContext)[1];
+    const [enopas, setEnopas] = useState('');
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const navigate = useNavigate();
     const toast = useToast();
     const setLoading = useContext(LoadingContext)[1];
+
+    const forgetPassword = async () => {
+        try {
+            const changePass = await fetchAPI('/password/forget', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({"email": enopas}),
+            })
+            console.log(changePass)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const onSubmit = async ({ email, password }) => {
         setLoading(true);
@@ -106,6 +131,7 @@ export default function SignIn() {
                                 Email address
                             </FormLabel>
                             <Input
+                                type='email'
                                 name="email"
                                 id="email"
                                 {...register(
@@ -134,9 +160,39 @@ export default function SignIn() {
                             <FormLabel fontSize="0.875rem" mb={1} mr={0}>
                                 <Flex align="center" justify="space-between">
                                     <Text>Password</Text>
-                                    <Text fontSize="0.875rem" color="var(--primary-color)">
+                                    <Button type = 'submit' fontSize="0.875rem" color="var(--primary-color)" onClick={onOpen} backgroundColor='transparent'>
                                         Forgot Password
-                                    </Text>
+                                    </Button>
+                                    <Modal isOpen={isOpen} onClose={onClose}>
+                                        <ModalOverlay />
+                                        <ModalContent>
+                                            <ModalHeader>Modal Title</ModalHeader>
+                                            <ModalCloseButton />
+                                            <ModalBody>
+                                                <FormControl isInvalid = {errors.email}>
+                                                <FormLabel className="inputLabel" color='black'>Email address</FormLabel>
+                                                    <Input type='email'
+                                                    id = 'enopas'
+                                                    {...register('enopas', {required: 'Email is required'},
+                                                    {pattern: {
+                                                        value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                                        message: 'Please enter a valid email',
+                                                    }}
+                                                    )}
+                                                    onChange = {(event)=>{setEnopas(event.target.value)}}
+                                                    className="inputUser" style={{height: '58px', fontSize: '14px', backgroundColor:'#FFFFFF', border:"1px solid #000"}}/>
+                                                    <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+                                                </FormControl>
+                                            </ModalBody>
+
+                                            <ModalFooter>
+                                                <Button colorScheme='red' mr={3} onClick={onClose}>
+                                                    Close
+                                                </Button>
+                                                <Button colorScheme='green'onClick={forgetPassword}>Send code</Button>
+                                            </ModalFooter>
+                                        </ModalContent>
+                                    </Modal>
                                 </Flex>
                             </FormLabel>
 
@@ -178,7 +234,7 @@ export default function SignIn() {
                     OR
                 </Text>
                 <Button
-                    colorSheme="primary"
+                    colorScheme="primary"
                     variant="outline"
                     width="100%"
                     color="white"
