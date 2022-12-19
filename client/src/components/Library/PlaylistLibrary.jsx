@@ -6,9 +6,9 @@ import { UserContext } from '../../stores';
 import PlaylistPreview from '../Playlists/PlaylistPreview';
 import SongSkeleton from '../SquareSkeleton';
 
-const PlaylistLibrary = ({ userId }) => {
+const PlaylistLibrary = () => {
     const user = useContext(UserContext)[0];
-    const { data: playlists } = useUserPlaylist(userId || user.id);
+    const { data: playlists } = useUserPlaylist(user.id);
     const { mutate: handleDelete } = useDeletePlaylist();
 
     return (

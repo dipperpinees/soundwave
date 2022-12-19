@@ -31,6 +31,7 @@ import useUserSongs from '../../hooks/useUserSongs';
 import { GenreContext, UserContext } from '../../stores';
 import { LoadingContext } from '../../stores/loadingStore';
 import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
+import Pagination from '../Pagination';
 import SongPreview from '../SongPreview';
 import SongSkeleton from '../SquareSkeleton';
 
@@ -40,6 +41,13 @@ export default function SongsLibrary() {
     const [deleteTrack, setDeleteTrack] = useState(null);
     const { data: tracks } = useUserSongs(user.id);
     const { mutate: deleteSong } = useDeleteSong();
+    const [paginate, setPaginate] = useState({page: 1, totalPages: 1});
+
+    useEffect(() => {
+        if (tracks) {
+            setPaginate({page: 1, totalPages: Math.ceil(tracks.length / 12)})
+        }
+    }, [tracks])
 
     return (
         <>
@@ -56,21 +64,30 @@ export default function SongsLibrary() {
             >
                 {!tracks
                     ? [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)
-                    : tracks.map((song) => (
-                          <SongPreview
-                              key={song.id}
-                              song={song}
-                              isOwner={true}
-                              onDelete={() => setDeleteTrack(song.id)}
-                              onEdit={() => setEditedTrack(song)}
-                          />
-                      ))}
+                    : tracks
+                          .slice(12*(paginate.page - 1), 12 * (paginate.page - 1) + 12)
+                          .map((song) => (
+                              <SongPreview
+                                  key={song.id}
+                                  song={song}
+                                  isOwner={true}
+                                  onDelete={() => setDeleteTrack(song.id)}
+                                  onEdit={() => setEditedTrack(song)}
+                              />
+                          ))}
             </Grid>
             {tracks?.length === 0 && <Text>You haven't uploaded any songs yet</Text>}
             {editedTrack && <EditTrack editedTrack={editedTrack} onClose={() => setEditedTrack(null)} />}
             {deleteTrack && (
                 <DeleteTrackAlert onClose={() => setDeleteTrack(null)} onDelete={() => deleteSong(deleteTrack)} />
             )}
+            {paginate.totalPages > 1 && <Pagination
+                onChangePage={(page) => setPaginate({...paginate, page})}
+                paginator={{
+                    totalPages: paginate.totalPages,
+                    page: paginate.page,
+                }}
+            />}
         </>
     );
 }
