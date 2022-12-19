@@ -23,6 +23,7 @@ import fetchAPI from '../utils/fetchAPI';
 import { UserContext } from './userStore';
 import { AiFillCamera } from 'react-icons/ai';
 import { DEFAULT_PLAYLIST_THUMBNAIL } from '../utils/image';
+import { LoadingContext } from './loadingStore';
 
 const initialState = {
     playlists: [],
@@ -85,16 +86,20 @@ const CreatePlaylist = ({ onClose, showAddSong, isBack }) => {
     const toast = useToast();
     const [thumbnail, setThumbnail] = useState({ src: '', file: null });
     const thumbnailRef = useRef();
+    const setLoading = useContext(LoadingContext)[1];
+
     const submit = async () => {
+        setLoading(true);
         try {
             const formData = new FormData();
             if (thumbnail.src) formData.append('thumbnail', thumbnailRef.current.files[0]);
             formData.append('name', name);
             await fetchAPI('/playlist/', {
                 method: 'POST',
-                
+
                 body: formData,
             });
+            setLoading(false);
             toast({
                 title: 'Create playlist successfully',
                 status: 'success',
@@ -103,6 +108,7 @@ const CreatePlaylist = ({ onClose, showAddSong, isBack }) => {
             });
             isBack ? showAddSong() : onClose();
         } catch (e) {
+            setLoading(false);
             toast({
                 title: e.message,
                 status: 'error',
@@ -116,7 +122,7 @@ const CreatePlaylist = ({ onClose, showAddSong, isBack }) => {
         const file = e.target.files[0];
         var reader = new FileReader();
         reader.onload = function () {
-            setThumbnail({ src: this.result });
+            setThumbnail({ src: this.result, file });
         };
         reader.readAsDataURL(file);
     };
@@ -143,10 +149,16 @@ const CreatePlaylist = ({ onClose, showAddSong, isBack }) => {
                             />
                         </AspectRatio>
                         <Center position="absolute" top={0} bottom={0} left={0} right={0}>
-                            <AiFillCamera fontSize="1.5rem"/>
+                            <AiFillCamera fontSize="1.5rem" />
                         </Center>
                     </Box>
-                    <Input type="file" display="none" accept="image/*" onChange={handleChangeThumbnail} ref={thumbnailRef}/>
+                    <Input
+                        type="file"
+                        display="none"
+                        accept="image/*"
+                        onChange={handleChangeThumbnail}
+                        ref={thumbnailRef}
+                    />
                     <Input
                         value={name}
                         onChange={(e) => setName(e.target.value)}
