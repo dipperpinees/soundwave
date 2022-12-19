@@ -112,6 +112,7 @@ const Row = ({
             method: isBanned ? 'DELETE' : 'POST',
         });
     };
+    
     return (
         <Tr key={id}>
             {/* <Td>
