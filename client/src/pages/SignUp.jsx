@@ -149,8 +149,7 @@ export default function SignUp() {
                                 type="text"
                                 id="name"
                                 {...register('name', {
-                                    required: 'Name is required',
-                                    minLength: { value: 6, message: 'Name must have at least 6 characters' },
+                                    required: 'Name is required'
                                 })}
                                 color="black"
                                 fontSize="0.875rem"

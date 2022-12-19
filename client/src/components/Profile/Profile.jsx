@@ -1,6 +1,9 @@
-import { Avatar, Box, Button, Flex, Heading, useToast } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Avatar, Box, Button, Flex, Icon, Text, useToast } from '@chakra-ui/react';
+import { useContext, useState } from 'react';
+import { BsCheckCircleFill } from 'react-icons/bs';
 import { FaUserPlus } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../stores';
 import fetchAPI from '../../utils/fetchAPI';
 import Describe from './Describe';
 
@@ -9,8 +12,14 @@ const Profile = ({ data, ...props }) => {
     const { userId } = props;
     const [isFollowed, setisFollowed] = useState(data.isFollowed);
     const toast = useToast();
+    const [user] = useContext(UserContext);
+    const navigate = useNavigate();
 
     const toggleFollow = () => {
+        if (!user.id) {
+            navigate('/signin');
+            return;
+        }
         const callAPI = async (type) => {
             try {
                 await fetchAPI(`/user/${type}/${data.id}`, {
@@ -41,9 +50,13 @@ const Profile = ({ data, ...props }) => {
                     name={data?.name}
                     src={data?.avatar}
                 />
-                <Heading class="user-name" fontSize={['lg']} mb={['18px', '24px']}>
-                    {data?.name}
-                </Heading>
+                <Flex align="center" gap={2}>
+                    <Text class="user-name" fontSize={['lg']} fontWeight={700}>
+                        {data?.name}
+                    </Text>
+                    {data?.isVerified && <Icon as={BsCheckCircleFill} />}
+                </Flex>
+
                 {/* <Text mb="16px">{data?.followerNumber} Followers</Text> */}
                 <Flex w={['100%', '40%', '100%']} flexDirection="column">
                     {userId !== data?.id ? (

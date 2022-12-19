@@ -1,19 +1,19 @@
-import { Flex, Image, Box, Text, Center, Icon, AspectRatio } from '@chakra-ui/react';
-import { LikeIcon } from '../Icon';
-import { BsPlay } from 'react-icons/bs';
-import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { AspectRatio, Box, Center, Flex, Icon, Image, Text } from '@chakra-ui/react';
 import { useContext } from 'react';
-import { PlayerContext } from '../../stores/playerStore';
-import './styles.scss';
+import { AiFillPauseCircle, AiFillPlayCircle } from 'react-icons/ai';
+import { BsPlay } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 import waveGif from '../../assets/animated.gif';
+import { PlayerContext } from '../../stores/playerStore';
 import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
+import { LikeIcon } from '../Icon';
+import './styles.scss';
 
 const Song = ({ ...props }) => {
     const { data } = props;
     const { id, title, thumbnail, author, playCount } = data[props.index];
 
-    const [{ songList, songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
+    const [{songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
 
     const addAndPlay = () => setPlayer({ type: 'Add', payload: data[props.index] });
 
@@ -23,7 +23,6 @@ const Song = ({ ...props }) => {
     const showPauseIcon = id === songPlayed?.id && isPlayed;
 
     const { isLikeIcon, isViewIcon } = props;
-    const [songName, singerName] = title.split(' - ');
 
     return (
         <Box id={id} borderBottom="1px solid rgba(255, 255, 255, 0.2)" padding="12px 0">
@@ -79,7 +78,7 @@ const Song = ({ ...props }) => {
                         maxW={['90%', '90%']}
                         fontSize="md"
                     >
-                        <Link to={`/music/${id}`}>{songName}</Link>
+                        <Link to={`/music/${id}`}>{title}</Link>
                     </Text>
                     <Flex
                         fontSize="xs"
@@ -90,11 +89,6 @@ const Song = ({ ...props }) => {
                         maxW={['90%', '90%']}
                     >
                         <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
-                        <Text m="0 4px">-</Text>
-                        <Text textOverflow={'ellipsis'} overflow="hidden">
-                            <Link to={''}>{singerName}</Link>
-                        </Text>
-                        {/* singer */}
                     </Flex>
                 </Box>
                 {isLikeIcon && (

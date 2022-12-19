@@ -1,6 +1,8 @@
 package services
 
-import "github.com/hiepnguyen223/int3306-project/common"
+import (
+	"github.com/hiepnguyen223/int3306-project/common"
+)
 
 type AdminService struct{}
 

@@ -148,7 +148,7 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                             <MenuButton>
                                 <Icon as={FiEdit} display="flex" fontSize="1.5rem" />
                             </MenuButton>
-                            <MenuList minWidth={24} maxWidth={30} fontSize="0.75rem">
+                            <MenuList minWidth={24} maxWidth={30} fontSize="0.75rem" border="none">
                                 <MenuItem padding="2px 8px" onClick={onEdit} _hover={{}}>
                                     <Icon as={MdModeEditOutline} marginRight={1} />
                                     Edit
