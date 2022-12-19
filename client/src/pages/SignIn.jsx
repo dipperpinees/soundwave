@@ -42,6 +42,7 @@ export default function SignIn() {
     const setLoading = useContext(LoadingContext)[1];
 
     const forgetPassword = async () => {
+        console.log(JSON.stringify({"email": enopas}))
         try {
             const changePass = await fetchAPI('/password/forget', {
                 method: 'POST',
