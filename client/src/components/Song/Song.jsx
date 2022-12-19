@@ -39,8 +39,6 @@ const Song = ({ isLikeIcon, isViewIcon, ...props }) => {
     const isPlayThisSong = id === songPlayed?.id;
     const showPauseIcon = isPlayThisSong && isPlayed;
 
-    const [songName, singerName] = title.split(' - ');
-
     return (
         <Box color={'whiteAlpha.700'} id={id} borderBottom="1px solid rgba(255, 255, 255, 0.2)" padding="12px 0">
             <Flex h="42px" overflow="hidden">
@@ -108,15 +106,10 @@ const Song = ({ isLikeIcon, isViewIcon, ...props }) => {
                             fontSize="md"
                             color={isPlayThisSong ? 'var(--primary-color)' : 'white'}
                         >
-                            <Link to={`/music/${id}`}>{songName}</Link>
+                            <Link to={`/music/${id}`}>{title}</Link>
                         </Text>
                         <Flex fontSize="xs" fontWeight={'600'} overflow={'hidden'} whiteSpace={'nowrap'}>
                             <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
-                            <Text m="0 4px">-</Text>
-                            <Text textOverflow={'ellipsis'} overflow="hidden">
-                                <Link to={''}>{singerName}</Link>
-                            </Text>
-                            {/* singer */}
                         </Flex>
                     </Box>
                 </Flex>
@@ -131,7 +124,7 @@ const Song = ({ isLikeIcon, isViewIcon, ...props }) => {
                     {isViewIcon && (
                         <Flex display={['none', 'flex', 'none', 'flex']} alignItems="center">
                             <BiTimeFive fontSize={'24px'} />
-                            <Text minW={'40px'} ml={'4px'}>
+                            <Text minW={'40px'} ml={'4px'} fontSize={12}>
                                 {duration &&
                                     (duration - (duration % 60)) / 60 +
                                         ':' +
@@ -143,7 +136,7 @@ const Song = ({ isLikeIcon, isViewIcon, ...props }) => {
                     {isViewIcon && (
                         <Flex display={['none', 'flex', 'none', 'flex']} alignItems="center">
                             <BsPlay fontSize={'24px'} />
-                            <Text minW={'34px'} ml={'2px'}>
+                            <Text minW={'34px'} ml={'2px'} fontSize={12}>
                                 {playCount}
                             </Text>
                         </Flex>

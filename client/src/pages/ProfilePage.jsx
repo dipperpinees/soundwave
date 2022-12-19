@@ -1,19 +1,22 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Grid, Heading } from '@chakra-ui/react';
 import { useContext } from 'react';
+import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import FeaturedTracks from '../components/FeaturedTracks';
+import PlaylistPreview from '../components/Playlists/PlaylistPreview';
 import Profile from '../components/Profile';
-import useProfile from '../hooks/useProfile';
-import { UserContext } from '../stores/userStore';
-import { PlaylistLibrary } from '../components/Library';
-import { Helmet } from 'react-helmet';
 import { ProfileSkeleton } from '../components/SquareSkeleton';
+import useProfile from '../hooks/useProfile';
+import useUserPlaylist from '../hooks/useUserPlaylists';
+import { UserContext } from '../stores/userStore';
 import { APP_NAME } from '../utils/constant';
 
 const ProfilePage = () => {
     const { id } = useParams();
     const { data, isLoading } = useProfile(id);
     const [user] = useContext(UserContext);
+    const { data: playlists } = useUserPlaylist(id, { enabled: !!id });
+
     return (
         <Box m={['0 24px', '0 24px', '0 24px 0 360px']} minHeight="100vh" sx={{ paddingTop: '80px' }} color={'white'}>
             <Helmet>
@@ -43,13 +46,23 @@ const ProfilePage = () => {
             </Box>
             <Box>
                 <Box>{isLoading ? null : <FeaturedTracks currentUserId={id} />}</Box>
-                {/* <Box flexBasis={['100%', '100%', '100%', '38%']} width={['100%', '100%', '100%', '38%']}>
-                    <RecentlyLikes userId={id} />
-                </Box> */}
-                <Box mt={['24px']} pb={'36px'} flex="100%" width={['100%']}>
-                    {/* <Albums currentUserId={id} /> */}
-                    {isLoading ? null : <PlaylistLibrary userId={id} />}
-                </Box>
+                {playlists && !!playlists.length && (
+                    <Box mt={['24px']} pb={'36px'} flex="100%" width={['100%']}>
+                        <Heading fontSize={['1.5rem']}>Featured Playlists</Heading>
+                        <Grid
+                            templateColumns={{
+                                base: 'repeat(2, minmax(0, 1fr))',
+                                sm: 'repeat(4, minmax(0, 1fr))',
+                                lg: 'repeat(6, minmax(0, 1fr))',
+                            }}
+                            gap={6}
+                        >
+                            {playlists.map((playlist) => (
+                                <PlaylistPreview key={playlist.id} {...playlist} showSettings={true} />
+                            ))}
+                        </Grid>
+                    </Box>
+                )}
             </Box>
         </Box>
     );
