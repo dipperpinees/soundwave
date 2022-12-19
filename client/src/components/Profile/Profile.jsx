@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../stores';
 import fetchAPI from '../../utils/fetchAPI';
 import Describe from './Describe';
+import EditProfile from './EditProfile/EditProfile';
 
 const Profile = ({ data, ...props }) => {
-    const { setIsEditProfile } = props;
     const { userId } = props;
-    const [isFollowed, setisFollowed] = useState(data.isFollowed);
+    const [isFollowed, setisFollowed] = useState(data?.isFollowed);
+    const [isEditProfile, setIsEditProfile] = useState(false);
     const toast = useToast();
     const [user] = useContext(UserContext);
     const navigate = useNavigate();
@@ -42,6 +43,7 @@ const Profile = ({ data, ...props }) => {
 
     return (
         <Box maxW={['100%', '100%', '180px']}>
+            {<EditProfile {...{ isEditProfile, setIsEditProfile }} data={data} />}
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
                 <Avatar
                     mt={[0, '24px']}

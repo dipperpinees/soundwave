@@ -1,50 +1,31 @@
-import { Box, Flex } from '@chakra-ui/react';
-import CurrentSong from '../components/CurrentSong';
-import Comments from '../components/Comments';
-import RelatedTracks from '../components/RelatedTracks/RelatedTracks';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useState, useLayoutEffect, useContext } from 'react';
-import fetchAPI from '../utils/fetchAPI';
-import { UserContext } from '../stores/userStore';
+import { Box } from '@chakra-ui/react';
+import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import PlaylistPageHeader from '../components/PlaylistPageHeader';
+import PlaylistSongList from '../components/PlaylistSongList';
+import usePlaylist from '../hooks/usePlaylist';
+import { PageHeaderSkeleton } from '../components/SquareSkeleton';
 
 const PlaylistPage = () => {
     const { id } = useParams();
-    const [user, userDispatch] = useContext(UserContext);
-    const navigate = useNavigate();
-    const [data, setData] = useState(null);
-
-    useLayoutEffect(() => {
-        const fetchSong = async () => {
-            try {
-                const data = await fetchAPI(`/song/${id}`);
-                setData(data);
-            } catch (e) {}
-        };
-        if (id !== undefined) fetchSong();
-    }, [id]);
-
-    // chuyển hướng nếu chưa đăng nhập
-    useLayoutEffect(() => {
-        if (!user.id) {
-            navigate('/signin');
-            return;
-        }
-    }, []);
+    const { data, isLoading } = usePlaylist(id);
 
     return (
-        <Box className="music-page">
-            <Box mb={'24px'}>
-                <CurrentSong {...data} />
+        <Box
+            p={'calc(var(--header-height) + 24px) 0 0 var(--navbar-width) '}
+            m={['0 24px', '0 24px', '0 48px 0 0']}
+            minH={'100vh'}
+            color={'white'}
+        >
+            <Helmet>
+                <title>Playlist Page</title>
+            </Helmet>
+            <Box mb={['24px']}>
+                {isLoading ? <PageHeaderSkeleton /> : <PlaylistPageHeader {...data} isLoading={isLoading} />}
             </Box>
-            <Flex>
-                {/* width = image width */}
-                <Box width="260px">
-                    <RelatedTracks id={data?.author?.id} />
-                </Box>
-                <Box flex={1}>
-                    <Comments />
-                </Box>
-            </Flex>
+            <Box>
+                <PlaylistSongList songs={data?.songs} isLoading={isLoading} />
+            </Box>
         </Box>
     );
 };

@@ -23,10 +23,10 @@ import { PlaylistContext } from '../../stores/playlistStore';
 import defaultPreview from '../../assets/song_preview.jpg';
 import { UserContext } from '../../stores';
 
-const CurrentSong = (props) => {
+const MusicPageHeader = (props) => {
     const { id, title, url, thumbnail, author } = props.data;
 
-    const [{ songList, songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
+    const [{ songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
     const playlistDispatch = useContext(PlaylistContext)[1];
     const user = useContext(UserContext)[0];
 
@@ -35,7 +35,7 @@ const CurrentSong = (props) => {
     const togglePlay = () => setPlayer({ type: 'Toggle' });
 
     const isPlayThisSong = id === songPlayed?.id;
-    const showPauseIcon = id === songPlayed?.id && isPlayed;
+    const showPauseIcon = isPlayThisSong && isPlayed;
 
     const [songName, singerName] = title?.split(' - ');
 
@@ -177,4 +177,4 @@ const CurrentSong = (props) => {
     );
 };
 
-export default CurrentSong;
+export default MusicPageHeader;

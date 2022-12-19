@@ -12,7 +12,7 @@ const Describe = ({ data }) => {
             <Heading fontSize={['1.5rem', '1.5rem', '1.2rem']} mb={['8px', '12px']}>
                 Introduction
             </Heading>
-            <Flex fontWeight={'600'} color={'text'} width={'100%'} flexWrap={'wrap'}>
+            <Flex fontWeight={'600'} color={'whiteAlpha.600'} width={'100%'} flexWrap={'wrap'}>
                 <ItemDescribe name={'Followers'} amount={data.followerNumber} />
                 <ItemDescribe name={'Following'} amount={data.followingNumber} />
                 <ItemDescribe name={'Songs'} amount={data.trackNumber} />
@@ -25,14 +25,14 @@ const Describe = ({ data }) => {
                     <Box
                         mb={['0', '0', '60px']}
                         fontWeight={'600'}
-                        color={'text'}
+                        color={'whiteAlpha.600'}
                         fontSize={['initial', '0.875rem', '0.875rem']}
                     >
                         {showFullDescription ? (
                             <>
                                 {data.description}
                                 <Text
-                                    color={'#a0aea3'}
+                                    color={'text'}
                                     ml={'4px'}
                                     display={'inline-block'}
                                     cursor={'pointer'}

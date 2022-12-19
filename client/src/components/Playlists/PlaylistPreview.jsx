@@ -4,6 +4,7 @@ import { FiEdit } from 'react-icons/fi';
 import { MdDeleteOutline, MdModeEditOutline, MdPause, MdPlayArrow } from 'react-icons/md';
 import { PlayerContext } from '../../stores';
 import { DEFAULT_PLAYLIST_THUMBNAIL } from '../../utils/image';
+import { Link } from 'react-router-dom';
 
 export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail, showSettings }) {
     const [showPlay, setShowPlay] = useState(false);
@@ -48,24 +49,28 @@ export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail, 
             </Box>
             <Flex direction="column" mt={1}>
                 <Flex justify="space-between">
-                    <Text fontSize="0.875rem" fontWeight={600} className="one-line-title">
-                        {name}
-                    </Text>
-                    {showSettings && <Menu>
-                        <MenuButton>
-                            <Icon as={FiEdit} display="flex" fontSize="1.25rem" />
-                        </MenuButton>
-                        <MenuList minWidth={24} border="none" fontSize="0.75rem">
-                            <MenuItem padding="2px 8px">
-                                <Icon as={MdModeEditOutline} marginRight={1} />
-                                Edit
-                            </MenuItem>
-                            <MenuItem padding="2px 8px" onClick={() => onDelete(id)}>
-                                <Icon as={MdDeleteOutline} marginRight={1} />
-                                Delete
-                            </MenuItem>
-                        </MenuList>
-                    </Menu>}
+                    <Link to={`/playlist/${id}`}>
+                        <Text fontSize="0.875rem" fontWeight={600} className="one-line-title">
+                            {name}
+                        </Text>
+                    </Link>
+                    {showSettings && (
+                        <Menu>
+                            <MenuButton>
+                                <Icon as={FiEdit} display="flex" fontSize="1.25rem" />
+                            </MenuButton>
+                            <MenuList minWidth={24} border="none" fontSize="0.75rem">
+                                <MenuItem padding="2px 8px">
+                                    <Icon as={MdModeEditOutline} marginRight={1} />
+                                    Edit
+                                </MenuItem>
+                                <MenuItem padding="2px 8px" onClick={() => onDelete(id)}>
+                                    <Icon as={MdDeleteOutline} marginRight={1} />
+                                    Delete
+                                </MenuItem>
+                            </MenuList>
+                        </Menu>
+                    )}
                 </Flex>
                 <Text fontSize="0.75rem" fontWeight={600} color="whiteAlpha.700" as="span">
                     Playlist • {songs.length} songs

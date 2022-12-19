@@ -6,6 +6,7 @@ import fetchAPI from '../../utils/fetchAPI';
 import SongPreview from '../SongPreview';
 import Slider from 'react-slick';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
+import SongSkeleton, { ProfileSongSkeleton } from '../SquareSkeleton';
 
 const RelatedTracks = ({ id }) => {
     const [data, setData] = useState(null);
@@ -42,7 +43,7 @@ const RelatedTracks = ({ id }) => {
     };
 
     return (
-        <Box display={data ? 'block' : 'none'}>
+        <Box>
             <Flex justifyContent="space-between" align={'center'}>
                 <Heading lineHeight={'100%'} fontSize="lg">
                     Related Tracks
@@ -51,7 +52,7 @@ const RelatedTracks = ({ id }) => {
                     <Flex align={'center'} justifyContent="end" mt="4px">
                         <Link href="#">
                             <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer">
-                                See more
+                                more
                                 <LineRightIcon />
                             </Text>
                         </Link>
@@ -59,13 +60,14 @@ const RelatedTracks = ({ id }) => {
                 )}
             </Flex>
             <List display={['none', 'none', 'block']}>
-                {data &&
-                    data.map((song, index) => {
-                        if (index >= 5) {
-                            return null;
-                        }
-                        return <Song key={song.id} index={index} setData={setData} data={data} />;
-                    })}
+                {data
+                    ? data.map((song, index) => {
+                          if (index >= 5) {
+                              return null;
+                          }
+                          return <Song key={song.id} index={index} setData={setData} data={data} />;
+                      })
+                    : [...Array(5).keys()].map((id) => <ProfileSongSkeleton key={id} />)}
             </List>
             <Box p={'24px 0'} display={['block', 'block', 'none']}>
                 {data &&

@@ -49,7 +49,7 @@ const LikeIcon = ({ showLikeNumber = true, ...props }) => {
                 </Fragment>
             )}
             {showLikeNumber && (
-                <Text minW={'36px'} ml={'4px'}>
+                <Text minW={'34px'} ml={'4px'} fontSize={12}>
                     {likeNumber}
                 </Text>
             )}
