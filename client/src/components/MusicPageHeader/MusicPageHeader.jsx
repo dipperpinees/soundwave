@@ -37,8 +37,6 @@ const MusicPageHeader = (props) => {
     const isPlayThisSong = id === songPlayed?.id;
     const showPauseIcon = isPlayThisSong && isPlayed;
 
-    const [songName, singerName] = title?.split(' - ');
-
     const download = () => window.open(url.replace('/upload/', '/upload/fl_attachment/'), '_blank');
 
     return (
@@ -69,7 +67,7 @@ const MusicPageHeader = (props) => {
                     fontSize={['1.2rem', '1.5rem', '1.9rem']}
                     mb={[0, '12px']}
                 >
-                    {songName}
+                    {title}
                 </Heading>
                 <HStack
                     whiteSpace={'nowrap'}
@@ -80,10 +78,6 @@ const MusicPageHeader = (props) => {
                 >
                     <Text>
                         <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
-                    </Text>
-                    <Box m="0 4px">-</Box>
-                    <Text textOverflow={'ellipsis'} overflow="hidden">
-                        <Link to={''}>{singerName}</Link>
                     </Text>
                 </HStack>
                 <Flex justify={'space-between'} align={'center'}>
