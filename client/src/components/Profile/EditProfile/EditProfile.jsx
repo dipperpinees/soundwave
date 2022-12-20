@@ -6,6 +6,7 @@ import {
 } from '@chakra-ui/react';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { MdPhotoCamera } from 'react-icons/md';
+import { useQueryClient } from 'react-query';
 import { UserContext } from '../../../stores';
 import fetchAPI from '../../../utils/fetchAPI';
 // import { EditProfileContext } from '../../stores';
@@ -21,7 +22,7 @@ const EditProfile = ({ data, isEditProfile, setIsEditProfile }) => {
     const [inputUserName, setInputUserName] = useState('');
     const [inputDescription, setInputDescription] = useState('');
     const [showSpinner, setShowSpinner] = useState(false);
-
+    const queryClient = useQueryClient();
     const inputImage = useRef();
 
     useEffect(() => {
@@ -71,6 +72,7 @@ const EditProfile = ({ data, isEditProfile, setIsEditProfile }) => {
                 data.description = response.description;
                 setShowSpinner(false);
                 onClose();
+                queryClient.removeQueries(['profile', Number(data.id)]);
             } catch (error) {
                 toast({
                     position: 'top',
