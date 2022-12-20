@@ -43,7 +43,7 @@ export default function SongAdmin() {
         selected[id] = isChecked;
         setSelected({ ...selected });
     };
-    
+
     const handleSearch = (e) => {
         clearTimeout(debounce.current);
         debounce.current = setTimeout(() => {

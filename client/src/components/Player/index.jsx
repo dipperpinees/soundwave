@@ -29,9 +29,12 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
         setIsLiked(songPlayed?.isLiked || false);
     }, [songPlayed]);
 
-    const changeTimePlay = useCallback((progress) => {
-        dispatch({ type: 'ChangeTime', payload: progress });
-    }, [dispatch])
+    const changeTimePlay = useCallback(
+        (progress) => {
+            dispatch({ type: 'ChangeTime', payload: progress });
+        },
+        [dispatch]
+    );
 
     const handleChangeProgress = useCallback(
         (e) => {
@@ -78,11 +81,11 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
     );
 
     const openNextUp = useCallback(() => {
-        setShowPlaylist(true)
-    }, [])
+        setShowPlaylist(true);
+    }, []);
 
     //dont show on signin signup page
-    if (["/signin", "/signup", "/admin"].includes(location.pathname) || !songList.length) return null;
+    if (['/signin', '/signup', '/admin'].includes(location.pathname) || !songList.length) return null;
 
     return (
         <>
@@ -117,7 +120,13 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
                 <Flex alignItems="center" gap={2} width={{ base: '80%', md: '16%' }}>
                     <Avatar name="thumbnail" src={songPlayed?.thumbnail || DEFAULT_SONG_THUMBNAIL} />
                     <Flex direction="column" flex={1} overflow="hidden">
-                        <Heading color="white" fontSize="0.75rem" as="h4" whiteSpace="nowrap" className="one-line-title">
+                        <Heading
+                            color="white"
+                            fontSize="0.75rem"
+                            as="h4"
+                            whiteSpace="nowrap"
+                            className="one-line-title"
+                        >
                             {songPlayed?.title}
                         </Heading>
                         <Text color="white" fontSize="0.675rem">
@@ -202,7 +211,7 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
                             onClose: () => setShowMobilePlayer(false),
                             changeTimePlay,
                             openNextUp,
-                            url: songPlayed.url
+                            url: songPlayed.url,
                         }}
                     />
                 </>

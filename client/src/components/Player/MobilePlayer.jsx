@@ -37,9 +37,9 @@ export default function MobilePlayer({
     );
 
     const download = useCallback(() => {
-        console.log("fdsfd")
+        console.log('fdsfd');
         window.open(url.replace('/upload/', '/upload/fl_attachment/'), '_blank');
-    }, [url])
+    }, [url]);
 
     return (
         <Flex
@@ -131,7 +131,7 @@ export default function MobilePlayer({
                     />
                 </Flex>
                 <Flex align="center" justify="space-between" width="100%">
-                    <Icon fontSize="1.5rem" as={MdDownload} onClick={download}/>
+                    <Icon fontSize="1.5rem" as={MdDownload} onClick={download} />
                     <Icon fontSize="1.75rem" as={MdPlaylistPlay} onClick={openNextUp} />
                 </Flex>
             </Flex>

@@ -112,7 +112,7 @@ const Row = ({
             method: isBanned ? 'DELETE' : 'POST',
         });
     };
-    
+
     return (
         <Tr key={id}>
             {/* <Td>
@@ -121,7 +121,7 @@ const Row = ({
             <Td>{id}</Td>
             <Td>
                 <Flex align="center" gap={2}>
-                    <Avatar name={name}  src={avatar} /> {name}
+                    <Avatar name={name} src={avatar} /> {name}
                 </Flex>
             </Td>
             <Td>{trackNumber}</Td>

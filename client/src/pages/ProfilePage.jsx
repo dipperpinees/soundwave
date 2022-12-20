@@ -18,7 +18,13 @@ const ProfilePage = () => {
     const { data: playlists } = useUserPlaylist(id, { enabled: !!id });
 
     return (
-        <Box m={['0 24px', '0 24px', '0 24px 0 360px']} minHeight="100vh" sx={{ paddingTop: '80px' }} color={'white'} pb={20}>
+        <Box
+            m={['0 24px', '0 24px', '0 24px 0 360px']}
+            minHeight="100vh"
+            sx={{ paddingTop: '80px' }}
+            color={'white'}
+            pb={20}
+        >
             <Helmet>
                 <title>
                     {APP_NAME} - {data ? data.name : 'Profile Page'}
@@ -48,7 +54,9 @@ const ProfilePage = () => {
                 <Box>{isLoading ? null : <FeaturedTracks currentUserId={id} />}</Box>
                 {playlists && !!playlists.length && (
                     <Box mt={['24px']} pb={'36px'} flex="100%" width={['100%']}>
-                        <Heading fontSize={['1.5rem']} mb={3}>Featured Playlists</Heading>
+                        <Heading fontSize={['1.5rem']} mb={3}>
+                            Featured Playlists
+                        </Heading>
                         <Grid
                             templateColumns={{
                                 base: 'repeat(2, minmax(0, 1fr))',

@@ -1,5 +1,5 @@
-import useSongs from "../../hooks/useSongs";
-import ListSongPreview from "../ListSongPreview";
+import useSongs from '../../hooks/useSongs';
+import ListSongPreview from '../ListSongPreview';
 
 export const LastestSongs = () => {
     const { data: lastestSongs, isLoading } = useSongs('limit=4');

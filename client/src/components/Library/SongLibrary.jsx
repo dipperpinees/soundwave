@@ -41,13 +41,13 @@ export default function SongsLibrary() {
     const [deleteTrack, setDeleteTrack] = useState(null);
     const { data: tracks } = useUserSongs(user.id);
     const { mutate: deleteSong } = useDeleteSong();
-    const [paginate, setPaginate] = useState({page: 1, totalPages: 1});
+    const [paginate, setPaginate] = useState({ page: 1, totalPages: 1 });
 
     useEffect(() => {
         if (tracks) {
-            setPaginate({page: 1, totalPages: Math.ceil(tracks.length / 12)})
+            setPaginate({ page: 1, totalPages: Math.ceil(tracks.length / 12) });
         }
-    }, [tracks])
+    }, [tracks]);
 
     return (
         <>
@@ -65,7 +65,7 @@ export default function SongsLibrary() {
                 {!tracks
                     ? [...Array(12).keys()].map((id) => <SongSkeleton key={id} />)
                     : tracks
-                          .slice(12*(paginate.page - 1), 12 * (paginate.page - 1) + 12)
+                          .slice(12 * (paginate.page - 1), 12 * (paginate.page - 1) + 12)
                           .map((song) => (
                               <SongPreview
                                   key={song.id}
@@ -81,13 +81,15 @@ export default function SongsLibrary() {
             {deleteTrack && (
                 <DeleteTrackAlert onClose={() => setDeleteTrack(null)} onDelete={() => deleteSong(deleteTrack)} />
             )}
-            {paginate.totalPages > 1 && <Pagination
-                onChangePage={(page) => setPaginate({...paginate, page})}
-                paginator={{
-                    totalPages: paginate.totalPages,
-                    page: paginate.page,
-                }}
-            />}
+            {paginate.totalPages > 1 && (
+                <Pagination
+                    onChangePage={(page) => setPaginate({ ...paginate, page })}
+                    paginator={{
+                        totalPages: paginate.totalPages,
+                        page: paginate.page,
+                    }}
+                />
+            )}
         </>
     );
 }

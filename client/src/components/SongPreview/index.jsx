@@ -102,7 +102,7 @@ export default function SongPreview({ song, isOwner, onDelete, onEdit, onUnlike 
                             fontSize="1rem"
                             onClick={likeSong}
                         />
-                        <Icon as={MdPlaylistAdd} onClick={addToNextUp} fontSize="1.25rem"/>
+                        <Icon as={MdPlaylistAdd} onClick={addToNextUp} fontSize="1.25rem" />
                         <Menu strategy="fixed" fontSize="1.25rem">
                             <MenuButton>
                                 <Icon as={MdOutlineMoreHoriz} display="flex" />

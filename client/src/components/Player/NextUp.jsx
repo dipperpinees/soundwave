@@ -9,7 +9,7 @@ import {
     Flex,
     Icon,
     Image,
-    Text
+    Text,
 } from '@chakra-ui/react';
 import React, { useContext } from 'react';
 import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';

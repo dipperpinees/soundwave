@@ -10,7 +10,7 @@ export function GenreStore({ children }) {
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(API_ENDPOINT + '/genre/')
+            const response = await fetch(API_ENDPOINT + '/genre/');
             const genres = await response.json();
             setState(genres);
         })();
