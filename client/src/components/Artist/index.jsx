@@ -1,12 +1,12 @@
 import { Avatar, Button, Flex, Icon, Stack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
-import { BsSoundwave } from 'react-icons/bs';
+import { BsCheckCircleFill, BsSoundwave } from 'react-icons/bs';
 import { IoIosPersonAdd, IoMdPeople } from 'react-icons/io';
 import { MdDone } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import fetchAPI from '../../utils/fetchAPI';
 
-export default function Artist({ id, name, avatar, followerNumber, trackNumber, size, isFollowed }) {
+export default function Artist({ id, name, avatar, followerNumber, trackNumber, size, isFollowed, isVerified }) {
     const [isFollow, setIsFollow] = useState(isFollowed);
     const toggleFollow = async () => {
         setIsFollow(!isFollow);
@@ -27,15 +27,14 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                     <Link to={`/profile/${id}`}>
                         <Avatar name={name} src={avatar} size="md" />
                     </Link>
-                    <Stack  overflow="hidden">
+                    <Stack overflow="hidden">
                         <Link to={`/profile/${id}`}>
-                            <Text
-                                fontSize="0.75rem"
-                                fontWeight={500}
-                                className="one-line-title"
-                            >
-                                {name}
-                            </Text>
+                            <Flex align="center" gap={1}>
+                                <Text fontSize="0.75rem" fontWeight={500} className="one-line-title">
+                                    {name}
+                                </Text>
+                                {isVerified && <Icon as={BsCheckCircleFill} fontSize="0.75rem" />}
+                            </Flex>
                         </Link>
                         <Flex fontSize="0.75rem">
                             <Icon as={IoMdPeople} fontSize="1rem" mr={1} /> {followerNumber}
@@ -67,7 +66,10 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                     </Link>
                     <Stack>
                         <Link to={`/profile/${id}`}>
-                            <Text fontSize={{ base: '1rem', md: '1.25rem' }}>{name}</Text>
+                            <Flex align="center" gap={2}>
+                                <Text fontSize={{ base: '1rem', md: '1.25rem' }}>{name}</Text>
+                                {isVerified && <Icon as={BsCheckCircleFill} fontSize="1rem" />}
+                            </Flex>
                         </Link>
                         <Flex fontSize="0.75rem">
                             <Icon as={IoMdPeople} fontSize="1rem" mr={1} /> {followerNumber}

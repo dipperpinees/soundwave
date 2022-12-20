@@ -13,8 +13,6 @@ import (
 	"github.com/hiepnguyen223/int3306-project/services"
 )
 
-// Lam Cherry
-
 var userService = services.UserService{}
 
 type userModel = models.User

@@ -8,8 +8,6 @@ import { useState } from 'react';
 const Comments = ({ songId }) => {
     const [comments, setComments] = useState(null);
 
-    console.log('re render');
-
     useEffect(() => {
         const getComments = async () => {
             try {
@@ -22,7 +20,6 @@ const Comments = ({ songId }) => {
 
     const sortComments = (typeSort) => {
         let sortFn;
-        console.log('sort');
         switch (typeSort) {
             case 'latest':
                 sortFn = (a, b) => b.updated_at.localeCompare(a.updated_at);

@@ -13,7 +13,7 @@ const LikeIcon = ({ showLikeNumber = true, ...props }) => {
     useEffect(() => {
         setLiked(song?.isLiked);
         setLikeNumber(song?.likeNumber);
-    }, [song?.id]);
+    }, [song]);
 
     const toggleLike = async () => {
         try {
@@ -29,8 +29,6 @@ const LikeIcon = ({ showLikeNumber = true, ...props }) => {
             }
             data[props.index] = song;
             setData && setData(data);
-            console.log('toggle Like', song?.likeNumber);
-            console.log('toggle LikeNumber', likeNumber);
             await fetchAPI(`/song/like/${song?.id}`, {
                 method: isLiked ? 'DELETE' : 'POST',
             });

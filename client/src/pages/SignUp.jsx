@@ -149,7 +149,7 @@ export default function SignUp() {
                                 type="text"
                                 id="name"
                                 {...register('name', {
-                                    required: 'Name is required'
+                                    required: 'Name is required',
                                 })}
                                 color="black"
                                 fontSize="0.875rem"

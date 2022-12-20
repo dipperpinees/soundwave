@@ -135,7 +135,7 @@ const SearchSongs = ({ handleChangeSearchQuery }) => {
             orderBy: searchParams.get('order'),
             genreID: searchParams.get('genre'),
             page: Number(searchParams.get('page')),
-            limit: 12
+            limit: 12,
         });
     }, [searchParams]);
 

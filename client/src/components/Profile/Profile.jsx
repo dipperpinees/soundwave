@@ -1,7 +1,8 @@
 import { Avatar, Box, Button, Flex, Icon, Text, useToast } from '@chakra-ui/react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { BsCheckCircleFill } from 'react-icons/bs';
 import { FaUserPlus } from 'react-icons/fa';
+import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../stores';
 import fetchAPI from '../../utils/fetchAPI';
@@ -15,6 +16,11 @@ const Profile = ({ data, ...props }) => {
     const toast = useToast();
     const [user] = useContext(UserContext);
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
+    useEffect(() => {
+        setisFollowed(!!data?.isFollowed);
+    }, [data]);
 
     const toggleFollow = () => {
         if (!user.id) {
@@ -38,6 +44,7 @@ const Profile = ({ data, ...props }) => {
                 });
             }
         };
+        queryClient.removeQueries(['profile', Number(userId)]);
         isFollowed ? callAPI('unfollow') : callAPI('follow');
     };
 
@@ -71,7 +78,7 @@ const Profile = ({ data, ...props }) => {
                             onClick={toggleFollow}
                             leftIcon={!isFollowed && <FaUserPlus style={{ 'margin-bottom': '2px' }} />}
                         >
-                            {isFollowed ? 'Followed' : 'Follow'}
+                            {isFollowed ? 'Following' : 'Follow'}
                         </Button>
                     ) : (
                         <Button

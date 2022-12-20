@@ -7,7 +7,7 @@ import { GiNextButton, GiPreviousButton } from 'react-icons/gi';
 import { IoIosRepeat } from 'react-icons/io';
 import { MdPause, MdPlayArrow, MdPlaylistPlay } from 'react-icons/md';
 import { TiArrowShuffle } from 'react-icons/ti';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import fetchAPI from '../../utils/fetchAPI';
 import { formatTime } from '../../utils/formatTime';
 import { DEFAULT_SONG_THUMBNAIL } from '../../utils/image';
@@ -29,9 +29,12 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
         setIsLiked(songPlayed?.isLiked || false);
     }, [songPlayed]);
 
-    const changeTimePlay = useCallback((progress) => {
-        dispatch({ type: 'ChangeTime', payload: progress });
-    }, [dispatch])
+    const changeTimePlay = useCallback(
+        (progress) => {
+            dispatch({ type: 'ChangeTime', payload: progress });
+        },
+        [dispatch]
+    );
 
     const handleChangeProgress = useCallback(
         (e) => {
@@ -44,7 +47,7 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
     const changeAutoPlay = useCallback(
         (type) => {
             if (autoPlay === type) {
-                dispatch({ type: 'ChangeAutoPlay', payload: 'next' });
+                dispatch({ type: 'ChangeAutoPlay', payload: 'none' });
             } else {
                 dispatch({ type: 'ChangeAutoPlay', payload: type });
             }
@@ -78,11 +81,11 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
     );
 
     const openNextUp = useCallback(() => {
-        setShowPlaylist(true)
-    }, [])
+        setShowPlaylist(true);
+    }, []);
 
     //dont show on signin signup page
-    if (["/signin", "/signup", "/admin"].includes(location.pathname) || !songList.length) return null;
+    if (['/signin', '/signup', '/admin'].includes(location.pathname) || !songList.length) return null;
 
     return (
         <>
@@ -96,7 +99,7 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
                 initial={{ marginBottom: 'calc(var(--player-height) * -1)' }}
                 animate={{ marginBottom: 0 }}
                 transition={{ duration: 1 }}
-                zIndex={1}
+                zIndex={1000}
                 onClick={handleShowMobilePlayer}
             >
                 {isMobile && (
@@ -115,14 +118,26 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
                 )}
 
                 <Flex alignItems="center" gap={2} width={{ base: '80%', md: '16%' }}>
-                    <Avatar name="thumbnail" src={songPlayed?.thumbnail || DEFAULT_SONG_THUMBNAIL} />
+                    <Link to={`/music/${songPlayed?.id}`}>
+                        <Avatar name="thumbnail" src={songPlayed?.thumbnail || DEFAULT_SONG_THUMBNAIL} />
+                    </Link>
                     <Flex direction="column" flex={1} overflow="hidden">
-                        <Heading color="white" fontSize="0.75rem" as="h4" whiteSpace="nowrap" className="one-line-title">
-                            {songPlayed?.title}
-                        </Heading>
+                        <Link to={`/music/${songPlayed?.id}`}>
+                            <Heading
+                                color="white"
+                                fontSize="0.75rem"
+                                as="h4"
+                                whiteSpace="nowrap"
+                                className="one-line-title"
+                            >
+                                {songPlayed?.title}
+                            </Heading>
+                        </Link>
+                        <Link to={`/profile/${songPlayed?.author?.id}`}>
                         <Text color="white" fontSize="0.675rem">
                             {songPlayed?.author?.name}
                         </Text>
+                        </Link>
                     </Flex>
                 </Flex>
                 <Flex className="player-play" display={{ base: 'none', md: 'flex' }} gap={4}>
@@ -202,7 +217,7 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
                             onClose: () => setShowMobilePlayer(false),
                             changeTimePlay,
                             openNextUp,
-                            url: songPlayed.url
+                            url: songPlayed.url,
                         }}
                     />
                 </>

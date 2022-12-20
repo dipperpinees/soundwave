@@ -6,7 +6,7 @@ import { PlayerContext } from '../../stores';
 import { DEFAULT_PLAYLIST_THUMBNAIL } from '../../utils/image';
 import { Link } from 'react-router-dom';
 
-export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail, showSettings }) {
+export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail, showSettings, author }) {
     const [showPlay, setShowPlay] = useState(false);
     const [{ isPlayed, playlistID }, dispatch] = useContext(PlayerContext);
 
@@ -22,6 +22,7 @@ export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail, 
                 onMouseEnter={() => setShowPlay(true)}
                 onMouseLeave={() => setShowPlay(false)}
             >
+                 <Link to={`/playlist/${id}`}>
                 <AspectRatio width="100%" ratio={1}>
                     <Image
                         objectFit="cover"
@@ -30,6 +31,7 @@ export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail, 
                         borderRadius={16}
                     />
                 </AspectRatio>
+                </Link>
                 {showPlay && (
                     <Icon
                         bgColor="var(--primary-color)"
@@ -72,8 +74,9 @@ export default function PlaylistPreview({ id, name, songs, onDelete, thumbnail, 
                         </Menu>
                     )}
                 </Flex>
+                {/* <Text fontSize="0.75rem" fontWeight={600} color="whiteAlpha.700" as="span">HIep Nguyen</Text> */}
                 <Text fontSize="0.75rem" fontWeight={600} color="whiteAlpha.700" as="span">
-                    Playlist • {songs.length} songs
+                    {author?.name} • {songs.length} songs
                 </Text>
             </Flex>
         </Box>

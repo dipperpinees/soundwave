@@ -1,12 +1,11 @@
-import Song from '../Song';
-import { Box, Heading, List, Flex, Text, Link, Icon } from '@chakra-ui/react';
-import { LineRightIcon } from '../Icon';
+import { Box, Flex, Heading, Icon, List } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import fetchAPI from '../../utils/fetchAPI';
-import SongPreview from '../SongPreview';
-import Slider from 'react-slick';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-import SongSkeleton, { ProfileSongSkeleton } from '../SquareSkeleton';
+import Slider from 'react-slick';
+import fetchAPI from '../../utils/fetchAPI';
+import Song from '../Song';
+import SongPreview from '../SongPreview';
+import { ProfileSongSkeleton } from '../SquareSkeleton';
 
 const RelatedTracks = ({ id }) => {
     const [data, setData] = useState(null);
@@ -48,16 +47,6 @@ const RelatedTracks = ({ id }) => {
                 <Heading lineHeight={'100%'} fontSize="lg">
                     Related Tracks
                 </Heading>
-                {data && data.length > 5 && (
-                    <Flex align={'center'} justifyContent="end" mt="4px">
-                        <Link href="#">
-                            <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer">
-                                more
-                                <LineRightIcon />
-                            </Text>
-                        </Link>
-                    </Flex>
-                )}
             </Flex>
             <List display={['none', 'none', 'block']}>
                 {data

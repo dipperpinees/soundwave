@@ -21,31 +21,32 @@ import {
     Th,
     Thead,
     Tr,
-    useToast,
+    useToast
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
-import useDeleteSong from '../../hooks/useDeleteSong';
 import useSongs from '../../hooks/useSongs';
 import fetchAPI from '../../utils/fetchAPI';
 import formatDate from '../../utils/formatDate';
+import Pagination from '../Pagination';
 
 export default function SongAdmin() {
     const [search, setSearch] = useState('');
     const [orderBy, setOrderBy] = useState('lastest');
-    const { data: songs, refetch } = useSongs(`limit=9999999&orderBy=${orderBy}&search=${search}`);
+    const [page, setPage] = useState(1);
+    const { data: songs, refetch } = useSongs(`limit=12&page=${page}&orderBy=${orderBy}&search=${search}`);
     const [selected, setSelected] = useState({});
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
     const debounce = useRef();
     const toast = useToast();
-
     const handleCheck = (isChecked, id) => {
         selected[id] = isChecked;
         setSelected({ ...selected });
     };
-    
+
     const handleSearch = (e) => {
         clearTimeout(debounce.current);
+        setPage(1);
         debounce.current = setTimeout(() => {
             setSearch(e.target.value);
         }, 500);
@@ -146,6 +147,13 @@ export default function SongAdmin() {
                         </Tbody>
                     </Table>
                 </TableContainer>
+                {songs && <Pagination
+                    onChangePage={setPage}
+                    paginator={{
+                        totalPages: songs.pagination.totalPages,
+                        page: 1,
+                    }}
+                />}
             </Box>
         </>
     );

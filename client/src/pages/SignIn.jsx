@@ -7,11 +7,18 @@ import {
     FormLabel,
     Icon,
     Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Text,
     useToast,
 } from '@chakra-ui/react';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
@@ -29,9 +36,40 @@ export default function SignIn() {
         formState: { errors },
     } = useForm();
     const userDispatch = useContext(UserContext)[1];
+    const [forgotEmail, setForgotEmail] = useState('');
     const navigate = useNavigate();
     const toast = useToast();
     const setLoading = useContext(LoadingContext)[1];
+    const [isOpenForgotModal, setIsOpenForgotModal] = useState(false);
+
+    const forgetPassword = async () => {
+        setLoading(true);
+        try {
+            if (!forgotEmail) return;
+            await fetchAPI('/password/forget', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: forgotEmail }),
+            });
+            setLoading(false);
+            toast({
+                title: 'Send email successfully',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            });
+        } catch (error) {
+            setLoading(false);
+            toast({
+                title: error.message,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            });
+        }
+    };
 
     const onSubmit = async ({ email, password }) => {
         setLoading(true);
@@ -113,6 +151,7 @@ export default function SignIn() {
                                 Email address
                             </FormLabel>
                             <Input
+                                type="email"
                                 name="email"
                                 id="email"
                                 {...register(
@@ -141,9 +180,50 @@ export default function SignIn() {
                             <FormLabel fontSize="0.875rem" mb={1} mr={0}>
                                 <Flex align="center" justify="space-between">
                                     <Text>Password</Text>
-                                    <Text fontSize="0.875rem" color="var(--primary-color)">
+                                    <Text
+                                        fontSize="0.875rem"
+                                        color="var(--primary-color)"
+                                        onClick={() => setIsOpenForgotModal(true)}
+                                        _hover={{ cursor: 'pointer' }}
+                                    >
                                         Forgot Password
                                     </Text>
+                                    <Modal isOpen={isOpenForgotModal} onClose={() => setIsOpenForgotModal(false)}>
+                                        <ModalOverlay />
+                                        <ModalContent bgColor="blackAlpha.900" color="white">
+                                            <ModalHeader>Forgot password</ModalHeader>
+                                            <ModalCloseButton />
+                                            <ModalBody>
+                                                <Text>Email address</Text>
+                                                <Input
+                                                    type="email"
+                                                    required
+                                                    onChange={(event) => {
+                                                        setForgotEmail(event.target.value);
+                                                    }}
+                                                    bgColor="white"
+                                                    color="black"
+                                                />
+                                            </ModalBody>
+
+                                            <ModalFooter>
+                                                <Button
+                                                    mr={3}
+                                                    onClick={() => setIsOpenForgotModal(false)}
+                                                    color="black"
+                                                >
+                                                    Close
+                                                </Button>
+                                                <Button
+                                                    bgColor="var(--primary-color)"
+                                                    onClick={forgetPassword}
+                                                    _hover={{ opacity: 0.8 }}
+                                                >
+                                                    Submit
+                                                </Button>
+                                            </ModalFooter>
+                                        </ModalContent>
+                                    </Modal>
                                 </Flex>
                             </FormLabel>
 
@@ -185,7 +265,7 @@ export default function SignIn() {
                     OR
                 </Text>
                 <Button
-                    colorSheme="primary"
+                    colorScheme="primary"
                     variant="outline"
                     width="100%"
                     color="white"

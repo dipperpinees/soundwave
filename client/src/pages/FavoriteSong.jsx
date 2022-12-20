@@ -33,7 +33,7 @@ export default function FavoriteSongs() {
             minHeight={'calc(100vh - var(--header-height))'}
         >
             <Helmet>
-                <title>{APP_NAME}  - Favorite Songs</title>
+                <title>{APP_NAME} - Favorite Songs</title>
             </Helmet>
             <Text as="h4" fontWeight={600} mb={2} fontSize="1.25rem" mt={4}>
                 Favorite Songs

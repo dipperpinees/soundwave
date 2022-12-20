@@ -7,20 +7,15 @@ export default function SoundVolume() {
     const [{ volume }, dispatch] = useContext(PlayerContext);
     const progressRef = useRef(null);
     const handleChangeProgress = (e) => {
-        const progress =
-            (e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth;
+        const progress = (e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth;
         dispatch({ type: 'ChangeVolume', payload: progress });
     };
     return (
         <Flex alignItems="center" gap={1}>
             {volume >= 0.1 ? (
-                <HiOutlineSpeakerWave
-                    onClick={() => dispatch({ type: 'ChangeVolume', payload: 0 })}
-                />
+                <HiOutlineSpeakerWave onClick={() => dispatch({ type: 'ChangeVolume', payload: 0 })} />
             ) : (
-                <HiOutlineSpeakerXMark
-                    onClick={() => dispatch({ type: 'ChangeVolume', payload: 1 })}
-                />
+                <HiOutlineSpeakerXMark onClick={() => dispatch({ type: 'ChangeVolume', payload: 1 })} />
             )}
             <div onClick={handleChangeProgress} ref={progressRef}>
                 <Progress

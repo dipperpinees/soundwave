@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Image, Text, useMediaQuery } from '@chakra-ui/react';
+import { Box, Flex, Icon, Image, useMediaQuery } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
 import { FiMenu } from 'react-icons/fi';

@@ -8,7 +8,7 @@ const defaultState = {
     songList: [],
     songPlayed: {},
     volume: 1,
-    autoPlay: 'next', //next, repeat, shuffle or null
+    autoPlay: 'none', //next, repeat, shuffle or null
     songDuration: 0,
     currentTime: 0,
     playlistID: 0,
@@ -87,6 +87,7 @@ export function PlayerStore({ children }) {
                 return { ...state, ...action.payload };
             }
             case 'ChangeTime': {
+                if (!state.currentTime) return;
                 setCurrentTimeAudio((action.payload / 100) * audioRef.current.duration);
                 return { ...state, currentTime: action.payload };
             }
@@ -191,6 +192,7 @@ export function PlayerStore({ children }) {
                 break;
             }
             default: {
+                dispatch({type: 'Pause'})
             }
         }
     }, [dispatch, autoPlay]);

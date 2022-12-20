@@ -2,8 +2,6 @@ package models
 
 import "time"
 
-// Comment model
-
 type Comment struct {
 	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id"`
 	Author    User      `json:"author"`
