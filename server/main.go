@@ -43,7 +43,7 @@ func main() {
 
 	//serve client
 	if configs.Environment() == "production" {
-		app.Use(static.Serve("/*", static.LocalFile("../client/build", false)))
+		app.Use(static.Serve("/", static.LocalFile("../client/build", false)))
 	}
 
 	router := app.Group("/api")
