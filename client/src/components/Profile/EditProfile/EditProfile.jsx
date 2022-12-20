@@ -1,27 +1,13 @@
 import {
-    Modal,
-    ModalOverlay,
-    useDisclosure,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalCloseButton,
-    ModalFooter,
-    Button,
-    Box,
-    Center,
-    Avatar,
-    Icon,
-    Input,
-    Spinner,
-    Textarea,
-    useToast,
-    Flex,
+    Avatar, Box, Button, Center, Flex, Icon,
+    Input, Modal, ModalBody,
+    ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner,
+    Textarea, useDisclosure, useToast
 } from '@chakra-ui/react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { MdPhotoCamera } from 'react-icons/md';
-import { useEffect, useRef, useState, useContext } from 'react';
-import fetchAPI from '../../../utils/fetchAPI';
 import { UserContext } from '../../../stores';
+import fetchAPI from '../../../utils/fetchAPI';
 // import { EditProfileContext } from '../../stores';
 
 const EditProfile = ({ data, isEditProfile, setIsEditProfile }) => {
@@ -43,13 +29,13 @@ const EditProfile = ({ data, isEditProfile, setIsEditProfile }) => {
         setImageURL(data?.avatar);
         setInputUserName(data?.name);
         setInputDescription(data?.description);
-    }, [isEditProfile]);
+    }, [isEditProfile, data, onOpen, onClose]);
 
     useEffect(() => {
         if (!isOpen) {
             setIsEditProfile(false);
         }
-    }, [isOpen]);
+    }, [isOpen, setIsEditProfile]);
 
     const loadImage = (e) => {
         setInputAvatar(e.target.files[0]);

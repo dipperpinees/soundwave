@@ -22,3 +22,5 @@ yarn-error.log*
 .env.development
 .env.production
 /build
+yarn.lock
+package-lock.json

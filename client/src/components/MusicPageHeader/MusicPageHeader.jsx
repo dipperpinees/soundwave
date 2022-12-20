@@ -24,7 +24,7 @@ import defaultPreview from '../../assets/song_preview.jpg';
 import { UserContext } from '../../stores';
 
 const MusicPageHeader = (props) => {
-    const { id, title, url, thumbnail, author } = props.data;
+    const { id, title, url, thumbnail, author, genre } = props.data;
 
     const [{ songPlayed, isPlayed }, setPlayer] = useContext(PlayerContext);
     const playlistDispatch = useContext(PlaylistContext)[1];
@@ -77,7 +77,7 @@ const MusicPageHeader = (props) => {
                     fontSize={['0.875rem', '1rem']}
                 >
                     <Text>
-                        <Link to={`/profile/${author?.id}`}>{author?.name}</Link>
+                        <Link to={`/profile/${author?.id}`}>{author?.name} • {genre?.name}</Link>
                     </Text>
                 </HStack>
                 <Flex justify={'space-between'} align={'center'}>

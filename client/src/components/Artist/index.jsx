@@ -66,7 +66,10 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                     </Link>
                     <Stack>
                         <Link to={`/profile/${id}`}>
-                            <Text fontSize={{ base: '1rem', md: '1.25rem' }}>{name}</Text>
+                            <Flex align="center" gap={2}>
+                                <Text fontSize={{ base: '1rem', md: '1.25rem' }}>{name}</Text>
+                                {isVerified && <Icon as={BsCheckCircleFill} fontSize="1rem" />}
+                            </Flex>
                         </Link>
                         <Flex fontSize="0.75rem">
                             <Icon as={IoMdPeople} fontSize="1rem" mr={1} /> {followerNumber}

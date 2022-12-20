@@ -21,7 +21,7 @@ const MusicPage = () => {
                 setData(data);
             } catch (e) {}
         };
-        if (id !== undefined) getSong();
+        if (id) getSong();
     }, [id]);
 
     return (
@@ -30,6 +30,7 @@ const MusicPage = () => {
             m={['0 24px', '0 24px', '0']}
             minH={'100vh'}
             color={'white'}
+            pb={24}
         >
             <Helmet>
                 <title>

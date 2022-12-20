@@ -1,6 +1,12 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import { LastestSongs, MostStreamedSong, RecentlyPlayed, RecommendArtist } from '../components/Recommend';
+import {
+    LastestSongs,
+    MostStreamedSong,
+    RecentlyPlayed,
+    RecommendArtist,
+    RecommendPlaylists,
+} from '../components/Recommend';
 import { APP_NAME } from '../utils/constant';
 
 export default function HomePage() {
@@ -19,6 +25,7 @@ export default function HomePage() {
                 <RecentlyPlayed />
                 <LastestSongs />
                 <MostStreamedSong />
+                <RecommendPlaylists />
             </Box>
             <RecommendArtist />
         </Flex>

@@ -7,7 +7,7 @@ export default function Pagination({ onChangePage, paginator }) {
             <ReactPaginate
                 breakLabel="..."
                 nextLabel=">>"
-                pageRangeDisplayed={5}
+                pageRangeDisplayed={1}
                 previousLabel="<<"
                 pageCount={paginator.totalPages || 1}
                 initialPage={paginator.page === 0 ? 0 : paginator.page - 1}

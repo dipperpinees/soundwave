@@ -37,7 +37,6 @@ export default function MobilePlayer({
     );
 
     const download = useCallback(() => {
-        console.log('fdsfd');
         window.open(url.replace('/upload/', '/upload/fl_attachment/'), '_blank');
     }, [url]);
 

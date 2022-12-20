@@ -15,11 +15,11 @@ import {
     ModalHeader,
     ModalOverlay,
     Text,
-    useDisclosure,
     useToast,
 } from '@chakra-ui/react';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { useContext, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { Link, useNavigate } from 'react-router-dom';
@@ -28,7 +28,6 @@ import { LoadingContext } from '../stores/loadingStore';
 import '../styles/SignIn.scss';
 import { APP_NAME } from '../utils/constant';
 import fetchAPI from '../utils/fetchAPI';
-import { Helmet } from 'react-helmet';
 
 export default function SignIn() {
     const {
@@ -37,27 +36,40 @@ export default function SignIn() {
         formState: { errors },
     } = useForm();
     const userDispatch = useContext(UserContext)[1];
-    const [enopas, setEnopas] = useState('');
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [forgotEmail, setForgotEmail] = useState('');
     const navigate = useNavigate();
     const toast = useToast();
     const setLoading = useContext(LoadingContext)[1];
+    const [isOpenForgotModal, setIsOpenForgotModal] = useState(false);
 
     const forgetPassword = async () => {
-        console.log(JSON.stringify({"email": enopas}))
+        setLoading(true);
         try {
-            const changePass = await fetchAPI('/password/forget', {
+            if (!forgotEmail) return;
+            await fetchAPI('/password/forget', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({"email": enopas}),
-            })
-            console.log(changePass)
+                body: JSON.stringify({ email: forgotEmail }),
+            });
+            setLoading(false);
+            toast({
+                title: 'Send email successfully',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            });
         } catch (error) {
-            console.log(error);
+            setLoading(false);
+            toast({
+                title: error.message,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            });
         }
-    }
+    };
 
     const onSubmit = async ({ email, password }) => {
         setLoading(true);
@@ -139,7 +151,7 @@ export default function SignIn() {
                                 Email address
                             </FormLabel>
                             <Input
-                                type='email'
+                                type="email"
                                 name="email"
                                 id="email"
                                 {...register(
@@ -168,36 +180,47 @@ export default function SignIn() {
                             <FormLabel fontSize="0.875rem" mb={1} mr={0}>
                                 <Flex align="center" justify="space-between">
                                     <Text>Password</Text>
-                                    <Button type = 'submit' fontSize="0.875rem" color="var(--primary-color)" onClick={onOpen} backgroundColor='transparent'>
+                                    <Text
+                                        fontSize="0.875rem"
+                                        color="var(--primary-color)"
+                                        onClick={() => setIsOpenForgotModal(true)}
+                                        _hover={{ cursor: 'pointer' }}
+                                    >
                                         Forgot Password
-                                    </Button>
-                                    <Modal isOpen={isOpen} onClose={onClose}>
+                                    </Text>
+                                    <Modal isOpen={isOpenForgotModal} onClose={() => setIsOpenForgotModal(false)}>
                                         <ModalOverlay />
-                                        <ModalContent>
-                                            <ModalHeader>Modal Title</ModalHeader>
+                                        <ModalContent bgColor="blackAlpha.900" color="white">
+                                            <ModalHeader>Forgot password</ModalHeader>
                                             <ModalCloseButton />
                                             <ModalBody>
-                                                <FormControl isInvalid = {errors.email}>
-                                                <FormLabel className="inputLabel" color='black'>Email address</FormLabel>
-                                                    <Input type='email'
-                                                    id = 'enopas'
-                                                    {...register('enopas', {required: 'Email is required'},
-                                                    {pattern: {
-                                                        value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                                        message: 'Please enter a valid email',
+                                                <Text>Email address</Text>
+                                                <Input
+                                                    type="email"
+                                                    required
+                                                    onChange={(event) => {
+                                                        setForgotEmail(event.target.value);
                                                     }}
-                                                    )}
-                                                    onChange = {(event)=>{setEnopas(event.target.value)}}
-                                                    className="inputUser" style={{height: '58px', fontSize: '14px', backgroundColor:'#FFFFFF', border:"1px solid #000"}}/>
-                                                    <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
-                                                </FormControl>
+                                                    bgColor="white"
+                                                    color="black"
+                                                />
                                             </ModalBody>
 
                                             <ModalFooter>
-                                                <Button colorScheme='red' mr={3} onClick={onClose}>
+                                                <Button
+                                                    mr={3}
+                                                    onClick={() => setIsOpenForgotModal(false)}
+                                                    color="black"
+                                                >
                                                     Close
                                                 </Button>
-                                                <Button colorScheme='green'onClick={forgetPassword}>Send code</Button>
+                                                <Button
+                                                    bgColor="var(--primary-color)"
+                                                    onClick={forgetPassword}
+                                                    _hover={{ opacity: 0.8 }}
+                                                >
+                                                    Submit
+                                                </Button>
                                             </ModalFooter>
                                         </ModalContent>
                                     </Modal>

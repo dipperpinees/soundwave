@@ -23,7 +23,7 @@ const ProfilePage = () => {
             minHeight="100vh"
             sx={{ paddingTop: '80px' }}
             color={'white'}
-            pb={20}
+            pb={24}
         >
             <Helmet>
                 <title>
@@ -66,7 +66,7 @@ const ProfilePage = () => {
                             gap={6}
                         >
                             {playlists.map((playlist) => (
-                                <PlaylistPreview key={playlist.id} {...playlist} showSettings={true} />
+                                <PlaylistPreview key={playlist.id} {...playlist} showSettings={false} />
                             ))}
                         </Grid>
                     </Box>

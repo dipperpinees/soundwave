@@ -8,12 +8,13 @@ import { Link } from 'react-router-dom';
 
 const FeaturedTracks = ({ currentUserId }) => {
     const [data, setData] = useState(null);
-
+    const [paginate, setPaginate] = useState({ page: 1, totalPages: 1 });
     useEffect(() => {
         const fetchSong = async () => {
             try {
                 const data = await fetchAPI(`/user/${currentUserId}/songs`);
                 setData(data);
+                setPaginate({page: 1, totalPages: Math.ceil(data.length / 5)})
             } catch (e) {}
         };
         fetchSong();
@@ -38,6 +39,12 @@ const FeaturedTracks = ({ currentUserId }) => {
             setData(newData);
         }
     };
+
+    const handleSeeMore = () => {
+        if (paginate.page === paginate.totalPages) return;
+        const newPage = paginate.page + 1;
+        setPaginate({...paginate, page: newPage});
+    }
 
     return (
         <Box>
@@ -75,10 +82,7 @@ const FeaturedTracks = ({ currentUserId }) => {
             {/* featured tracks song list */}
             <List>
                 {data
-                    ? data.map((song, index) => {
-                          if (index >= 5) {
-                              return null;
-                          }
+                    ? data.slice(0, 5 * (paginate.page - 1) + 5).map((song, index) => {
                           return (
                               <Song
                                   key={song.id}
@@ -98,10 +102,10 @@ const FeaturedTracks = ({ currentUserId }) => {
             {data && data.length > 5 && (
                 <Flex justifyContent="end" mt="4px">
                     <Link to="">
-                        <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer">
+                        {paginate.page < paginate.totalPages && <Text mr="4px" fontSize="xs" display="inline-flex" alignItems="center" cursor="pointer" onClick={handleSeeMore}>
                             See more
                             <LineRightIcon />
-                        </Text>
+                        </Text>}
                     </Link>
                 </Flex>
             )}
