@@ -1,23 +1,6 @@
-# App nghe nhạc
+# SOUNDWAVE - Listen to Free Online Music Streaming
 ## Công nghệ dự kiến sử dụng:
   + Front-end: [ReactJS](https://reactjs.org/), [SCSS](https://sass-lang.com/), [Chakra UI](https://chakra-ui.com/), [React Hook Form](https://react-hook-form.com/), [React Icons](https://react-icons.github.io/react-icons/), [React Query](https://react-query-v3.tanstack.com/)
   + Back-end: [Golang](https://go.dev/)([Gin Gonic](https://gin-gonic.com/)), [GORM](https://gorm.io/)
   + Database: MySQL
   + RESTful API ([DEMO API](https://music-a8of.onrender.com/swagger/))
-## Database Design
-  <a href="https://app.quickdatabasediagrams.com/#/d/sxtRMq">Datagram</a>
-## GIT
-  Mỗi người sẽ code trên một nhánh (branch), khi push sẽ push lên nhánh đó rồi mới merge vào nhánh chính (master), nếu muốn cập nhật sự thay đổi trên nhánh chính về nhánh của mình thì sẽ pull code từ nhánh chính (master) về.
- ```bash
-  # Tạo branch mới
-  git branch <branch-name>
-  # Chuyển sang branch mới tạo
-  git checkout <branch-name>
-  # Push branch mới tạo lên trên github
-  git push --set-upstream origin <branch-name>
-  # Pull code từ master về branch
-  git pull origin master
- ```
-## [UI Design](https://drive.google.com/drive/folders/12iPdt_N6ndeQkfoksEqpM0qUDYDLWrfg?usp=sharing)
-
-## [Tài liệu chức năng](https://docs.google.com/spreadsheets/d/1AfBjBW-0iT-vGn4dQdejipoWCmCoYLEZFEyTKjaOttE/edit#gid=0)
