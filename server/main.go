@@ -5,7 +5,6 @@ import (
 
 	"os"
 
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/hiepnguyen223/int3306-project/common"
 	"github.com/hiepnguyen223/int3306-project/configs"
@@ -41,14 +40,15 @@ func main() {
 	app.Use(middlewares.CORS())
 	app.Use(middlewares.Auth())
 
+	router := app.Group("/api")
+	routers.HandleRoute(router)
+
 	//serve client
 	if configs.Environment() == "production" {
-		app.Use(static.Serve("/", static.LocalFile("../client/build", false)))
+		app.NoRoute(func(c *gin.Context) {
+			c.File("../client/build/index.html")
+		})
 	}
-
-	router := app.Group("/api")
-
-	routers.HandleRoute(router)
 
 	var PORT string
 	if configs.EnvPort() != "" {
