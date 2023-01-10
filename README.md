@@ -1,7 +1,7 @@
 <p align="center">
   <a href="https://soundwavee.vercel.app" target="blank"><img src="https://iili.io/HI5pxkB.png" width="200" alt="SOUNDWAVE" /></a>
 </p>
-<p align="center"> <b>SOUNDWAVE</b>  - Listen to Free Online Music Streaming</p>
+<p align="center"> <b><a href="https://soundwavee.vercel.app">SOUNDWAVE</a></b>  - Listen to Free Online Music Streaming</p>
 
 ## Technology used:
   + Front-end: [ReactJS](https://reactjs.org/), [SCSS](https://sass-lang.com/), [Chakra UI](https://chakra-ui.com/), [React Hook Form](https://react-hook-form.com/), [React Icons](https://react-icons.github.io/react-icons/), [React Query](https://react-query-v3.tanstack.com/)
