@@ -27,6 +27,7 @@ Fill env variables in `.env` file (client & server folders)
 - Follow other users
 - Search & filter song & user
 - ADMIN dashboard
+- Password reset email message
 
 <img width="550" src="https://iili.io/HI7iFGp.png"/>
 <img width="550" src="https://iili.io/HI7i3nR.png"/>
