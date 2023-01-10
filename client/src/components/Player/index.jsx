@@ -47,7 +47,7 @@ export default function Player({ songList, songPlayed, isPlayed, currentTime, so
     const changeAutoPlay = useCallback(
         (type) => {
             if (autoPlay === type) {
-                dispatch({ type: 'ChangeAutoPlay', payload: 'none' });
+                dispatch({ type: 'ChangeAutoPlay', payload: 'next' });
             } else {
                 dispatch({ type: 'ChangeAutoPlay', payload: type });
             }

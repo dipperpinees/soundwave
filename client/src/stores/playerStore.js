@@ -8,7 +8,7 @@ const defaultState = {
     songList: [],
     songPlayed: {},
     volume: 1,
-    autoPlay: 'none', //next, repeat, shuffle or null
+    autoPlay: 'next', //next, repeat, shuffle or null
     songDuration: 0,
     currentTime: 0,
     playlistID: 0,
