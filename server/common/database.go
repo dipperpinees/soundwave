@@ -21,8 +21,11 @@ func connectDb() *gorm.DB {
 	DB_NAME := configs.EnvDbName()
 	DB_HOST := configs.EnvDbHost()
 	DB_PORT := configs.EnvDbPort()
-
-	dsn := DB_USERNAME + ":" + DB_PASSWORD + "@tcp" + "(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME + "?" + "parseTime=true"
+	DB_TLS := ""
+	if DB_HOST != "localhost" {
+		DB_TLS = "&tls=true"
+	}
+	dsn := DB_USERNAME + ":" + DB_PASSWORD + "@tcp" + "(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME + "?parseTime=true" + DB_TLS
 	db, err := gorm.Open(mysql.Open(dsn))
 
 	if err != nil {
