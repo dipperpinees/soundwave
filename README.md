@@ -9,8 +9,21 @@
   + Database: MySQL
   + RESTful API ([DEMO API](https://music-a8of.onrender.com/swagger/))
 
+## How to start
+
+```bash
+# client
+$ cd public/client
+$ yarn install
+$ yarn build
+
+# server
+$ go mod tidy
+$ go run main.go
+```
+
 ## Environment variables
-Fill env variables in `.env` file (client & server folders)
+Fill env variables in `.env` file
 
 ## Functionality overview
 
