@@ -46,7 +46,7 @@ func main() {
 	//serve client
 	if configs.Environment() == "production" {
 		app.NoRoute(func(c *gin.Context) {
-			c.File("../client/build/index.html")
+			c.File("./public/client/build/index.html")
 		})
 	}
 
