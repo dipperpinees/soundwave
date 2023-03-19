@@ -13,6 +13,7 @@
 
 ```bash
 # client
+$ git clone https://github.com/hiepnguyen223/soundwave-front-end.git public/client
 $ cd public/client
 $ yarn install
 $ yarn build
