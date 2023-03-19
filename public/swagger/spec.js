@@ -12,7 +12,7 @@ var spec =
     tags: [ 
         {
             name: "auth",                                
-            description: "Đăng kí, đăng nhập, xác thực tài khoản",  
+            description: "Sign in, Sign up, Authentication",  
         }
     ],
     schemes: [window.location.protocol.replace(":", "")], 
@@ -20,14 +20,14 @@ var spec =
         "/signup": {   
             post: {       
                 tags: ["auth"],
-                summary: "Tạo tài khoản",
+                summary: "Create account",
                 operationId: "CreateUser",
                 consumes: ["application/json"],    
                 produces: ["application/json"],     
                 parameters: [              
                     {
                         "in": "body",      
-                        "name": "Thông tin tài khoản",  
+                        "name": "Account infomation",  
                         "required": "true",   
                         "schema": {
                             "type": "object",
@@ -55,14 +55,14 @@ var spec =
         "/signin": {
             post: {
                 tags: ["auth"],
-                summary: "Đăng nhập tài khoản",
-                operationId: "Login",
+                summary: "Sign in",
+                operationId: "Sign in",
                 consumes: ["application/json"],
                 produces: ["application/json"],
                 parameters: [
                     {
                         "in": "body",      
-                        "name": "Thông tin tài khoản",  
+                        "name": "Account infomation",  
                         "required": "true",   
                         "schema": {
                             "type": "object",
@@ -87,7 +87,7 @@ var spec =
         "/auth": {
             post: {
                 tags: ["auth"],
-                summary: "Xác thực token",
+                summary: "Token authentication",
                 operationId: "Authenication",
                 produces: ["application/json"],
                 responses: {
@@ -100,7 +100,7 @@ var spec =
         "/logout": {
             post: {
                 tags: ["auth"],
-                summary: "Đăng xuất",
+                summary: "Log out",
                 operationId: "LogOut",
                 produces: ["application/json"],
                 responses: {
@@ -113,14 +113,14 @@ var spec =
         "/password/forget": {
             post: {
                 tags: ["auth"],
-                summary: "Quên mật khẩu",
+                summary: "Forgot password",
                 operationId: "ForgotPassword",
                 produces: ["application/json"],
                 consumes: ["application/json"],
                 parameters: [
                     {
                         "in": "body",      
-                        "name": "Thông tin quên mật khẩu",  
+                        "name": "Account infomation",  
                         "required": "true",   
                         "schema": {
                             "type": "object",
@@ -142,14 +142,14 @@ var spec =
         "/password/reset": {
             post: {
                 tags: ["auth"],
-                summary: "Đổi mật khẩu",
+                summary: "Reset password",
                 operationId: "ResetPassword",
                 produces: ["application/json"],
                 consumes: ["application/json"],
                 parameters: [
                     {
                         "in": "body",      
-                        "name": "Thông tin reset mật khẩu",  
+                        "name": "Account infomation",  
                         "required": "true",   
                         "schema": {
                             "type": "object",
@@ -177,7 +177,7 @@ var spec =
         "/song": {
             post: {
                 tags: ["song"],
-                summary: "Upload nhạc",
+                summary: "Upload song",
                 operationId: "CreateSong",
                 consumes: ["multipart/form-data"],
                 produces: ["application/json"],
@@ -215,8 +215,8 @@ var spec =
             },
             get: {
                 tags: ["song"],
-                summary: "Lấy list bài nhạc",
-                operationId: "GetListSongs",
+                summary: "Get list of songs",
+                operationId: "GetListOfSongs",
                 produces: ["application/json"],
                 parameters: [
                     {
@@ -250,7 +250,7 @@ var spec =
         "/song/{songID}": {
             get: {
                 tags: ["song"],
-                summary: "Lấy bài nhạc theo id",
+                summary: "Get song by id",
                 operationId: "GetSongByID",
                 produces: ["application/json"],
                 parameters: [
@@ -270,7 +270,7 @@ var spec =
             },
             delete: {
                 tags: ["song"],
-                summary: "Xoá bài nhạc",
+                summary: "Delete song",
                 produces: ["application/json"],
                 parameters: [
                     {
@@ -289,7 +289,7 @@ var spec =
             },
             put: {
                 tags: ["song"],
-                summary: "Update bài nhạc",
+                summary: "Update song",
                 consumes: ["multipart/form-data"],
                 produces: ["application/json"],
                 parameters: [
@@ -327,7 +327,7 @@ var spec =
         "/song/like/{songID}": {
             post: {
                 tags: ["song"],
-                summary: "Like bài nhạc",
+                summary: "Like song",
                 operationId: "CreateFavoriteSong",
                 consumes: ["application/json"],
                 produces: ["application/json"],
@@ -348,7 +348,7 @@ var spec =
             },
             delete: {
                 tags: ["song"],
-                summary: "Unlike bài nhạc",
+                summary: "Unlike song",
                 operationId: "DeleteFavoriteSong",
                 consumes: ["application/json"],
                 produces: ["application/json"],
@@ -371,7 +371,7 @@ var spec =
         "/song/{songID}/comment": {
             get: {
                 tags: ["comment"],
-                summary: "Lấy comments bài nhạc",
+                summary: "Get comments of song",
                 operationId: "GetCommentBySongID",
                 produces: ["application/json"],
                 parameters: [
@@ -391,7 +391,7 @@ var spec =
             },
             post: {
                 tags: ["comment"],
-                summary: "Comment bài nhạc",
+                summary: "Create comment of song",
                 operationId: "CreateComment",
                 consumes: ["application/json"],
                 produces: ["application/json"],
@@ -427,7 +427,7 @@ var spec =
         "/song/comment/{commentID}": {
             put: {
                 tags: ["comment"],
-                summary: "Cập nhật comment",
+                summary: "Update comment",
                 operationId: "UpdateComment",
                 produces: ["application/json"],
                 parameters: [
@@ -460,7 +460,7 @@ var spec =
             },
             delete: {
                 tags: ["comment"],
-                summary: "Xoá comment",
+                summary: "Delete comment",
                 operationId: "DeleteCommentBySongID",
                 produces: ["application/json"],
                 parameters: [
@@ -482,8 +482,8 @@ var spec =
         "/song/play/{songID}": {
             post: {
                 tags: ["song"],
-                summary: "Tăng số lượt nghe bài hát",
-                operationId: "IncrementPlayCount",
+                summary: "Increase song listeners",
+                operationId: "IncrementPlayListeners",
                 produces: ["application/json"],
                 parameters: [
                     {
@@ -502,7 +502,7 @@ var spec =
         "/song/{songID}/report": {
             post: {
                 tags: ["song"],
-                summary: "Báo cáo bài hát",
+                summary: "Report song",
                 operationId: "ReportSong",
                 produces: ["application/json"],
                 consumes: ["application/json"],
@@ -514,7 +514,7 @@ var spec =
                     },
                     {
                         "in": "body",      
-                        "name": "Thông tin report",  
+                        "name": "Report infomation",  
                         "required": "true",   
                         "schema": {
                             "type": "object",
@@ -536,7 +536,7 @@ var spec =
         "/user/": {
             get: {
                 tags: ["user"],
-                summary: "Lấy danh sách user",
+                summary: "Get list of users",
                 operationId: "GetUserList",
                 produces: ["application/json"],
                 parameters: [
@@ -564,7 +564,7 @@ var spec =
             },
             put: {
                 tags: ["user"],
-                summary: "Cập nhật thông tin user",
+                summary: "Update user infomation",
                 operationId: "UpdateUser",
                 consumes: ["multipart/form-data"],
                 produces: ["application/json"],
@@ -596,7 +596,7 @@ var spec =
         "/user/{userID}": {
             get: {
                 tags: ["user"],
-                summary: "Lấy thông tin user",
+                summary: "Get user infomation",
                 operationId: "GetUserByID",
                 produces: ["application/json"],
                 parameters: [
@@ -616,7 +616,7 @@ var spec =
         "/user/favorite": {
             get: {
                 tags: ["user"],
-                summary: "Lấy bài hát yêu thích của user",
+                summary: "Get list of favorite songs",
                 operationId: "GetFavoriteSongs",
                 produces: ["application/json"],
                 responses: {
@@ -629,7 +629,7 @@ var spec =
         "/user/{userID}/songs": {
             get: {
                 tags: ["user", "song"],
-                summary: "Lấy các bài nhạc user đã đăng tải",
+                summary: "Get list of uploaded songs",
                 operationId: "GetSongOfUser",
                 produces: ["application/json"],
                 parameters: [
@@ -649,7 +649,7 @@ var spec =
         "/user/{userID}/playlists": {
             get: {
                 tags: ["user", "playlist"],
-                summary: "Lấy playlist của user",
+                summary: "Get playlists of user",
                 operationId: "GetPlaylistsOfUser",
                 produces: ["application/json"],
                 parameters: [
@@ -669,7 +669,7 @@ var spec =
         "/user/follow/{followingID}": {
             post: {
                 tags: ["user"],
-                summary: "Follow user khác",
+                summary: "Follow user",
                 operationId: "Follow",
                 consumes: ["application/json"],
                 produces: ["application/json"],
@@ -690,7 +690,7 @@ var spec =
         "/user/unfollow/{followingID}": {
             post: {
                 tags: ["user"],
-                summary: "Unfollow user khác",
+                summary: "Unfollow user",
                 operationId: "Unfollow",
                 consumes: ["application/json"],
                 produces: ["application/json"],
@@ -711,7 +711,7 @@ var spec =
         "/user/follower/{userID}": {
             get: {
                 tags: ["user"],
-                summary: "Lấy danh sách người theo dõi",
+                summary: "Get followers",
                 operationId: "GetFollowers",
                 produces: ["application/json"],
                 parameters: [
@@ -731,7 +731,7 @@ var spec =
         "/user/following/{userID}": {
             get: {
                 tags: ["user"],
-                summary: "Lấy danh sách người đang theo dõi",
+                summary: "Get followings",
                 operationId: "GetFollowings",
                 produces: ["application/json"],
                 parameters: [
@@ -751,7 +751,7 @@ var spec =
         "/genre": {
             get: {
                 tags: ["genre"],
-                summary: "Lấy list genre",
+                summary: "Get list of genres",
                 operationId: "GetGenres",
                 responses: {
                     200: {                                    
@@ -763,7 +763,7 @@ var spec =
         "/playlist/": {
             post: {
                 tags: ["playlist"],
-                summary: "Tạo playlist",
+                summary: "Create playlist",
                 operationId: "CreatePlaylist",
                 consumes: ["multipart/form-data"],
                 produces: ["application/json"],
@@ -789,7 +789,7 @@ var spec =
             },
             get: {
                 tags: ["playlist"],
-                summary: "Lấy danh sách các playlist",
+                summary: "Get list of playlists",
                 operationId: "GetPlaylists",
                 responses: {
                     200: {                                    
@@ -801,7 +801,7 @@ var spec =
         "/playlist/{playlistID}": {
             get: {
                 tags: ["playlist"],
-                summary: "Lấy playlist bằng id",
+                summary: "Get playlist by id",
                 operationId: "GetPlaylistByID",
                 produces: ["application/json"],
                 parameters: [
@@ -821,7 +821,7 @@ var spec =
         "/playlist/{playlistID}/song/": {
             post: {
                 tags: ["playlist"],
-                summary: "Thêm bài hát vào playlist",
+                summary: "Add song to playlist",
                 operationId: "CreatePlaylist",
                 consumes: ["application/json"],
                 produces: ["application/json"],
