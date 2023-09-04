@@ -23,5 +23,9 @@ func IsValidContentType(fileType string, file *multipart.FileHeader) bool {
 		return false
 	}
 
+	if fileType == "audio" && currentFileType == "application/octet-stream" {
+		return true
+	}
+
 	return strings.HasPrefix(currentFileType, fileType)
 }

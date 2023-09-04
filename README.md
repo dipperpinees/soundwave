@@ -31,7 +31,7 @@ docker run -d \
 -e EMAIL_PASSWORD='email_password' \
 -e EMAIL='abc@gmail.com' \
 -e ADMIN_EMAIL='admin@gmail.com' \
--e ADMIN_PASSWORD='admin' \
+-e ADMIN_PASSWORD='admin123' \
 -p 3001:3001 \
 soundwave
 ``` 

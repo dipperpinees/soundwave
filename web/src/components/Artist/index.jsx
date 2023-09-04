@@ -50,6 +50,7 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                     onClick={toggleFollow}
                     _hover={{ borderColor: 'var(--primary-color)' }}
                     flex="none"
+                    color="#fff"
                 >
                     {isFollow ? <MdDone /> : <IoIosPersonAdd />}
                     {isFollow ? 'Following' : 'Follow'}
@@ -83,10 +84,11 @@ export default function Artist({ id, name, avatar, followerNumber, trackNumber, 
                             gap={1}
                             onClick={toggleFollow}
                             width="120px"
+                            color="#fff"
                             _hover={{ borderColor: 'var(--primary-color)' }}
                         >
                             {isFollow ? <MdDone /> : <IoIosPersonAdd />}
-                            {isFollow ? 'Following' : 'Follow'}
+                            {isFollow ? 'Following' : 'Fđollow'}
                         </Button>
                     </Stack>
                 </Flex>

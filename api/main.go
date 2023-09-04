@@ -15,9 +15,9 @@ import (
 )
 
 func handleAPIRoutes(app *gin.Engine) {
+	app.Use(middlewares.CORS())
+	app.Use(middlewares.Auth())
 	router := app.Group("/api")
-	router.Use(middlewares.CORS())
-	router.Use(middlewares.Auth())
 	routers.HandleRoute(router)
 }
 

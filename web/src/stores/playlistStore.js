@@ -263,7 +263,7 @@ const AddSongPlaylist = ({ onClose, songID, userID, showCreatePlaylist }) => {
                         </ModalBody>
 
                         <ModalFooter>
-                            <Button variant="ghost" _hover={{}} _active={{}} onClick={showCreatePlaylist}>
+                            <Button variant="ghost" _hover={{}} color="#fff" _active={{}} onClick={showCreatePlaylist}>
                                 Create new playlist
                             </Button>
                             <Button
