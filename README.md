@@ -5,22 +5,37 @@
 
 ## Technology used:
   + Front-end: [ReactJS](https://reactjs.org/), [SCSS](https://sass-lang.com/), [Chakra UI](https://chakra-ui.com/), [React Hook Form](https://react-hook-form.com/), [React Icons](https://react-icons.github.io/react-icons/), [React Query](https://react-query-v3.tanstack.com/)
-  + Back-end: [Golang](https://go.dev/)([Gin Gonic](https://gin-gonic.com/)), [GORM](https://gorm.io/)
+  + Back-end: [Golang](https://go.dev/) ([Gin Gonic](https://gin-gonic.com/)), [GORM](https://gorm.io/)
   + Database: MySQL
-  + RESTful API ([DEMO API](https://music-a8of.onrender.com/swagger/))
+  + RESTful API ([DEMO API](https://soundwave-app.onrender.com/swagger))
 
 ## How to start
-
+Build docker image
 ```bash
-# client
-$ cd web
-$ yarn install
-$ yarn build
-
-# server
-$ go mod tidy
-$ go run main.go
+docker build -t soundwave --build-arg GOOGLE_CLIENT_ID=<YOUR_GOOGLE_CLIENT_ID>  .
 ```
+Run the application in a Docker container:
+```bash
+docker run -d \
+--name soundwave-app \
+-e DB_USERNAME='root' \
+-e DB_PASSWORD='123456' \
+-e DB_NAME='db' \
+-e DB_HOST='127.0.0.1' \
+-e DB_PORT='4000' \
+-e SECRET_KEY='secret_key' \
+-e CLOUDINARY_CLOUD_NAME='cloud_name' \
+-e CLOUDINARY_API_KEY='api_key' \
+-e CLOUDINARY_API_SECRET='api_secret' \
+-e CLOUDINARY_UPLOAD_FOLDER='folder' \
+-e EMAIL_PASSWORD='email_password' \
+-e EMAIL='abc@gmail.com' \
+-e ADMIN_EMAIL='admin@gmail.com' \
+-e ADMIN_PASSWORD='admin' \
+-p 3001:3001 \
+soundwave
+``` 
+
 
 ## Environment variables
 Fill env variables in `.env` file
