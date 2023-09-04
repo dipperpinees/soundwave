@@ -1,0 +1,104 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+.but-social {
+    box-shadow: 0 1px 10px 0;
+    background-color: #fff;
+    color: #191919;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 42px;
+    padding: 9px 10px;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0);
+    display: inline-flex;
+    font-weight: 700;
+    width: 100%;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition-duration: .2s;
+    transition-property: background-color, color, border-color, transform,-webkit-transform;
+    margin-right: 20rem;
+}
+
+#inputInfo {
+    width: 100%;
+    max-width: 485px;
+    margin-left: 10px;
+    margin-top: 40px;
+}
+
+.inputLabel {
+    font-family: 'Open Sans', 'Helvetica', 'Arial';
+    color: #FFF;
+    font-size: 12px;
+    line-height: 14px;
+    text-decoration: none solid rgb(0,0,0);
+    vertical-align: middle;
+    word-spacing: 0px;
+    background-color: none;
+    height: 14px;
+    width: 385px;
+    border: 0px solid #32323D;
+    margin: 0 0 4px 0;
+    min-height: auto;
+    min-width: auto;
+}
+
+
+.inputUser {
+    font-family: 'Open Sans', 'Helvetica', 'Arial';
+    line-height: 16px;
+    text-decoration: none solid rgb(0,0,0);
+    word-spacing: 0px;
+    color: #000000;
+    height: 54px;
+    width: 385px;
+    border: 1px solid #D1D1D6;
+    padding: 18px 16px 18px 16px;
+    min-height: auto;
+    min-width: auto;
+    display: block;
+    cursor: text;
+    margin-bottom: 10px;
+}
+
+
+
+.logo {
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+
+#but-login {
+    line-height: 18px;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: middle;
+    word-spacing: 0px;
+    background-position: 0% 0%;
+    color: #FFFFFF;
+    height: 58px;
+    width: 485px;
+    border: 1px solid #FFFFFF;
+    margin: 24px 0 0 0px;
+    padding: 19px 32px 19px 32px;
+    min-height: 54px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: inline-flex;
+}
+
+#but-login:hover {
+    background-color: #DC5F00;
+}

@@ -1,0 +1,38 @@
+@import "/src/styles/responsive.scss";
+
+.player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background-color: white;
+    background-image: linear-gradient(to right, #1d111f, #120e1d);
+    padding: 0px 24px;
+    &-play {
+        align-items: center;
+        justify-content: center;
+        & button {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px white solid;
+            margin: 12px;
+            & svg {
+                margin: auto
+            }
+        }
+    }
+
+    & svg {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &-choose {
+        & path {
+            color: var(--primary-color)
+        }
+    }
+}

@@ -1,0 +1,17 @@
+.image-song {
+    .play-btn {
+        position: absolute;
+        visibility: hidden;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    &:hover {
+        .play-btn {
+            visibility: visible;
+            background: rgba(0, 0, 0, 0.1);
+        }
+    }
+}
