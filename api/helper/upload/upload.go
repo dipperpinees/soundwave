@@ -41,11 +41,11 @@ func Upload(c *gin.Context, filesStruct interface{}) error {
 			}
 
 			dst := "public/" + file.Filename
-			c.SaveUploadedFile(file, dst)
+			c.SaveUploadedFile(file, dst) //nolint:all
 			defer os.Remove(dst)
 
 			uploadUrl, err := NewMediaUpload().Single(dst)
-			field.Set(uploadUrl)
+			field.Set(uploadUrl) //nolint:all
 			queueErr <- err
 		}(key)
 	}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/gin-contrib/static"
@@ -46,7 +47,10 @@ func initServer() {
 	} else {
 		PORT = ":3001"
 	}
-	app.Run(PORT)
+	err := app.Run(PORT)
+	if (err == nil) {
+		fmt.Printf("Server started at port %s", PORT)
+	}
 }
 
 func initDB() {
@@ -62,7 +66,10 @@ func initDB() {
 
 func main() {
 	//load env variable
-	godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Failed to load .env")
+	}
 
 	initDB()
 	initServer();

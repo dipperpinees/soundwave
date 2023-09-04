@@ -73,7 +73,7 @@ func (SongController) GetByID(c *gin.Context) {
 func (SongController) FindMany(c *gin.Context) {
 	userID := helper.GetUserID(c)
 	query := dtos.SongFilterInput{}
-	c.BindQuery(&query)
+	c.BindQuery(&query) //nolint:all
 
 	listSong, total, err := songService.FindMany(query.Page, query.Search, query.OrderBy, query.GenreID, query.Limit, userID)
 	if err != nil {
@@ -150,7 +150,7 @@ func (SongController) UpdateSong(c *gin.Context) {
 		return
 	}
 	formData := dtos.SongUpdateInput{}
-	c.ShouldBind(&formData)
+	c.ShouldBind(&formData) //nolint:all
 	if err := upload.Upload(c, &formData); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return

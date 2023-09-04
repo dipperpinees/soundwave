@@ -93,7 +93,10 @@ func (AuthController) ForgetPassword(c *gin.Context) {
 	}
 
 	code, err := userService.CreateForget(user.ID)
-	mail.Send([]string{user.Email}, "Reset your password", helper.ResetPasswordTemplate(fmt.Sprintf("%s/forgot?code=%s&userID=%d", origin, code, user.ID)))
+	if err := mail.Send([]string{user.Email}, "Reset your password", helper.ResetPasswordTemplate(fmt.Sprintf("%s/forgot?code=%s&userID=%d", origin, code, user.ID))); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return

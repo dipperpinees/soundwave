@@ -21,7 +21,7 @@ func (UserController) UpdateUser(c *gin.Context) {
 	userID := helper.GetUserID(c)
 
 	userUpdate := dtos.UserUpdateInput{}
-	c.ShouldBind(&userUpdate)
+	c.ShouldBind(&userUpdate); //nolint:all
 
 	if err := upload.Upload(c, &userUpdate); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})

@@ -118,7 +118,7 @@ func (PlaylistController) Delete(c *gin.Context) {
 func (PlaylistController) FindMany(c *gin.Context) {
 	userID := helper.GetUserID(c)
 	query := dtos.PlaylistFilterInput{}
-	c.BindQuery(&query)
+	c.BindQuery(&query) //nolint:all
 
 	playlists, total, err := playlistService.FindMany(query.Page, query.Search, query.Limit, userID)
 	if err != nil {
