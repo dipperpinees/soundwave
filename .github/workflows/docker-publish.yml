@@ -29,3 +29,5 @@ jobs:
           context: .
           push: true
           tags: dipperpinees/soundwave:${{ github.sha }}
+          build-args: |
+            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
