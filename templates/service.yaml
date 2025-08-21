@@ -9,3 +9,4 @@ spec:
   ports:
     - port: {{ .Values.service.port }}
       targetPort: 3001
+      protocol: TCP

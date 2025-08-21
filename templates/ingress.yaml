@@ -5,6 +5,9 @@ metadata:
   name: {{ .Chart.Name }}
   annotations:
     kubernetes.io/ingress.class: {{ .Values.ingress.className }}
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
 spec:
   rules:
     {{- range .Values.ingress.hosts }}
