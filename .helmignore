@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+web/node_modules/
+
+# Build artifacts
+web/build/
+api/build/
+
+# Source code directories (keep only templates and values)
+web/src/
+api/*.go
+api/common/
+api/configs/
+api/controllers/
+api/dtos/
+api/helper/
+api/middlewares/
+api/models/
+api/public/
+api/routers/
+api/services/
+
+# Development files
+.git/
+.github/
+.gitignore
+.dockerignore
+Dockerfile
+Jenkinsfile
+README.md
+.prettierrc
+
+# Environment files
+.env*
+*.env
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Test files
+*_test.go
+test/
+tests/
+
+# Documentation
+docs/
+*.md
+
+# Temporary files
+tmp/
+temp/
