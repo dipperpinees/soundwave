@@ -1,12 +1,12 @@
 
 # Build the React app
-FROM node:16-alpine3.16 as node_builder
+FROM node:22.16.0-alpine as node_builder
 ARG GOOGLE_CLIENT_ID
 WORKDIR /app
 COPY ./web .
 RUN yarn install
-ENV REACT_APP_API=/api
-ENV REACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+ENV VITE_API=/api
+ENV VITE_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
 RUN yarn build
 
 # Build the Go API
