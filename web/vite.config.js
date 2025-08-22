@@ -18,13 +18,6 @@ export default defineConfig({
     outDir: 'build',
     sourcemap: true,
   },
-  define: {
-    global: 'globalThis',
-    'process.env': {
-      REACT_APP_API: process.env.VITE_API || process.env.REACT_APP_API,
-      REACT_APP_GOOGLE_CLIENT_ID: process.env.VITE_GOOGLE_CLIENT_ID || process.env.REACT_APP_GOOGLE_CLIENT_ID,
-    },
-  },
   optimizeDeps: {
     include: ['react', 'react-dom'],
   },
