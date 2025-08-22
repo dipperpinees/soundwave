@@ -31,3 +31,26 @@ jobs:
           tags: dipperpinees/soundwave:${{ github.sha }}
           build-args: |
             GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+
+      # Update manifest in another repository
+      - name: Checkout manifest repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.MANIFEST_REPOSITORY }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: manifest-repo
+
+      - name: Update manifest
+        run: |
+          cd manifest-repo
+          # Update the tag in soundwave/values.yaml with the new Docker image tag
+          sed -i "s|tag: \".*\"|tag: \"${{ github.sha }}\"|g" soundwave/values.yaml
+          
+          # Configure git
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # Commit and push changes
+          git add soundwave/values.yaml
+          git commit -m "Update soundwave image tag to ${{ github.sha }}"
+          git push
