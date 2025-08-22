@@ -16,7 +16,7 @@ import Search from './pages/Search';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Upload from './pages/Upload';
-import { Store } from './stores';
+import { Store } from './stores/index.jsx';
 import ScrollToTop from './utils/ScrollToTop';
 import theme from './utils/theme';
 
